@@ -23,26 +23,42 @@ module MinitestToRspec
           method_name = exp.shift
           case method_name
           when :test
-            if exp.length == 1 && exp[0].sexp_type == :str
-              s(:call, mystery, :it, exp.shift)
-            else
-              raise <<-EOS
-Expected test() to have exactly one argument, a string.  Found
-#{exp.length} arguments: #{exp}
-              EOS
-            end
+            method_test(exp, mystery)
           when :require
-            if exp.length == 1 && exp[0].sexp_type == :str && exp[0][1] == "test_helper"
-              exp.clear
-              s(:call, mystery, :require, s(:str, "spec_helper"))
-            else
-              exp.clear
-              orig
-            end
+            method_require(exp, orig, mystery)
           else
             exp.clear
             orig
           end
+        end
+
+        private
+
+        def method_require(exp, orig, mystery)
+          if test_helper?(exp)
+            exp.clear
+            s(:call, mystery, :require, s(:str, "spec_helper"))
+          else
+            exp.clear
+            orig
+          end
+        end
+
+        def method_test(exp, mystery)
+          if exp.length == 1 && exp[0].sexp_type == :str
+            s(:call, mystery, :it, exp.shift)
+          else
+            raise <<-EOS
+Expected test() to have exactly one argument, a string.  Found
+#{exp.length} arguments: #{exp}
+            EOS
+          end
+        end
+
+        def test_helper?(exp)
+          exp.length == 1 &&
+            exp[0].sexp_type == :str &&
+            exp[0][1] == "test_helper"
         end
       end
     end

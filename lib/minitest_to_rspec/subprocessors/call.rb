@@ -46,12 +46,7 @@ module MinitestToRspec
 
         def method_test(exp, mystery)
           if exp.length == 1 && exp[0].sexp_type == :str
-            s(:call, mystery, :it, exp.shift)
-          else
-            raise <<-EOS
-Expected test() to have exactly one argument, a string.  Found
-#{exp.length} arguments: #{exp}
-            EOS
+            s(:call, mystery, :it, *exp)
           end
         end
 

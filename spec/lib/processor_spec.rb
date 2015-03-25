@@ -3,19 +3,15 @@ require "spec_helper"
 module MinitestToRspec
   RSpec.describe Processor do
     let(:processor) { described_class.new }
-    describe "#process_call" do
-      it "replaces test_helper with spec_helper" do
-        input = s(:call, nil, :require, s(:str, "test_helper"))
-        expect(processor.process(input)).to eq(
-          s(:call, nil, :require, s(:str, "spec_helper"))
-        )
-      end
 
-      it "replaces test with it" do
-        input = s(:call, nil, :test, s(:str, "is delicious"))
-        expect(processor.process(input)).to eq(
-          s(:call, nil, :it, s(:str, "is delicious"))
-        )
+    describe "#process_call" do
+      let(:delegate) { Subprocessors::Call }
+
+      it "delegates" do
+        input = s(:call)
+        allow(delegate).to receive(:process).and_call_original
+        processor.process(input)
+        expect(delegate).to have_received(:process).with(input)
       end
     end
   end

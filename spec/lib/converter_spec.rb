@@ -3,8 +3,12 @@ require "spec_helper"
 module MinitestToRspec
   RSpec.describe Converter do
 
-    # This is what an end-to-end test might look like, but then
-    # again these tests may end up being more isolated.
+    def convert(input)
+      described_class.new.convert(input)
+    end
+
+    # This is what an end-to-end test might look like, but
+    # these tests may end up being more isolated.
     it "converts minitest to rspec" do
       skip "Not yet implemented"
       input = <<-EOS
@@ -16,7 +20,7 @@ class BananaTest < ActiveSupport::TestCase
   end
 end
       EOS
-      output = described_class.new.convert(input)
+      output = convert(input)
       expect(output).to eq(
         <<-EOS
 require "spec_helper"

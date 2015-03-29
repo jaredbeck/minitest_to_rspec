@@ -44,14 +44,18 @@ module MinitestToRspec
         end
 
         def method_test(exp, mystery)
-          if exp.length == 1 && exp[0].sexp_type == :str
+          if exp.length == 1 && string?(exp[0])
             s(:call, mystery, :it, *exp)
           end
         end
 
+        def string?(exp)
+          exp.sexp_type == :str
+        end
+
         def test_helper?(exp)
           exp.length == 1 &&
-            exp[0].sexp_type == :str &&
+            string?(exp[0]) &&
             exp[0][1] == "test_helper"
         end
       end

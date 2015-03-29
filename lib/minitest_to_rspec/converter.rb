@@ -1,5 +1,7 @@
 require "ruby_parser"
+require "stringio"
 require_relative "processor"
+require_relative "renderer"
 
 module MinitestToRspec
   class Converter
@@ -48,8 +50,10 @@ module MinitestToRspec
 
     # Given an AST representing an rspec file, returns a string
     # of ruby code.
-    def render(sexp)
-      sexp # TODO: Render ruby code
+    def render(exp)
+      buffer = StringIO.new
+      Renderer.new(buffer).process(exp)
+      buffer.string
     end
   end
 end

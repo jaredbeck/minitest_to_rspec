@@ -21,25 +21,24 @@ module MinitestToRspec
           type = exp.shift # unused, it's always :call, right?
           mystery = exp.shift # the second element is a mystery
           method_name = exp.shift
-          case method_name
+          result = case method_name
           when :test
             method_test(exp, mystery)
           when :require
             method_require(exp, orig, mystery)
           else
-            exp.clear
             orig
           end
+          exp.clear
+          result
         end
 
         private
 
         def method_require(exp, orig, mystery)
           if test_helper?(exp)
-            exp.clear
             s(:call, mystery, :require, s(:str, "spec_helper"))
           else
-            exp.clear
             orig
           end
         end

@@ -16,6 +16,25 @@ module MinitestToRspec
     # Parses an input string using the `ruby_parser` gem, and
     # returns an Abstract Syntax Tree (AST) in the form of
     # S-expressions.
+    #
+    # Example of AST
+    # --------------
+    #
+    # s(:block,
+    #   s(:call, nil, :require, s(:str, "test_helper")),
+    #   s(:class,
+    #     :BananaTest,
+    #     s(:colon2, s(:const, :ActiveSupport), :TestCase),
+    #     s(:iter,
+    #       s(:call, nil, :test, s(:str, "is delicious")),
+    #       s(:args),
+    #       s(:call, nil, :assert,
+    #         s(:call, s(:call, s(:const, :Banana), :new), :delicious?)
+    #       )
+    #     )
+    #   )
+    # )
+    #
     def parse(input)
       RubyParser.new.parse(input)
     end

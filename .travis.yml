@@ -3,6 +3,6 @@ rvm:
   - "2.0.0-p598"
   - "2.1.5"
   - "2.2.0"
-script: bundle exec rspec spec
+script: bundle exec rake
 notifications:
   email: false

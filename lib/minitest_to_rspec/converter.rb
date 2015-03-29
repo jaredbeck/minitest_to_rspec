@@ -42,8 +42,8 @@ module MinitestToRspec
     # Processes an AST (S-expressions) representing a minitest
     # file, and returns an AST (still S-expressions) representing
     # an rspec file.
-    def process(sexp)
-      @processor.process(sexp)
+    def process(exp)
+      @processor.process(exp)
     end
 
     # Given an AST representing an rspec file, returns a string

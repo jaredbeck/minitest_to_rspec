@@ -3,6 +3,11 @@ require "spec_helper"
 module MinitestToRspec
   RSpec.describe Converter do
 
+    EXAMPLES = %w[
+      01_trivial_assertion
+      02_empty_testcase
+    ]
+
     def convert(input)
       described_class.new.convert(input)
     end
@@ -20,14 +25,10 @@ module MinitestToRspec
     end
 
     describe "#convert" do
-      it "converts a trivial assertion" do
-        fixture = "01_trivial_assertion"
-        expect(convert(input(fixture))).to eq(output(fixture))
-      end
-
-      it "converts empty TestCase" do
-        fixture = "02_empty_testcase"
-        expect(convert(input(fixture))).to eq(output(fixture))
+      EXAMPLES.each do |fixture|
+        it "converts: #{fixture}" do
+          expect(convert(input(fixture))).to eq(output(fixture))
+        end
       end
     end
   end

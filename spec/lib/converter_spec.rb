@@ -20,11 +20,14 @@ module MinitestToRspec
     end
 
     describe "#convert" do
-      describe "a trivial example, with a simple assertion" do
-        it "converts to rspec" do
-          fixture = "01_trivial_assertion"
-          expect(convert(input(fixture))).to eq(output(fixture))
-        end
+      it "converts a trivial assertion" do
+        fixture = "01_trivial_assertion"
+        expect(convert(input(fixture))).to eq(output(fixture))
+      end
+
+      it "converts empty TestCase" do
+        fixture = "02_empty_testcase"
+        expect(convert(input(fixture))).to eq(output(fixture))
       end
     end
   end

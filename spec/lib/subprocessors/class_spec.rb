@@ -1,4 +1,5 @@
 require "spec_helper"
+require "ruby_parser"
 
 module MinitestToRspec
   module Subprocessors
@@ -24,24 +25,13 @@ module MinitestToRspec
         it "converts an ActiveSupport::TestCase" do
           input = s(:class,
             :BananaTest,
-            s(:colon2, s(:const, :ActiveSupport), :TestCase),
-            s(:iter,
-              s(:call, nil, :test, s(:str, "is delicious")),
-              s(:args),
-              s(:call, nil, :assert,
-                s(:call, s(:call, s(:const, :Banana), :new), :delicious?)
-              )
-            )
+            s(:colon2, s(:const, :ActiveSupport), :TestCase)
           )
           iter = process(input)
           expect(iter.sexp_type).to eq(:iter)
-          expect(iter.length).to eq(4) # type, call, args, iter
+          expect(iter.length).to eq(3) # type, call, args
           call = iter[1]
-          expect(call.sexp_type).to eq(:call)
-          expect(call.length).to eq(4) # type, receiver, name, argument
-          expect(call[1]).to eq(s(:const, :RSpec))
-          expect(call[2]).to eq(:describe)
-          expect(call[3]).to eq(s(:const, :Banana))
+          expect(call).to eq(RubyParser.new.parse("RSpec.describe(Banana)"))
         end
       end
     end

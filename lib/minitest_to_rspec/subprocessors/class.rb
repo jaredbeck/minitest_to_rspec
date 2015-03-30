@@ -49,15 +49,6 @@ module MinitestToRspec
             parent[2] == :TestCase
         end
 
-        def assert_symbol(obj)
-          raise TypeError unless obj.is_a?(Symbol)
-        end
-
-        def assert_valid_rspec_iter(iter)
-          raise(NotImplemented, "Empty test case") if iter.nil?
-          raise ArgumentError unless iter.is_a?(Sexp)
-        end
-
         # Given a `test_class_name` like `BananaTest`, returns the
         # described clas, like `Banana`.
         def described_class(test_class_name)
@@ -79,7 +70,7 @@ module MinitestToRspec
 
         def result(name, parent, iter)
           if parent && test_case?(parent)
-            rspec_describe(name, iter)
+            rspec_describe_block(name, iter)
           elsif iter.nil?
             s(:class, name, parent)
           else
@@ -87,14 +78,18 @@ module MinitestToRspec
           end
         end
 
+        def rspec_describe(arg)
+          s(:call, s(:const, :RSpec), :describe, arg)
+        end
+
         # Returns a S-expression representing a call to RSpec.describe
-        def rspec_describe(name, iter)
-          assert_symbol(name)
-          assert_valid_rspec_iter(iter)
-          rspec = s(:const, :RSpec)
+        def rspec_describe_block(name, iter)
           arg = s(:const, described_class(name))
-          describe = s(:call, rspec, :describe, arg)
-          s(:iter, describe, s(:args), full_process(iter))
+          result = s(:iter, rspec_describe(arg), s(:args))
+          unless iter.nil?
+            result << full_process(iter)
+          end
+          result
         end
 
         # TODO: Obviously, there are test case parent classes

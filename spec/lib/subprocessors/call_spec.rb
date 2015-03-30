@@ -1,4 +1,5 @@
 require "spec_helper"
+require "ruby_parser"
 
 module MinitestToRspec
   module Subprocessors
@@ -23,6 +24,15 @@ module MinitestToRspec
           argument = "is delicious"
           input = exp(:test, argument)
           expect(process(input)).to eq(exp(:it, argument))
+        end
+
+        it "replaces `assert` with `expect` to be truthy" do
+          input = s(:call, nil, :assert,
+            s(:call, s(:call, s(:const, :Banana), :new), :delicious?)
+          )
+          expected_ruby = "expect(Banana.new.delicious?).to be_truthy"
+          exp = RubyParser.new.parse(expected_ruby)
+          expect(process(input)).to eq(exp)
         end
       end
     end

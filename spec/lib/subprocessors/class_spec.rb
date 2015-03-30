@@ -33,19 +33,15 @@ module MinitestToRspec
               )
             )
           )
-          expect(process(input)).to eq(
-            s(:iter,
-              s(:call, s(:const, :RSpec), :describe, s(:const, :Banana)),
-              s(:args),
-              s(:iter,
-                s(:call, nil, :it, s(:str, "is delicious")),
-                s(:args),
-                s(:call, nil, :assert,
-                  s(:call, s(:call, s(:const, :Banana), :new), :delicious?)
-                )
-              )
-            )
-          )
+          iter = process(input)
+          expect(iter.sexp_type).to eq(:iter)
+          expect(iter.length).to eq(4) # type, call, args, iter
+          call = iter[1]
+          expect(call.sexp_type).to eq(:call)
+          expect(call.length).to eq(4) # type, receiver, name, argument
+          expect(call[1]).to eq(s(:const, :RSpec))
+          expect(call[2]).to eq(:describe)
+          expect(call[3]).to eq(s(:const, :Banana))
         end
       end
     end

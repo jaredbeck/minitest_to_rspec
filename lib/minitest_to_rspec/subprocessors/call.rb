@@ -21,19 +21,21 @@ module MinitestToRspec
           raise ArgumentError unless exp.shift == :call
           receiver = exp.shift
           method_name = exp.shift
-          result = case method_name
-          when :test
-            method_test(exp, receiver)
-          when :require
-            method_require(exp, orig, receiver)
-          else
-            orig
-          end
+          result = process_by_method_name(exp, method_name, orig, receiver)
           exp.clear
           result
         end
 
         private
+
+        # Given `exp`, the argument to an `assert`, return an
+        # expression representing an expectation like
+        # expect(exp).to be_truthy
+        def method_assert(exp)
+          matcher = s(:call, nil, :be_truthy)
+          expectation_target = s(:call, nil, :expect, exp.shift)
+          s(:call, expectation_target, :to, matcher)
+        end
 
         def method_require(exp, orig, receiver)
           if test_helper?(exp)
@@ -46,6 +48,19 @@ module MinitestToRspec
         def method_test(exp, receiver)
           if exp.length == 1 && string?(exp[0])
             s(:call, receiver, :it, *exp)
+          end
+        end
+
+        def process_by_method_name(exp, method_name, orig, receiver)
+          case method_name
+          when :assert
+            method_assert(exp)
+          when :test
+            method_test(exp, receiver)
+          when :require
+            method_require(exp, orig, receiver)
+          else
+            orig
           end
         end
 

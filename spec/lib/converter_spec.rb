@@ -7,28 +7,25 @@ module MinitestToRspec
       described_class.new.convert(input)
     end
 
-    # This is what an end-to-end test might look like, but
-    # these tests may end up being more isolated.
-    it "converts minitest to rspec" do
-      skip "Not yet implemented"
-      input = <<-EOS
-require 'test_helper'
+    def input(fixture)
+      File.read(fixture_path(fixture, "in.rb"))
+    end
 
-class BananaTest < ActiveSupport::TestCase
-  test "is delicious" do
-    assert Banana.new.delicious?
-  end
-end
-      EOS
-      output = convert(input)
-      expect(output).to eq(
-        <<-EOS
-require("spec_helper")
-RSpec.describe(Banana) do
-  it("is delicious") { expect(Banana.new.delicious?).to be_truthy }
-end
-        EOS
-      )
+    def fixture_path(fixture, file)
+      File.join(__dir__, '..', 'fixtures', fixture, file)
+    end
+
+    def output(fixture)
+      File.read(fixture_path(fixture, "out.rb"))
+    end
+
+    describe "#convert" do
+      describe "a trivial example, with a simple assertion" do
+        it "converts to rspec" do
+          fixture = "01_trivial_assertion"
+          expect(convert(input(fixture))).to eq(output(fixture))
+        end
+      end
     end
   end
 end

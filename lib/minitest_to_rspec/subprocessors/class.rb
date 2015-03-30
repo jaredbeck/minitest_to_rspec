@@ -58,6 +58,12 @@ module MinitestToRspec
           raise ArgumentError unless iter.is_a?(Sexp)
         end
 
+        # Given a `test_class_name` like `BananaTest`, returns the
+        # described clas, like `Banana`.
+        def described_class(test_class_name)
+          test_class_name.to_s.gsub(/Test\Z/, "").to_sym
+        end
+
         def inheritance?(exp)
           exp.sexp_type == :colon2
         end
@@ -81,17 +87,13 @@ module MinitestToRspec
           end
         end
 
-        # RSpec.describe(Banana) do; puts; end
-        # s(:iter,
-        #   s(:call, s(:const, :RSpec), :describe, s(:const, :Banana)),
-        #   s(:args),
-        #   s(:call, nil, :puts)
-        # )
+        # Returns a S-expression representing a call to RSpec.describe
         def rspec_describe(name, iter)
           assert_symbol(name)
           assert_valid_rspec_iter(iter)
           rspec = s(:const, :RSpec)
-          describe = s(:call, rspec, :describe, s(:const, name))
+          arg = s(:const, described_class(name))
+          describe = s(:call, rspec, :describe, arg)
           s(:iter, describe, s(:args), full_process(iter))
         end
 

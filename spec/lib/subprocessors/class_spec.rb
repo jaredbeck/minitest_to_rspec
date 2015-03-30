@@ -35,7 +35,7 @@ module MinitestToRspec
           )
           expect(process(input)).to eq(
             s(:iter,
-              s(:call, s(:const, :RSpec), :describe, s(:const, :BananaTest)),
+              s(:call, s(:const, :RSpec), :describe, s(:const, :Banana)),
               s(:args),
               s(:iter,
                 s(:call, nil, :it, s(:str, "is delicious")),

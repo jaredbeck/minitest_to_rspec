@@ -18,14 +18,14 @@ module MinitestToRspec
       class << self
         def process(exp)
           orig = exp.dup
-          type = exp.shift # unused, it's always :call, right?
-          mystery = exp.shift # the second element is a mystery
+          raise ArgumentError unless exp.shift == :call
+          receiver = exp.shift
           method_name = exp.shift
           result = case method_name
           when :test
-            method_test(exp, mystery)
+            method_test(exp, receiver)
           when :require
-            method_require(exp, orig, mystery)
+            method_require(exp, orig, receiver)
           else
             orig
           end
@@ -35,17 +35,17 @@ module MinitestToRspec
 
         private
 
-        def method_require(exp, orig, mystery)
+        def method_require(exp, orig, receiver)
           if test_helper?(exp)
-            s(:call, mystery, :require, s(:str, "spec_helper"))
+            s(:call, receiver, :require, s(:str, "spec_helper"))
           else
             orig
           end
         end
 
-        def method_test(exp, mystery)
+        def method_test(exp, receiver)
           if exp.length == 1 && string?(exp[0])
-            s(:call, mystery, :it, *exp)
+            s(:call, receiver, :it, *exp)
           end
         end
 

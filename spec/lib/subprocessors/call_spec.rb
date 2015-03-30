@@ -3,7 +3,7 @@ require "spec_helper"
 module MinitestToRspec
   module Subprocessors
     RSpec.describe Call do
-      describe "#process_call" do
+      describe ".process" do
 
         # Returns an S-expression representing a method call.
         def exp(method_name, argument)

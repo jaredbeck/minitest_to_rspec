@@ -14,7 +14,7 @@ module MinitestToRspec
         described_class.process(input, out)
       end
 
-      describe "#process" do
+      describe ".process" do
         it "renders call with zero arguments" do
           input = s(:call, nil, :banana?)
           process(input)

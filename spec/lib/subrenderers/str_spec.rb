@@ -3,7 +3,7 @@ require "spec_helper"
 module MinitestToRspec
   module Subrenderers
     RSpec.describe Str do
-      describe "#process" do
+      describe ".process" do
 
         # Returns an S-expression representing a string.
         def str(value)

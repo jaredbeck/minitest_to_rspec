@@ -10,10 +10,20 @@ module MinitestToRspec
         s(:call, nil, method_name.to_sym, s(:str, argument.to_s))
       end
 
+      def process(input)
+        described_class.process(input, out)
+      end
+
       describe "#process" do
+        it "renders call with zero arguments" do
+          input = s(:call, nil, :banana?)
+          process(input)
+          expect(out.string).to eq("banana?")
+        end
+
         it "can render trivial call with one string argument" do
           input = exp(:require, "spec_helper")
-          described_class.process(input, out)
+          process(input)
           expect(out.string).to eq('require("spec_helper")')
         end
 
@@ -23,7 +33,7 @@ module MinitestToRspec
               s(:str, "grapefruit")
             )
           )
-          described_class.process(input, out)
+          process(input)
           expect(out.string).to eq('banana(kiwi("grapefruit"))')
         end
       end

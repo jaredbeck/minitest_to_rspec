@@ -1,12 +1,12 @@
 require "ruby_parser"
-require "stringio"
+require "ruby2ruby"
 require_relative "processor"
-require_relative "renderer"
 
 module MinitestToRspec
   class Converter
     def initialize
       @processor = Processor.new
+      @ruby2ruby = Ruby2Ruby.new
     end
 
     def convert(input)
@@ -51,9 +51,7 @@ module MinitestToRspec
     # Given an AST representing an rspec file, returns a string
     # of ruby code.
     def render(exp)
-      buffer = StringIO.new
-      Renderer.new(buffer).process(exp)
-      buffer.string
+      @ruby2ruby.process(exp)
     end
   end
 end

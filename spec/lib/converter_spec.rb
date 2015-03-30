@@ -23,12 +23,9 @@ end
       output = convert(input)
       expect(output).to eq(
         <<-EOS
-require "spec_helper"
-
-RSpec.describe Banana do
-  it "is delicious" do
-    expect(Banana.new.delicious?).to be_truthy
-  end
+require("spec_helper")
+RSpec.describe(Banana) do
+  it("is delicious") { expect(Banana.new.delicious?).to be_truthy }
 end
         EOS
       )

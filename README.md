@@ -38,16 +38,16 @@ The first release will support:
 
 Assertion              | Tested
 ---------------------- | ------
-assert                 | [x]
-assert_difference      | [ ]
-assert_equal           | [x]
-assert_match           | [ ]
-assert_nil             | [ ]
-assert_no_difference   | [ ]
-assert_nothing_raised  | [ ]
-assert_raises          | [ ]
-refute                 | [x]
-refute_equal           | [ ]
+assert                 | ✔
+assert_difference      |
+assert_equal           | ✔
+assert_match           |
+assert_nil             |
+assert_no_difference   |
+assert_nothing_raised  |
+assert_raises          |
+refute                 | ✔
+refute_equal           |
 
 See [doc/supported_assertions.md][5] for details.
 

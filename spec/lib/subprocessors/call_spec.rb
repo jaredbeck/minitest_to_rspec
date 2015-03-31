@@ -11,6 +11,10 @@ module MinitestToRspec
           s(:call, nil, method_name.to_sym, s(:str, argument.to_s))
         end
 
+        def parse(ruby)
+          RubyParser.new.parse(ruby)
+        end
+
         def process(input)
           described_class.process(input)
         end
@@ -27,12 +31,19 @@ module MinitestToRspec
         end
 
         it "replaces `assert` with `expect` to be truthy" do
-          input = s(:call, nil, :assert,
-            s(:call, s(:call, s(:const, :Banana), :new), :delicious?)
+          expect(
+            process(parse("assert Banana.new.delicious?"))
+          ).to eq(
+            parse("expect(Banana.new.delicious?).to be_truthy")
           )
-          expected_ruby = "expect(Banana.new.delicious?).to be_truthy"
-          exp = RubyParser.new.parse(expected_ruby)
-          expect(process(input)).to eq(exp)
+        end
+
+        it "replaces `refute` with `expect` to be falsey" do
+          expect(
+            process(parse("refute Kiwi.new.delicious?"))
+          ).to eq(
+            parse("expect(Kiwi.new.delicious?).to be_falsey")
+          )
         end
       end
     end

@@ -37,6 +37,15 @@ module MinitestToRspec
           s(:call, expectation_target, :to, matcher)
         end
 
+        # Given `exp`, the argument to a `refute`, return an
+        # expression representing an expectation like
+        # expect(exp).to be_falsey
+        def method_refute(exp)
+          matcher = s(:call, nil, :be_falsey)
+          expectation_target = s(:call, nil, :expect, exp.shift)
+          s(:call, expectation_target, :to, matcher)
+        end
+
         def method_require(exp, orig, receiver)
           if test_helper?(exp)
             s(:call, receiver, :require, s(:str, "spec_helper"))
@@ -57,6 +66,8 @@ module MinitestToRspec
             method_assert(exp)
           when :test
             method_test(exp, receiver)
+          when :refute
+            method_refute(exp)
           when :require
             method_require(exp, orig, receiver)
           else

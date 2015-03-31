@@ -6,6 +6,7 @@ module MinitestToRspec
     EXAMPLES = %w[
       01_trivial_assertion
       02_empty_testcase
+      03_trivial_refutation
     ]
 
     def convert(input)

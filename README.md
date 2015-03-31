@@ -31,6 +31,17 @@ The code style is whatever [ruby2ruby][6] feels like printing,
 and is not configurable.  The goal is not style, but to get to
 rspec quickly.
 
+Usage
+-----
+
+No CLI executable is provided yet, but ruby usage is simple.
+
+```ruby
+require 'minitest_to_rspec'
+MinitestToRspec::Converter.new.convert("assert('banana')")
+#=> "expect(\"banana\").to(be_truthy)"
+```
+
 Supported Assertions
 --------------------
 

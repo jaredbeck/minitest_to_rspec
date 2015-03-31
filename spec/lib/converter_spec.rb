@@ -7,6 +7,7 @@ module MinitestToRspec
       01_trivial_assertion
       02_empty_testcase
       03_trivial_refutation
+      04_assert_equal
     ]
 
     def convert(input)

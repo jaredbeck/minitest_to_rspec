@@ -28,6 +28,18 @@ module MinitestToRspec
 
         private
 
+        def be_falsey
+          matcher(:be_falsey)
+        end
+
+        def be_truthy
+          matcher(:be_truthy)
+        end
+
+        def eq(exp)
+          matcher(:eq, exp)
+        end
+
         def expectation_target(exp)
           s(:call, nil, :expect, exp)
         end
@@ -36,17 +48,27 @@ module MinitestToRspec
         # In RSpec `expect(exp)` is called an expectation target.
         # Returns an expression representing an expectation like
         # `expect(exp).to be_falsey`.
-        def expect_to(matcher_name, exp)
-          matcher = s(:call, nil, matcher_name)
+        def expect_to(matcher, exp)
           s(:call, expectation_target(exp), :to, matcher)
         end
 
+        def matcher(name, *args)
+          exp = s(:call, nil, name)
+          exp.concat(args)
+        end
+
         def method_assert(exp)
-          expect_to(:be_truthy, exp.shift)
+          expect_to(be_truthy, exp.shift)
+        end
+
+        def method_assert_equal(exp)
+          expected = exp.shift
+          calculated = exp.shift
+          expect_to(eq(expected), calculated)
         end
 
         def method_refute(exp)
-          expect_to(:be_falsey, exp.shift)
+          expect_to(be_falsey, exp.shift)
         end
 
         def method_require(exp, orig, receiver)
@@ -67,6 +89,8 @@ module MinitestToRspec
           case method_name
           when :assert
             method_assert(exp)
+          when :assert_equal
+            method_assert_equal(exp)
           when :test
             method_test(exp, receiver)
           when :refute

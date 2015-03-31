@@ -45,6 +45,14 @@ module MinitestToRspec
             parse("expect(Kiwi.new.delicious?).to be_falsey")
           )
         end
+
+        it "replaces assert_equal with expect to eq" do
+          expect(
+            process(parse("assert_equal false, Kiwi.new.delicious?"))
+          ).to eq(
+            parse("expect(Kiwi.new.delicious?).to eq(false)")
+          )
+        end
       end
     end
   end

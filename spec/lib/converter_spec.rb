@@ -28,7 +28,9 @@ module MinitestToRspec
     describe "#convert" do
       EXAMPLES.each do |fixture|
         it "converts: #{fixture}" do
-          expect(convert(input(fixture))).to eq(output(fixture))
+          expected = output(fixture).strip
+          calculated = convert(input(fixture)).strip
+          expect(calculated).to eq(expected)
         end
       end
     end

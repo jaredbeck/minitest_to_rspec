@@ -56,5 +56,5 @@ sort -nr
 0 assert_blank
 ```
 
-Assertions which do are note used in the targeted test suite
-are note yet supported, but contributions are welcome.
+Assertions which are not used in the targeted test suite
+are not yet supported, but contributions are welcome.

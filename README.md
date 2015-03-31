@@ -27,21 +27,27 @@ RSpec.describe(Banana) do
 end
 ```
 
+The code style is whatever [ruby2ruby][6] feels like printing,
+and is not configurable.  The goal is not style, but to get to
+rspec quickly.
+
 Supported Assertions
 --------------------
 
 The first release will support:
 
-- [x] assert
-- [ ] assert_difference
-- [x] assert_equal
-- [ ] assert_match
-- [ ] assert_nil
-- [ ] assert_no_difference
-- [ ] assert_nothing_raised
-- [ ] assert_raises
-- [x] refute
-- [ ] refute_equal
+Assertion              | Tested
+---------------------- | ------
+assert                 | [x]
+assert_difference      | [ ]
+assert_equal           | [x]
+assert_match           | [ ]
+assert_nil             | [ ]
+assert_no_difference   | [ ]
+assert_nothing_raised  | [ ]
+assert_raises          | [ ]
+refute                 | [x]
+refute_equal           | [ ]
 
 See [doc/supported_assertions.md][5] for details.
 
@@ -50,3 +56,4 @@ See [doc/supported_assertions.md][5] for details.
 [3]: https://codeclimate.com/github/jaredbeck/minitest_to_rspec/badges/gpa.svg
 [4]: https://codeclimate.com/github/jaredbeck/minitest_to_rspec
 [5]: https://github.com/jaredbeck/minitest_to_rspec/blob/master/doc/supported_assertions.md
+[6]: https://github.com/seattlerb/ruby2ruby

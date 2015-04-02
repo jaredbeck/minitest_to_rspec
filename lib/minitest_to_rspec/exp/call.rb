@@ -13,8 +13,21 @@ module MinitestToRspec
         @original = exp.dup
       end
 
+      class << self
+        def assert_difference?(exp)
+          exp.sexp_type == :call && new(exp).assert_difference?
+        end
+      end
+
       def arguments
         @exp[3..-1]
+      end
+
+      def assert_difference?
+        method_name == :assert_difference &&
+          arguments.length == 2 &&
+          arguments[0].sexp_type == :str &&
+          arguments[1].sexp_type == :lit
       end
 
       def method_name

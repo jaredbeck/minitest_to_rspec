@@ -1,6 +1,6 @@
 # MinitestToRspec
 
-Converts minitest files to rspec.
+Converts [minitest][8] files to [rspec][9].
 
 [![Build Status][1]][2] [![Code Climate][3]][4] [![Test Coverage][7]][4]
 
@@ -70,3 +70,5 @@ See [doc/supported_assertions.md][5] for details.
 [5]: https://github.com/jaredbeck/minitest_to_rspec/blob/master/doc/supported_assertions.md
 [6]: https://github.com/seattlerb/ruby2ruby
 [7]: https://codeclimate.com/github/jaredbeck/minitest_to_rspec/badges/coverage.svg
+[8]: https://github.com/jaredbeck/minitest_to_rspec/blob/master/doc/minitest.md
+[9]: https://github.com/jaredbeck/minitest_to_rspec/blob/master/doc/rspec.md

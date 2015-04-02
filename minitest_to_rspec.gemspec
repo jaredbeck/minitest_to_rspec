@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors = ["Jared Beck"]
   spec.email = ["jared@jaredbeck.com"]
 
-  spec.summary = %q{Converts minitest files to rspec}
-  spec.homepage = nil
+  spec.summary = "Converts minitest files to rspec"
+  spec.homepage = "https://github.com/jaredbeck/minitest_to_rspec"
   spec.license = "MIT"
 
   spec.files = `git ls-files -z`.split("\x0").reject { |f|

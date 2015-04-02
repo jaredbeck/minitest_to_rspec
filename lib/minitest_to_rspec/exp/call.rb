@@ -27,11 +27,13 @@ module MinitestToRspec
         @exp[3..-1]
       end
 
+      def argument_types
+        arguments.map(&:sexp_type)
+      end
+
       def assert_difference?
-        method_name == :assert_difference &&
-          arguments.length == 2 &&
-          arguments[0].sexp_type == :str &&
-          arguments[1].sexp_type == :lit
+        return false unless method_name == :assert_difference
+        [[:str], [:str, :lit]].include?(argument_types)
       end
 
       def assert_no_difference?

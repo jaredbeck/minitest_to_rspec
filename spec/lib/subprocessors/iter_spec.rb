@@ -16,6 +16,16 @@ module MinitestToRspec
 
         it "replaces assert_difference with expect to change" do
           input = parse <<-EOS
+            assert_difference "ary.length" do ary.push("banana") end
+          EOS
+          output = parse <<-EOS
+            expect { ary.push("banana") }.to(change { ary.length })
+          EOS
+          expect(process(input)).to eq(output)
+        end
+
+        it "replaces assert_difference (arity 2) with expect to change by" do
+          input = parse <<-EOS
             assert_difference "ary.length", +1 do
               ary.push("banana")
             end

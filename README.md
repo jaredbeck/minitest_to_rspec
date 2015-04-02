@@ -50,7 +50,7 @@ The first release will support:
 Assertion              | Arity | Tested
 ---------------------- | ----- | ------
 assert                 |       | ✔
-assert_difference      | 1     |
+assert_difference      | 1     | ✔
 assert_difference      | 2     | ✔
 assert_equal           |       | ✔
 assert_match           |       | ✔

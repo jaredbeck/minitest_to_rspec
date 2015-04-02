@@ -77,22 +77,15 @@ module MinitestToRspec
         end
 
         def process_assert_yes_difference(call, block)
-          by_exp = call[4]
-          diff_exp = parse(call[3][1])
-          s(:call,
-            expectation_target_with_block(block),
-            :to,
-            change_by(diff_exp, by_exp)
-          )
+          by = call[4]
+          what = parse(call[3][1])
+          matcher = by.nil? ? change(what) : change_by(what, by)
+          s(:call, expectation_target_with_block(block), :to, matcher)
         end
 
         def process_assert_no_difference(call, block)
-          diff_exp = parse(call[3][1])
-          s(:call,
-            expectation_target_with_block(block),
-            :to_not,
-            change(diff_exp)
-          )
+          what = parse(call[3][1])
+          s(:call, expectation_target_with_block(block), :to_not, change(what))
         end
 
         def process_exp(exp)

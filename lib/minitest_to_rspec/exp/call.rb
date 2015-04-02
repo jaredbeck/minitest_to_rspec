@@ -3,14 +3,6 @@ module MinitestToRspec
 
     # Data object.  Represents a `:call` s-expression.
     class Call
-
-      ASSERTIONS = %i[
-              assert
-              assert_equal
-              refute
-              refute_equal
-            ]
-
       attr_reader :original
 
       def initialize(exp)
@@ -21,10 +13,6 @@ module MinitestToRspec
 
       def arguments
         @exp[3..-1]
-      end
-
-      def assertion?
-        ASSERTIONS.include?(method_name)
       end
 
       def method_name

@@ -3,25 +3,25 @@ require_relative '../exp/call'
 module MinitestToRspec
   module Subprocessors
     class Call
+
+      ASSERTIONS = %i[
+        assert
+        assert_equal
+        refute
+        refute_equal
+      ]
+
       class << self
         def process(sexp)
           exp = Exp::Call.new(sexp)
           sexp.clear
-          if exp.require_test_helper?
-            require_spec_helper
-          elsif exp.method_name == :test
-            method_test(exp)
-          elsif exp.assertion?
-            assertion(exp)
-          else
-            exp.original
-          end
+          process_exp(exp)
         end
 
         private
 
-        def assertion(exp)
-          send("method_#{exp.method_name}".to_sym, exp.arguments.dup)
+        def assertion?(exp)
+          ASSERTIONS.include?(exp.method_name)
         end
 
         def be_falsey
@@ -57,27 +57,46 @@ module MinitestToRspec
         end
 
         def method_assert(exp)
-          expect_to(be_truthy, exp.shift)
+          expect_to(be_truthy, exp.arguments[0])
         end
 
         def method_assert_equal(exp)
-          expected = exp.shift
-          calculated = exp.shift
+          expected = exp.arguments[0]
+          calculated = exp.arguments[1]
           expect_to(eq(expected), calculated)
         end
 
         def method_refute(exp)
-          expect_to(be_falsey, exp.shift)
+          expect_to(be_falsey, exp.arguments[0])
         end
 
         def method_refute_equal(exp)
-          unexpected = exp.shift
-          calculated = exp.shift
+          unexpected = exp.arguments[0]
+          calculated = exp.arguments[1]
           expect_to_not(eq(unexpected), calculated)
         end
 
         def method_test(exp)
           s(:call, nil, :it, *exp.arguments)
+        end
+
+        def processable?(exp)
+          exp.method_name == :test || assertion?(exp)
+        end
+
+        # Given a `Exp::Call`, returns a `Sexp`
+        def process_exp(exp)
+          if exp.require_test_helper?
+            require_spec_helper
+          elsif processable?(exp)
+            process_method(exp)
+          else
+            exp.original
+          end
+        end
+
+        def process_method(exp)
+          send("method_#{exp.method_name}".to_sym, exp)
         end
 
         def require_spec_helper

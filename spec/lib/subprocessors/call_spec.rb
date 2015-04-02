@@ -61,6 +61,14 @@ module MinitestToRspec
             parse("expect(Kiwi.new.delicious?).to_not eq(true)")
           )
         end
+
+        it "replaces assert_match with expect to match" do
+          expect(
+            process(parse('assert_match(/nana\Z/, "banana")'))
+          ).to eq(
+            parse('expect("banana").to match(/nana\Z/)')
+          )
+        end
       end
     end
   end

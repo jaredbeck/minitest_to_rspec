@@ -8,6 +8,7 @@ module MinitestToRspec
       ASSERTIONS = %i[
         assert
         assert_equal
+        assert_match
         refute
         refute_equal
       ]
@@ -52,6 +53,10 @@ module MinitestToRspec
           s(:call, expectation_target(exp), :to_not, matcher)
         end
 
+        def match(pattern)
+          matcher(:match, pattern)
+        end
+
         def matcher(name, *args)
           exp = s(:call, nil, name)
           exp.concat(args)
@@ -65,6 +70,12 @@ module MinitestToRspec
           expected = exp.arguments[0]
           calculated = exp.arguments[1]
           expect_to(eq(expected), calculated)
+        end
+
+        def method_assert_match(exp)
+          pattern = exp.arguments[0]
+          string = exp.arguments[1]
+          expect_to(match(pattern), string)
         end
 
         def method_refute(exp)

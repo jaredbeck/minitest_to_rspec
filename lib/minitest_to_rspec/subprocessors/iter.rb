@@ -10,7 +10,7 @@ module MinitestToRspec
           end
           exp = sexp.dup
           sexp.clear
-          if assert_difference?(exp)
+          if assert_difference_iter?(exp)
             process_assert_difference(exp[1], exp[3])
           else
             process_uninteresting_iter(exp)
@@ -19,13 +19,16 @@ module MinitestToRspec
 
         private
 
-        def assert_difference?(exp)
-          exp.length > 1 &&
-            exp[1].sexp_type == :call &&
-            exp[1][2] == :assert_difference &&
-            exp[1].length == 5 &&
-            exp[1][3].sexp_type == :str &&
-            exp[1][4].sexp_type == :lit
+        def assert_difference_call?(exp)
+          exp.length == 5 &&
+            exp.sexp_type == :call &&
+            exp[2] == :assert_difference &&
+            exp[3].sexp_type == :str &&
+            exp[4].sexp_type == :lit
+        end
+
+        def assert_difference_iter?(exp)
+          exp.length > 1 && assert_difference_call?(exp[1])
         end
 
         # Returns an expression representing an RSpec `change {}.by()` matcher.

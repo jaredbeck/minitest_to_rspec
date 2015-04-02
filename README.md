@@ -45,23 +45,23 @@ MinitestToRspec::Converter.new.convert("assert('banana')")
 Supported Assertions
 --------------------
 
-The first release will support:
+Selected assertions from minitest, Test::Unit, and ActiveSupport.
+See [doc/supported_assertions.md][5] for rationale.  Contributions
+are welcome.
 
-Assertion              | Arity | Tested
----------------------- | ----- | ------
-assert                 |       | ✔
-assert_difference      | 1     | ✔
-assert_difference      | 2     | ✔
-assert_equal           |       | ✔
-assert_match           |       | ✔
-assert_nil             |       | ✔
-assert_no_difference   |       | ✔
-assert_nothing_raised  |       |
-assert_raises          |       | ✔
-refute                 |       | ✔
-refute_equal           |       | ✔
-
-See [doc/supported_assertions.md][5] for details.
+Assertion                   | Arity
+--------------------------- | -----
+assert                      |
+assert_difference           | 1
+assert_difference           | 2
+assert_equal                |
+assert_match                |
+assert_nil                  |
+assert_no_difference        |
+[assert_nothing_raised][10] |
+assert_raises               |
+refute                      |
+refute_equal                |
 
 [1]: https://travis-ci.org/jaredbeck/minitest_to_rspec.svg
 [2]: https://travis-ci.org/jaredbeck/minitest_to_rspec
@@ -72,3 +72,4 @@ See [doc/supported_assertions.md][5] for details.
 [7]: https://codeclimate.com/github/jaredbeck/minitest_to_rspec/badges/coverage.svg
 [8]: https://github.com/jaredbeck/minitest_to_rspec/blob/master/doc/minitest.md
 [9]: https://github.com/jaredbeck/minitest_to_rspec/blob/master/doc/rspec.md
+[10]: http://www.rubydoc.info/gems/test-unit/3.0.9/Test/Unit/Assertions#assert_nothing_raised-instance_method

@@ -58,6 +58,16 @@ module MinitestToRspec
           expect(process(input)).to eq(output)
         end
 
+        it "replaces assert_nothing_raised with expect to_not raise" do
+          input = parse <<-EOS
+            assert_nothing_raised { Banana.delicious! }
+          EOS
+          output = parse <<-EOS
+            expect { Banana.delicious! }.to_not(raise_error)
+          EOS
+          expect(process(input)).to eq(output)
+        end
+
         context "sexp_type is not :iter" do
           it "raises ArgumentError" do
             expect {

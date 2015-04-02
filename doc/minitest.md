@@ -12,6 +12,12 @@ Rails adds some assertions to minitest.
 - http://guides.rubyonrails.org/testing.html
 - [active_support/testing/assertions.rb][3] 
 
+Test::Unit
+----------
+
+- https://github.com/test-unit/test-unit
+- http://www.rubydoc.info/gems/test-unit/3.0.9/Test/Unit/Assertions
+
 Selected History
 ----------------
 

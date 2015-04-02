@@ -22,6 +22,10 @@ module MinitestToRspec
           exp.sexp_type == :call && new(exp).assert_no_difference?
         end
 
+        def assert_nothing_raised?(exp)
+          exp.sexp_type == :call && new(exp).assert_nothing_raised?
+        end
+
         def assert_raises?(exp)
           exp.sexp_type == :call && new(exp).assert_raises?
         end
@@ -44,6 +48,10 @@ module MinitestToRspec
         method_name == :assert_no_difference &&
           arguments.length == 1 &&
           arguments[0].sexp_type == :str
+      end
+
+      def assert_nothing_raised?
+        method_name == :assert_nothing_raised && arguments.empty?
       end
 
       def assert_raises?

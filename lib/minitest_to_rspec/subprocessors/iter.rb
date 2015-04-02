@@ -27,6 +27,10 @@ module MinitestToRspec
           exp.length > 1 && Exp::Call.assert_no_difference?(exp[1])
         end
 
+        def assert_nothing_raised?(exp)
+          exp.length > 1 && Exp::Call.assert_nothing_raised?(exp[1])
+        end
+
         def assert_raises?(exp)
           exp.length > 1 && Exp::Call.assert_raises?(exp[1])
         end
@@ -91,6 +95,11 @@ module MinitestToRspec
           s(:call, expectation_target_with_block(block), :to_not, change(what))
         end
 
+        def process_assert_nothing_raised(exp)
+          block = exp[3]
+          s(:call, expectation_target_with_block(block), :to_not, raise_error)
+        end
+
         def process_assert_raises(exp)
           block = exp[3]
           call = Exp::Call.new(exp[1])
@@ -105,6 +114,8 @@ module MinitestToRspec
             process_assert_difference(exp, false)
           elsif assert_raises?(exp)
             process_assert_raises(exp)
+          elsif assert_nothing_raised?(exp)
+            process_assert_nothing_raised(exp)
           else
             process_uninteresting_iter(exp)
           end
@@ -118,8 +129,8 @@ module MinitestToRspec
           iter
         end
 
-        def raise_error(err)
-          matcher(:raise_error, err)
+        def raise_error(*args)
+          matcher(:raise_error, *args)
         end
       end
     end

@@ -52,6 +52,10 @@ module MinitestToRspec
           s(:call, expectation_target(exp), :to, matcher)
         end
 
+        def expect_to_not(matcher, exp)
+          s(:call, expectation_target(exp), :to_not, matcher)
+        end
+
         def matcher(name, *args)
           exp = s(:call, nil, name)
           exp.concat(args)
@@ -69,6 +73,12 @@ module MinitestToRspec
 
         def method_refute(exp)
           expect_to(be_falsey, exp.shift)
+        end
+
+        def method_refute_equal(exp)
+          unexpected = exp.shift
+          calculated = exp.shift
+          expect_to_not(eq(unexpected), calculated)
         end
 
         def method_require(exp, orig, receiver)
@@ -95,6 +105,8 @@ module MinitestToRspec
             method_test(exp, receiver)
           when :refute
             method_refute(exp)
+          when :refute_equal
+            method_refute_equal(exp)
           when :require
             method_require(exp, orig, receiver)
           else

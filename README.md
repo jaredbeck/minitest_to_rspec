@@ -58,7 +58,7 @@ assert_no_difference   |
 assert_nothing_raised  |
 assert_raises          |
 refute                 | ✔
-refute_equal           |
+refute_equal           | ✔
 
 See [doc/supported_assertions.md][5] for details.
 

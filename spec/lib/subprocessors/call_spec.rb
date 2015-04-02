@@ -53,6 +53,14 @@ module MinitestToRspec
             parse("expect(Kiwi.new.delicious?).to eq(false)")
           )
         end
+
+        it "replaces refute_equal with expect to_not eq" do
+          expect(
+            process(parse("refute_equal(true, Kiwi.new.delicious?)"))
+          ).to eq(
+            parse("expect(Kiwi.new.delicious?).to_not eq(true)")
+          )
+        end
       end
     end
   end

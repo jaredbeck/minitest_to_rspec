@@ -25,6 +25,18 @@ module MinitestToRspec
           EOS
           expect(process(input)).to eq(output)
         end
+
+        it "replaces assert_no_difference with expect to_not change" do
+          input = parse <<-EOS
+            assert_no_difference "banana.flavor" do
+              banana.peel
+            end
+          EOS
+          output = parse <<-EOS
+            expect { banana.peel }.to_not(change { banana.flavor })
+          EOS
+          expect(process(input)).to eq(output)
+        end
       end
     end
   end

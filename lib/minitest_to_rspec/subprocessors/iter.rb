@@ -12,6 +12,8 @@ module MinitestToRspec
           sexp.clear
           if assert_difference?(exp)
             process_assert_difference(exp[1], exp[3])
+          elsif assert_no_difference?(exp)
+            process_assert_no_difference(exp[1], exp[3])
           else
             process_uninteresting_iter(exp)
           end
@@ -23,10 +25,20 @@ module MinitestToRspec
           exp.length > 1 && Exp::Call.assert_difference?(exp[1])
         end
 
+        def assert_no_difference?(exp)
+          exp.length > 1 && Exp::Call.assert_no_difference?(exp[1])
+        end
+
+        # Returns an expression representing an RSpec `change {}`
+        # matcher.  See also `change_by` below.
+        def change(exp)
+          matcher_with_block(:change, exp)
+        end
+
         # Returns an expression representing an RSpec `change {}.by()` matcher.
         def change_by(diff_exp, by_exp)
           s(:call,
-            matcher_with_block(:change, diff_exp),
+            change(diff_exp),
             :by,
             by_exp
           )
@@ -52,14 +64,26 @@ module MinitestToRspec
           )
         end
 
+        def parse(str)
+          RubyParser.new.parse(str)
+        end
+
         def process_assert_difference(call, block)
           by_exp = call[4]
-          diff_str = call[3][1]
-          diff_exp = RubyParser.new.parse(diff_str)
+          diff_exp = parse(call[3][1])
           s(:call,
             expectation_target_with_block(block),
             :to,
             change_by(diff_exp, by_exp)
+          )
+        end
+
+        def process_assert_no_difference(call, block)
+          diff_exp = parse(call[3][1])
+          s(:call,
+            expectation_target_with_block(block),
+            :to_not,
+            change(diff_exp)
           )
         end
 

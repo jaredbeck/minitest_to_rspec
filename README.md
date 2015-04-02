@@ -50,7 +50,7 @@ The first release will support:
 Assertion              | Tested
 ---------------------- | ------
 assert                 | ✔
-assert_difference      |
+assert_difference      | ✔
 assert_equal           | ✔
 assert_match           |
 assert_nil             |

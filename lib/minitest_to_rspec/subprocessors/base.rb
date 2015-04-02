@@ -3,11 +3,12 @@ module MinitestToRspec
     class Base
       class << self
 
-        # Run `exp` through a new `Processor`.  This is appropriate
-        # for expressions like `:iter` (a block) which we're not
-        # interested in processing.  We *are* interested in
-        # processing expressions within an `:iter`, but not the
-        # iter itself.  TODO: `full_process` may not be the best name.
+        # Run `exp` through a new `Processor`.  This is useful for expressions
+        # that cannot be fully understood by a single subprocessor.  For
+        # example, we process :iter expressions, because we're interested in
+        # :iter that contain e.g. an `assert_difference`.  However, if the :iter
+        # turns out to be uninteresting, we still want to fully process its
+        # sub-expressions. TODO: `full_process` may not be the best name.
         def full_process(exp)
           Processor.new.process(exp)
         end

@@ -25,5 +25,16 @@ module MinitestToRspec
         expect(delegate).to have_received(:process).with(input)
       end
     end
+
+    describe "#process_iter" do
+      let(:delegate) { Subprocessors::Iter }
+
+      it "delegates" do
+        input = s(:iter)
+        allow(delegate).to receive(:process).and_call_original
+        processor.process(input)
+        expect(delegate).to have_received(:process).with(input)
+      end
+    end
   end
 end

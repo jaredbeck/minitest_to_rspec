@@ -48,33 +48,33 @@ module MinitestToRspec
         end
 
         def method_assert(exp)
-          expect_to(be_truthy, exp.arguments[0])
+          expect_to(be_truthy, exp.arguments[0], true)
         end
 
         def method_assert_equal(exp)
           expected = exp.arguments[0]
           calculated = exp.arguments[1]
-          expect_to(eq(expected), calculated)
+          expect_to(eq(expected), calculated, true)
         end
 
         def method_assert_match(exp)
           pattern = exp.arguments[0]
           string = exp.arguments[1]
-          expect_to(match(pattern), string)
+          expect_to(match(pattern), string, true)
         end
 
         def method_assert_nil(exp)
-          expect_to(be_nil, exp.arguments[0])
+          expect_to(be_nil, exp.arguments[0], true)
         end
 
         def method_refute(exp)
-          expect_to(be_falsey, exp.arguments[0])
+          expect_to(be_falsey, exp.arguments[0], true)
         end
 
         def method_refute_equal(exp)
           unexpected = exp.arguments[0]
           calculated = exp.arguments[1]
-          expect_to_not(eq(unexpected), calculated)
+          expect_to_not(eq(unexpected), calculated, true)
         end
 
         def method_test(exp)

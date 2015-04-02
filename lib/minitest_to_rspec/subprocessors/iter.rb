@@ -46,26 +46,26 @@ module MinitestToRspec
           by = call[4]
           what = parse(call[3][1])
           matcher = by.nil? ? change(what) : change_by(what, by)
-          s(:call, expectation_target_with_block(block), :to, matcher)
+          expect_to(matcher, block, false)
         end
 
         def process_assert_no_difference(exp)
           call = exp[1]
           block = exp[3]
           what = parse(call[3][1])
-          s(:call, expectation_target_with_block(block), :to_not, change(what))
+          expect_to_not(change(what), block, false)
         end
 
         def process_assert_nothing_raised(exp)
           block = exp[3]
-          s(:call, expectation_target_with_block(block), :to_not, raise_error)
+          expect_to_not(raise_error, block, false)
         end
 
         def process_assert_raises(exp)
           block = exp[3]
           call = Exp::Call.new(exp[1])
           err = call.arguments.first
-          s(:call, expectation_target_with_block(block), :to, raise_error(err))
+          expect_to(raise_error(err), block, false)
         end
 
         # Given a `Exp::Iter`, returns a `Sexp`

@@ -3,7 +3,12 @@ module MinitestToRspec
     class Base
       class << self
 
-        def expectation_target(exp)
+        def expectation_target(exp, eager = true)
+          m = "expectation_target_%s" % [eager ? "eager" : "lazy"]
+          send(m, exp)
+        end
+
+        def expectation_target_eager(exp)
           s(:call, nil, :expect, exp)
         end
 
@@ -11,7 +16,7 @@ module MinitestToRspec
         # can be based on an expression, as in `expect(1 + 1)` or it
         # can be based on a block, as in `expect { raise }`.  Either
         # way, it's called an "expectation target".
-        def expectation_target_with_block(block)
+        def expectation_target_lazy(block)
           s(:iter,
             s(:call, nil, :expect),
             s(:args),
@@ -22,12 +27,12 @@ module MinitestToRspec
         # Takes `exp`, the argument to an `assert` or `refute`. In RSpec
         # `expect(exp)` is called an "expectation target". The combination of
         # target and matcher returned by this method is called an "expectation".
-        def expect_to(matcher, exp)
-          s(:call, expectation_target(exp), :to, matcher)
+        def expect_to(matcher, target, eager)
+          s(:call, expectation_target(target, eager), :to, matcher)
         end
 
-        def expect_to_not(matcher, exp)
-          s(:call, expectation_target(exp), :to_not, matcher)
+        def expect_to_not(matcher, target, eager)
+          s(:call, expectation_target(target, eager), :to_not, matcher)
         end
 
         # Run `exp` through a new `Processor`.  This is useful for expressions

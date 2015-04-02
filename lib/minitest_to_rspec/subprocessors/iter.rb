@@ -52,23 +52,18 @@ module MinitestToRspec
           RubyParser.new.parse(str)
         end
 
-        def process_assert_difference(exp, phase)
+        def process_assert_difference(exp)
           call = exp[1]
           block = exp[3]
-          processing_method = "process_assert_%s_difference" % [
-            phase ? "yes" : "no"
-          ]
-          send(processing_method, call, block)
-        end
-
-        def process_assert_yes_difference(call, block)
           by = call[4]
           what = parse(call[3][1])
           matcher = by.nil? ? change(what) : change_by(what, by)
           s(:call, expectation_target_with_block(block), :to, matcher)
         end
 
-        def process_assert_no_difference(call, block)
+        def process_assert_no_difference(exp)
+          call = exp[1]
+          block = exp[3]
           what = parse(call[3][1])
           s(:call, expectation_target_with_block(block), :to_not, change(what))
         end
@@ -85,17 +80,13 @@ module MinitestToRspec
           s(:call, expectation_target_with_block(block), :to, raise_error(err))
         end
 
+        # Given a `Exp::Iter`, returns a `Sexp`
         def process_exp(exp)
-          if exp.assert_difference?
-            process_assert_difference(exp.sexp, true)
-          elsif exp.assert_no_difference?
-            process_assert_difference(exp.sexp, false)
-          elsif exp.assert_raises?
-            process_assert_raises(exp.sexp)
-          elsif exp.assert_nothing_raised?
-            process_assert_nothing_raised(exp.sexp)
-          else
+          m = processing_method(exp)
+          if m.nil?
             process_uninteresting_iter(exp.sexp)
+          else
+            send(m, exp)
           end
         end
 
@@ -105,6 +96,18 @@ module MinitestToRspec
             iter << full_process(exp.shift)
           end
           iter
+        end
+
+        # Returns the name of a method in this subprocessor, or nil if
+        # this iter is not processable.
+        def processing_method(iter)
+          if !iter.empty? && iter[1].sexp_type == :call
+            method_name = iter[1][2]
+            decision = "#{method_name}?".to_sym
+            if iter.respond_to?(decision) && iter.public_send(decision)
+              "process_#{method_name}".to_sym
+            end
+          end
         end
 
         def raise_error(*args)

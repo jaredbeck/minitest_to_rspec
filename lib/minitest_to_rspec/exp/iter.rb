@@ -11,6 +11,10 @@ module MinitestToRspec
         @exp = exp.dup
       end
 
+      def [](*args)
+        @exp[*args]
+      end
+
       def assert_difference?
         !empty? && Exp::Call.assert_difference?(@exp[1])
       end

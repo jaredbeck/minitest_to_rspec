@@ -48,6 +48,16 @@ module MinitestToRspec
           expect(process(input)).to eq(output)
         end
 
+        it "replaces assert_raises with expect to raise" do
+          input = parse <<-EOS
+            assert_raises(NotDeliciousError) { Kiwi.delicious! }
+          EOS
+          output = parse <<-EOS
+            expect { Kiwi.delicious! }.to(raise_error(NotDeliciousError))
+          EOS
+          expect(process(input)).to eq(output)
+        end
+
         context "sexp_type is not :iter" do
           it "raises ArgumentError" do
             expect {

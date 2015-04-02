@@ -57,7 +57,7 @@ assert_match           |       | ✔
 assert_nil             |       | ✔
 assert_no_difference   |       | ✔
 assert_nothing_raised  |       |
-assert_raises          |       |
+assert_raises          |       | ✔
 refute                 |       | ✔
 refute_equal           |       | ✔
 

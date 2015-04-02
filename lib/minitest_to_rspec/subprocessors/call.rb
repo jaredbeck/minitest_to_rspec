@@ -62,11 +62,6 @@ module MinitestToRspec
           matcher(:match, pattern)
         end
 
-        def matcher(name, *args)
-          exp = s(:call, nil, name)
-          exp.concat(args)
-        end
-
         def method_assert(exp)
           expect_to(be_truthy, exp.arguments[0])
         end

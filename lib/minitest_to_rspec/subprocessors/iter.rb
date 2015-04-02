@@ -27,6 +27,10 @@ module MinitestToRspec
           exp.length > 1 && Exp::Call.assert_no_difference?(exp[1])
         end
 
+        def assert_raises?(exp)
+          exp.length > 1 && Exp::Call.assert_raises?(exp[1])
+        end
+
         # Returns an expression representing an RSpec `change {}`
         # matcher.  See also `change_by` below.
         def change(exp)
@@ -87,11 +91,20 @@ module MinitestToRspec
           s(:call, expectation_target_with_block(block), :to_not, change(what))
         end
 
+        def process_assert_raises(exp)
+          block = exp[3]
+          call = Exp::Call.new(exp[1])
+          err = call.arguments.first
+          s(:call, expectation_target_with_block(block), :to, raise_error(err))
+        end
+
         def process_exp(exp)
           if assert_difference?(exp)
             process_assert_difference(exp, true)
           elsif assert_no_difference?(exp)
             process_assert_difference(exp, false)
+          elsif assert_raises?(exp)
+            process_assert_raises(exp)
           else
             process_uninteresting_iter(exp)
           end
@@ -103,6 +116,10 @@ module MinitestToRspec
             iter << full_process(exp.shift)
           end
           iter
+        end
+
+        def raise_error(err)
+          matcher(:raise_error, err)
         end
       end
     end

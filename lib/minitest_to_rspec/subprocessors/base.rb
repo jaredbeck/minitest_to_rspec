@@ -12,6 +12,11 @@ module MinitestToRspec
         def full_process(exp)
           Processor.new.process(exp)
         end
+
+        def matcher(name, *args)
+          exp = s(:call, nil, name)
+          exp.concat(args)
+        end
       end
     end
   end

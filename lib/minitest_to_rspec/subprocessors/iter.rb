@@ -5,24 +5,22 @@ module MinitestToRspec
     class Iter < Base
       class << self
         def process(sexp)
-          unless sexp.sexp_type == :iter
-            raise ArgumentError, "Expected iter, got #{sexp.sexp_type}"
-          end
+          assert_iter(sexp)
           exp = sexp.dup
           sexp.clear
-          if assert_difference?(exp)
-            process_assert_difference(exp[1], exp[3])
-          elsif assert_no_difference?(exp)
-            process_assert_no_difference(exp[1], exp[3])
-          else
-            process_uninteresting_iter(exp)
-          end
+          process_exp(exp)
         end
 
         private
 
         def assert_difference?(exp)
           exp.length > 1 && Exp::Call.assert_difference?(exp[1])
+        end
+
+        def assert_iter(sexp)
+          unless sexp.sexp_type == :iter
+            raise ArgumentError, "Expected iter, got #{sexp.sexp_type}"
+          end
         end
 
         def assert_no_difference?(exp)
@@ -68,7 +66,17 @@ module MinitestToRspec
           RubyParser.new.parse(str)
         end
 
-        def process_assert_difference(call, block)
+        def process_assert_difference(exp, phase)
+          call = exp[1]
+          block = exp[3]
+          if phase
+            process_assert_yes_difference(call, block)
+          else
+            process_assert_no_difference(call, block)
+          end
+        end
+
+        def process_assert_yes_difference(call, block)
           by_exp = call[4]
           diff_exp = parse(call[3][1])
           s(:call,
@@ -85,6 +93,16 @@ module MinitestToRspec
             :to_not,
             change(diff_exp)
           )
+        end
+
+        def process_exp(exp)
+          if assert_difference?(exp)
+            process_assert_difference(exp, true)
+          elsif assert_no_difference?(exp)
+            process_assert_difference(exp, false)
+          else
+            process_uninteresting_iter(exp)
+          end
         end
 
         def process_uninteresting_iter(exp)

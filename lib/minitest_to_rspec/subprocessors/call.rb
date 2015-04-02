@@ -43,21 +43,6 @@ module MinitestToRspec
           matcher(:eq, exp)
         end
 
-        def expectation_target(exp)
-          s(:call, nil, :expect, exp)
-        end
-
-        # Takes `exp`, the argument to an `assert` or `refute`. In RSpec
-        # `expect(exp)` is called an "expectation target". The combination of
-        # target and matcher returned by this method is called an "expectation".
-        def expect_to(matcher, exp)
-          s(:call, expectation_target(exp), :to, matcher)
-        end
-
-        def expect_to_not(matcher, exp)
-          s(:call, expectation_target(exp), :to_not, matcher)
-        end
-
         def match(pattern)
           matcher(:match, pattern)
         end

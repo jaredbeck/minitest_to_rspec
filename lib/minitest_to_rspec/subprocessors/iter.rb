@@ -28,18 +28,6 @@ module MinitestToRspec
           )
         end
 
-        # In RSpec, `expect` returns an "expectation target".  This
-        # can be based on an expression, as in `expect(1 + 1)` or it
-        # can be based on a block, as in `expect { raise }`.  Either
-        # way, it's called an "expectation target".
-        def expectation_target_with_block(block)
-          s(:iter,
-            s(:call, nil, :expect),
-            s(:args),
-            full_process(block)
-          )
-        end
-
         def matcher_with_block(matcher_name, block)
           s(:iter,
             s(:call, nil, matcher_name),

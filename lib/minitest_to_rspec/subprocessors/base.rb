@@ -3,6 +3,24 @@ module MinitestToRspec
     class Base
       class << self
 
+        # Returns a s-expression representing an RSpec expectation, i.e. the
+        # combination of an "expectation target" and a matcher.
+        def expect(target, eager, phase, matcher)
+          s(:call, expectation_target(target, eager), phase, matcher)
+        end
+
+        def expect_to(matcher, target, eager)
+          expect(target, eager, :to, matcher)
+        end
+
+        def expect_to_not(matcher, target, eager)
+          expect(target, eager, :to_not, matcher)
+        end
+
+        # In RSpec, `expect` returns an "expectation target".  This
+        # can be based on an expression, as in `expect(1 + 1)` or it
+        # can be based on a block, as in `expect { raise }`.  Either
+        # way, it's called an "expectation target".
         def expectation_target(exp, eager = true)
           m = "expectation_target_%s" % [eager ? "eager" : "lazy"]
           send(m, exp)
@@ -12,27 +30,12 @@ module MinitestToRspec
           s(:call, nil, :expect, exp)
         end
 
-        # In RSpec, `expect` returns an "expectation target".  This
-        # can be based on an expression, as in `expect(1 + 1)` or it
-        # can be based on a block, as in `expect { raise }`.  Either
-        # way, it's called an "expectation target".
         def expectation_target_lazy(block)
           s(:iter,
             s(:call, nil, :expect),
             s(:args),
             full_process(block)
           )
-        end
-
-        # Takes `exp`, the argument to an `assert` or `refute`. In RSpec
-        # `expect(exp)` is called an "expectation target". The combination of
-        # target and matcher returned by this method is called an "expectation".
-        def expect_to(matcher, target, eager)
-          s(:call, expectation_target(target, eager), :to, matcher)
-        end
-
-        def expect_to_not(matcher, target, eager)
-          s(:call, expectation_target(target, eager), :to_not, matcher)
         end
 
         # Run `exp` through a new `Processor`.  This is useful for expressions

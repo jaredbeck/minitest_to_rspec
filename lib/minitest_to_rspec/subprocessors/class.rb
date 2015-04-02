@@ -1,8 +1,9 @@
 require_relative "../errors"
+require_relative "base"
 
 module MinitestToRspec
   module Subprocessors
-    class Class
+    class Class < Base
       class << self
 
         # Examples of S-expressions

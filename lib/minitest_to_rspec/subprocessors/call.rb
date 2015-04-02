@@ -1,8 +1,9 @@
-require_relative '../exp/call'
+require_relative "../exp/call"
+require_relative "base"
 
 module MinitestToRspec
   module Subprocessors
-    class Call
+    class Call < Base
 
       ASSERTIONS = %i[
         assert

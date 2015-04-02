@@ -1,39 +1,80 @@
 module MinitestToRspec
   module Subprocessors
+
+    # Processes `:call` s-expressions
     class Call
 
-      ASSERTIONS = %i[
-        assert
-        assert_equal
-        refute
-        refute_equal
-      ]
+      # Represents a `:call` s-expression
+      class Exp
 
-      class << self
-        def process(exp)
-          orig = exp.dup
-          raise ArgumentError unless exp.shift == :call
-          receiver = exp.shift
-          method_name = exp.shift
-          result = case method_name
-          when :test
-            method_test(exp, receiver)
-          when :require
-            method_require(exp, orig, receiver)
-          when *ASSERTIONS
-            assertion(exp, method_name)
-          else
-            orig
-          end
-          exp.clear
-          result
+        ASSERTIONS = %i[
+          assert
+          assert_equal
+          refute
+          refute_equal
+        ]
+
+        attr_reader :original
+
+        def initialize(exp)
+          raise ArgumentError unless exp.sexp_type == :call
+          @exp = exp.dup
+          @original = exp.dup
         end
 
-        def assertion(exp, method_name)
-          send("method_#{method_name}".to_sym, exp)
+        def arguments
+          @exp[3..-1]
+        end
+
+        def assertion?
+          ASSERTIONS.include?(method_name)
+        end
+
+        def method_name
+          @exp[2]
+        end
+
+        def one_string_argument?
+          arguments.length == 1 && string?(arguments[0])
+        end
+
+        def require_test_helper?
+          method_name == :require &&
+            one_string_argument? &&
+            arguments[0][1] == "test_helper"
+        end
+
+        def receiver
+          @exp[1]
         end
 
         private
+
+        def string?(exp)
+          exp.sexp_type == :str
+        end
+      end
+
+      class << self
+        def process(sexp)
+          exp = Exp.new(sexp)
+          sexp.clear
+          if exp.require_test_helper?
+            require_spec_helper
+          elsif exp.method_name == :test
+            method_test(exp)
+          elsif exp.assertion?
+            assertion(exp)
+          else
+            exp.original
+          end
+        end
+
+        private
+
+        def assertion(exp)
+          send("method_#{exp.method_name}".to_sym, exp.arguments.dup)
+        end
 
         def be_falsey
           matcher(:be_falsey)
@@ -51,10 +92,9 @@ module MinitestToRspec
           s(:call, nil, :expect, exp)
         end
 
-        # Takes `exp`, the argument to an `assert` or `refute`.
-        # In RSpec `expect(exp)` is called an expectation target.
-        # Returns an expression representing an expectation like
-        # `expect(exp).to be_falsey`.
+        # Takes `exp`, the argument to an `assert` or `refute`. In RSpec
+        # `expect(exp)` is called an "expectation target". The combination of
+        # target and matcher returned by this method is called an "expectation".
         def expect_to(matcher, exp)
           s(:call, expectation_target(exp), :to, matcher)
         end
@@ -88,28 +128,12 @@ module MinitestToRspec
           expect_to_not(eq(unexpected), calculated)
         end
 
-        def method_require(exp, orig, receiver)
-          if test_helper?(exp)
-            s(:call, receiver, :require, s(:str, "spec_helper"))
-          else
-            orig
-          end
+        def method_test(exp)
+          s(:call, nil, :it, *exp.arguments)
         end
 
-        def method_test(exp, receiver)
-          if exp.length == 1 && string?(exp[0])
-            s(:call, receiver, :it, *exp)
-          end
-        end
-
-        def string?(exp)
-          exp.sexp_type == :str
-        end
-
-        def test_helper?(exp)
-          exp.length == 1 &&
-            string?(exp[0]) &&
-            exp[0][1] == "test_helper"
+        def require_spec_helper
+          s(:call, nil, :require, s(:str, "spec_helper"))
         end
       end
     end

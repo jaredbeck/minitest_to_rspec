@@ -1,15 +1,36 @@
 module MinitestToRspec
   module Subprocessors
     class Call
+
+      ASSERTIONS = %i[
+        assert
+        assert_equal
+        refute
+        refute_equal
+      ]
+
       class << self
         def process(exp)
           orig = exp.dup
           raise ArgumentError unless exp.shift == :call
           receiver = exp.shift
           method_name = exp.shift
-          result = process_by_method_name(exp, method_name, orig, receiver)
+          result = case method_name
+          when :test
+            method_test(exp, receiver)
+          when :require
+            method_require(exp, orig, receiver)
+          when *ASSERTIONS
+            assertion(exp, method_name)
+          else
+            orig
+          end
           exp.clear
           result
+        end
+
+        def assertion(exp, method_name)
+          send("method_#{method_name}".to_sym, exp)
         end
 
         private
@@ -78,25 +99,6 @@ module MinitestToRspec
         def method_test(exp, receiver)
           if exp.length == 1 && string?(exp[0])
             s(:call, receiver, :it, *exp)
-          end
-        end
-
-        def process_by_method_name(exp, method_name, orig, receiver)
-          case method_name
-          when :assert
-            method_assert(exp)
-          when :assert_equal
-            method_assert_equal(exp)
-          when :test
-            method_test(exp, receiver)
-          when :refute
-            method_refute(exp)
-          when :refute_equal
-            method_refute_equal(exp)
-          when :require
-            method_require(exp, orig, receiver)
-          else
-            orig
           end
         end
 

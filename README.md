@@ -47,18 +47,19 @@ Supported Assertions
 
 The first release will support:
 
-Assertion              | Tested
----------------------- | ------
-assert                 | ✔
-assert_difference      | ✔
-assert_equal           | ✔
-assert_match           | ✔
-assert_nil             | ✔
-assert_no_difference   | ✔
-assert_nothing_raised  |
-assert_raises          |
-refute                 | ✔
-refute_equal           | ✔
+Assertion              | Arity | Tested
+---------------------- | ----- | ------
+assert                 |       | ✔
+assert_difference      | 1     |
+assert_difference      | 2     | ✔
+assert_equal           |       | ✔
+assert_match           |       | ✔
+assert_nil             |       | ✔
+assert_no_difference   |       | ✔
+assert_nothing_raised  |       |
+assert_raises          |       |
+refute                 |       | ✔
+refute_equal           |       | ✔
 
 See [doc/supported_assertions.md][5] for details.
 

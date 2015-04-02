@@ -54,10 +54,6 @@ module MinitestToRspec
           arguments[0][1] == "test_helper"
       end
 
-      def receiver
-        @exp[1]
-      end
-
       private
 
       def string?(exp)

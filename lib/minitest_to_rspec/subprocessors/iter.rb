@@ -1,39 +1,17 @@
 require_relative "base"
+require_relative "../exp/iter"
 
 module MinitestToRspec
   module Subprocessors
     class Iter < Base
       class << self
         def process(sexp)
-          assert_iter(sexp)
-          exp = sexp.dup
+          exp = Exp::Iter.new(sexp)
           sexp.clear
           process_exp(exp)
         end
 
         private
-
-        def assert_difference?(exp)
-          exp.length > 1 && Exp::Call.assert_difference?(exp[1])
-        end
-
-        def assert_iter(sexp)
-          unless sexp.sexp_type == :iter
-            raise ArgumentError, "Expected iter, got #{sexp.sexp_type}"
-          end
-        end
-
-        def assert_no_difference?(exp)
-          exp.length > 1 && Exp::Call.assert_no_difference?(exp[1])
-        end
-
-        def assert_nothing_raised?(exp)
-          exp.length > 1 && Exp::Call.assert_nothing_raised?(exp[1])
-        end
-
-        def assert_raises?(exp)
-          exp.length > 1 && Exp::Call.assert_raises?(exp[1])
-        end
 
         # Returns an expression representing an RSpec `change {}`
         # matcher.  See also `change_by` below.
@@ -108,16 +86,16 @@ module MinitestToRspec
         end
 
         def process_exp(exp)
-          if assert_difference?(exp)
-            process_assert_difference(exp, true)
-          elsif assert_no_difference?(exp)
-            process_assert_difference(exp, false)
-          elsif assert_raises?(exp)
-            process_assert_raises(exp)
-          elsif assert_nothing_raised?(exp)
-            process_assert_nothing_raised(exp)
+          if exp.assert_difference?
+            process_assert_difference(exp.sexp, true)
+          elsif exp.assert_no_difference?
+            process_assert_difference(exp.sexp, false)
+          elsif exp.assert_raises?
+            process_assert_raises(exp.sexp)
+          elsif exp.assert_nothing_raised?
+            process_assert_nothing_raised(exp.sexp)
           else
-            process_uninteresting_iter(exp)
+            process_uninteresting_iter(exp.sexp)
           end
         end
 

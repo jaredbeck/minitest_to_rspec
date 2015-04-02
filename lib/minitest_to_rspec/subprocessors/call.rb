@@ -1,19 +1,5 @@
 module MinitestToRspec
   module Subprocessors
-
-    # Examples of s(:call)
-    # --------------------
-    #
-    # The following input examples
-    #
-    #     [:call, nil, :require, [:str, "test_helper"]]
-    #     [:call, nil, :test, [:str, "is delicious"]]
-    #
-    # are processed into
-    #
-    #     [:call, nil, :require, [:str, "spec_helper"]]
-    #     [:call, nil, :it, [:str, "is delicious"]]
-    #
     class Call
       class << self
         def process(exp)

@@ -6,7 +6,9 @@ module MinitestToRspec
       attr_reader :original
 
       def initialize(exp)
-        raise ArgumentError unless exp.sexp_type == :call
+        unless exp.sexp_type == :call
+          raise ArgumentError, "Expected call, got #{exp.sexp_type}"
+        end
         @exp = exp.dup
         @original = exp.dup
       end

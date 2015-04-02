@@ -69,11 +69,10 @@ module MinitestToRspec
         def process_assert_difference(exp, phase)
           call = exp[1]
           block = exp[3]
-          if phase
-            process_assert_yes_difference(call, block)
-          else
-            process_assert_no_difference(call, block)
-          end
+          processing_method = "process_assert_%s_difference" % [
+            phase ? "yes" : "no"
+          ]
+          send(processing_method, call, block)
         end
 
         def process_assert_yes_difference(call, block)

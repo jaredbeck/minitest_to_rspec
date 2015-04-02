@@ -69,6 +69,14 @@ module MinitestToRspec
             parse('expect("banana").to match(/nana\Z/)')
           )
         end
+
+        it "replaces assert_nil with expect to be_nil" do
+          expect(
+            process(parse('assert_nil(kiwi)'))
+          ).to eq(
+            parse('expect(kiwi).to(be_nil)')
+          )
+        end
       end
     end
   end

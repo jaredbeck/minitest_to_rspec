@@ -53,7 +53,7 @@ assert                 | ✔
 assert_difference      | ✔
 assert_equal           | ✔
 assert_match           | ✔
-assert_nil             |
+assert_nil             | ✔
 assert_no_difference   |
 assert_nothing_raised  |
 assert_raises          |

@@ -9,6 +9,7 @@ module MinitestToRspec
         assert
         assert_equal
         assert_match
+        assert_nil
         refute
         refute_equal
       ]
@@ -28,6 +29,10 @@ module MinitestToRspec
 
         def be_falsey
           matcher(:be_falsey)
+        end
+
+        def be_nil
+          matcher(:be_nil)
         end
 
         def be_truthy
@@ -76,6 +81,10 @@ module MinitestToRspec
           pattern = exp.arguments[0]
           string = exp.arguments[1]
           expect_to(match(pattern), string)
+        end
+
+        def method_assert_nil(exp)
+          expect_to(be_nil, exp.arguments[0])
         end
 
         def method_refute(exp)

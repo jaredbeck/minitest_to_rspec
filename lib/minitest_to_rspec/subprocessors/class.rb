@@ -50,15 +50,6 @@ module MinitestToRspec
           exp.sexp_type == :colon2
         end
 
-        # Run `exp` through a new `Processor`.  This is appropriate
-        # for expressions like `:iter` (a block) which we're not
-        # interested in processing.  We *are* interested in
-        # processing expressions within an `:iter`, but not the
-        # iter itself.  TODO: `full_process` may not be the best name.
-        def full_process(exp)
-          Processor.new.process(exp)
-        end
-
         # TODO: there has to be a better name for this method
         def result(name, parent, block)
           x = container(name, parent)

@@ -31,8 +31,20 @@ module MinitestToRspec
         !empty? && Exp::Call.assert_raises?(@exp[1])
       end
 
+      def each
+        @exp[2..-1].each do |e| yield(e) end
+      end
+
       def empty?
         @exp.length == 1 # just the sexp_type
+      end
+
+      def setup?
+        !empty? && Exp::Call.method_name?(@exp[1], :setup)
+      end
+
+      def teardown?
+        !empty? && Exp::Call.method_name?(@exp[1], :teardown)
       end
 
       def sexp

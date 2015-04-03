@@ -29,6 +29,10 @@ module MinitestToRspec
         def assert_raises?(exp)
           exp.sexp_type == :call && new(exp).assert_raises?
         end
+
+        def method_name?(exp, name)
+          exp.sexp_type == :call && new(exp).method_name == name
+        end
       end
 
       def arguments

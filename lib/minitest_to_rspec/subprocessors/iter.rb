@@ -86,6 +86,18 @@ module MinitestToRspec
           iter
         end
 
+        def process_setup(exp)
+          iter = s(:iter, s(:call, nil, :before))
+          exp.each do |e| iter << full_process(e) end
+          iter
+        end
+
+        def process_teardown(exp)
+          iter = s(:iter, s(:call, nil, :after))
+          exp.each do |e| iter << full_process(e) end
+          iter
+        end
+
         # Returns the name of a method in this subprocessor, or nil if
         # this iter is not processable.
         def processing_method(iter)

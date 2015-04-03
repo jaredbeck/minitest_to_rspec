@@ -21,8 +21,13 @@ module MinitestToRspec
           end
 
           it "does not convert trivial class" do
-            input = ->{ s(:class, :Derp, nil, s(:call, nil, :puts)) }
-            expect(process(input.call)).to eq(input.call)
+            # Actually, we wrap the one call in a block, but it
+            # still prints the same.
+            expect(process(
+              s(:class, :Derp, nil, s(:call, nil, :puts))
+            )).to eq(
+              s(:class, :Derp, nil, s(:block, s(:call, nil, :puts)))
+            )
           end
         end
 
@@ -36,6 +41,32 @@ module MinitestToRspec
           expect(iter.length).to eq(3) # type, call, args
           call = iter[1]
           expect(call).to eq(parse("RSpec.describe(Banana)"))
+        end
+
+        it "converts a class with more than just a single test" do
+          expect(process(parse(
+            <<-EOS
+              class BananaTest < ActiveSupport::TestCase
+                include Monkeys
+                fend_off_the_monkeys
+                peel_bananas
+                test "is delicious" do
+                  assert Banana.new.delicious?
+                end
+              end
+            EOS
+          ))).to eq(parse(
+            <<-EOS
+              RSpec.describe(Banana) do
+                include Monkeys
+                fend_off_the_monkeys
+                peel_bananas
+                it "is delicious" do
+                  expect(Banana.new.delicious?).to be_truthy
+                end
+              end
+            EOS
+          ))
         end
 
         context "class definition with module shorthand" do

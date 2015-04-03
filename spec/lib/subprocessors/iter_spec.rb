@@ -68,6 +68,22 @@ module MinitestToRspec
           expect(process(input)).to eq(output)
         end
 
+        it "replaces setup with before" do
+          expect(
+            process(parse('setup { peel_bananas }'))
+          ).to eq(
+            parse('before { peel_bananas }')
+          )
+        end
+
+        it "replaces teardown with after" do
+          expect(
+            process(parse('teardown { peel_bananas }'))
+          ).to eq(
+            parse('after { peel_bananas }')
+          )
+        end
+
         context "sexp_type is not :iter" do
           it "raises ArgumentError" do
             expect {

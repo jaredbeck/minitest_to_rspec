@@ -9,15 +9,20 @@ module MinitestToRspec
           raise ArgumentError unless exp.shift == :class
           name = exp.shift
           parent = exp.shift
-          iter = exp.empty? ? nil : exp.shift
-          unless exp.empty?
-            raise("Unexpected class expression")
-          end
           assert_valid_name(name)
-          result(name, parent, iter)
+          block = shift_into_block(exp)
+          result(name, parent, block)
         end
 
         private
+
+        def shift_into_block(exp)
+          block = s(:block)
+          until exp.empty?
+            block << full_process(exp.shift)
+          end
+          block
+        end
 
         def active_support_test_case?(parent)
           parent.length == 3 &&
@@ -54,13 +59,21 @@ module MinitestToRspec
           Processor.new.process(exp)
         end
 
-        def result(name, parent, iter)
+        # TODO: there has to be a better name for this method
+        def result(name, parent, block)
+          x = container(name, parent)
+          if block.length > 1
+            x << block
+          end
+          x
+        end
+
+        # TODO: there has to be a better name for this method
+        def container(name, parent)
           if parent && test_case?(parent)
-            rspec_describe_block(name, iter)
-          elsif iter.nil?
-            s(:class, name, parent)
+            rspec_describe_block(name)
           else
-            s(:class, name, parent, full_process(iter))
+            s(:class, name, parent)
           end
         end
 
@@ -69,13 +82,9 @@ module MinitestToRspec
         end
 
         # Returns a S-expression representing a call to RSpec.describe
-        def rspec_describe_block(name, iter)
+        def rspec_describe_block(name)
           arg = s(:const, described_class(name))
-          result = s(:iter, rspec_describe(arg), s(:args))
-          unless iter.nil?
-            result << full_process(iter)
-          end
-          result
+          s(:iter, rspec_describe(arg), s(:args))
         end
 
         # TODO: Obviously, there are test case parent classes

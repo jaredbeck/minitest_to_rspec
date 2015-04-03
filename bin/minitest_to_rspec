@@ -1,0 +1,64 @@
+#!/usr/bin/env ruby
+
+require 'minitest_to_rspec'
+
+module MinitestToRspec
+  class CLI
+    E_USAGE = 1
+    E_FILE_NOT_FOUND = 2
+    E_FILE_ALREADY_EXISTS = 3
+
+    def initialize(args)
+      check_usage(args)
+      @source = args[0]
+      @target = args[1]
+    end
+
+    def run
+      assert_file_exists(@source)
+      assert_file_does_not_exist(@target)
+      write_target(converter.convert(read_source))
+    end
+
+    private
+
+    def assert_file_exists(file)
+      unless File.exist?(file)
+        $stderr.puts "File not found: #{file}"
+        exit(E_FILE_NOT_FOUND)
+      end
+    end
+
+    def assert_file_does_not_exist(file)
+      if File.exist?(file)
+        $stderr.puts "File already exists: #{file}"
+        exit(E_FILE_ALREADY_EXISTS)
+      end
+    end
+
+    def check_usage(args)
+      unless args.length == 2
+        print_usage
+        exit(E_USAGE)
+      end
+    end
+
+    def converter
+      Converter.new
+    end
+
+    def print_usage
+      $stderr.puts "Usage: minitest_to_rspec source_file target_file"
+    end
+
+    def read_source
+      File.read(@source)
+    end
+
+    def write_target(str)
+      File.write(@target, str)
+    end
+  end
+end
+
+MinitestToRspec::CLI.new(ARGV).run

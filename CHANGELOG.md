@@ -7,10 +7,13 @@ of [keepachangelog.com][2].
 Road Map
 --------
 
-- CLI
-- More assertions
+More assertions. Contributions welcome.
 
-Contributions welcome.
+0.2.0
+-----
+
+### Added
+- CLI.  Usage: `minitest_to_rspec source_file target_file`
 
 0.1.0
 -----

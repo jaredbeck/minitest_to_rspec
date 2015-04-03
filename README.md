@@ -34,7 +34,14 @@ rspec quickly.
 Usage
 -----
 
-No CLI executable is provided yet, but ruby usage is simple.
+### CLI
+
+```bash
+gem install minitest_to_rspec
+minitest_to_rspec source_file target_file
+```
+
+### Ruby
 
 ```ruby
 require 'minitest_to_rspec'

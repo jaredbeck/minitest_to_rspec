@@ -6,6 +6,7 @@ require 'minitest_to_rspec/version'
 Gem::Specification.new do |spec|
   spec.name = "minitest_to_rspec"
   spec.version = MinitestToRspec::VERSION
+  spec.executables << 'minitest_to_rspec'
   spec.authors = ["Jared Beck"]
   spec.email = ["jared@jaredbeck.com"]
 

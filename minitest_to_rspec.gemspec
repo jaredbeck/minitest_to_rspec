@@ -27,7 +27,7 @@ ruby2ruby.
   spec.add_runtime_dependency "ruby_parser", "~> 3.6"
   spec.add_runtime_dependency "ruby2ruby", "~> 2.1"
 
-  spec.add_development_dependency "bundler", "~> 1.9"
+  spec.add_development_dependency "bundler", "~> 1.7"
   spec.add_development_dependency "cane", "~> 2.6"
   spec.add_development_dependency "codeclimate-test-reporter", "~> 0.4.7"
   spec.add_development_dependency "rake", "~> 10.4"

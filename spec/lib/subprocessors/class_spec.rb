@@ -6,6 +6,10 @@ module MinitestToRspec
     RSpec.describe Class do
       describe ".process" do
 
+        def parse(str)
+          RubyParser.new.parse(str)
+        end
+
         def process(exp)
           described_class.process(exp)
         end
@@ -31,7 +35,22 @@ module MinitestToRspec
           expect(iter.sexp_type).to eq(:iter)
           expect(iter.length).to eq(3) # type, call, args
           call = iter[1]
-          expect(call).to eq(RubyParser.new.parse("RSpec.describe(Banana)"))
+          expect(call).to eq(parse("RSpec.describe(Banana)"))
+        end
+
+        context "class definition with module shorthand" do
+          it "converts a class with module shorthand" do
+            expect {
+              process(
+                s(:class,
+                  s(:colon2, s(:const, :Fruit), :BananaTest),
+                  nil
+                )
+              )
+            }.to raise_error(ModuleShorthandError,
+              /Please convert your class definition to use nested modules/
+            )
+          end
         end
       end
     end

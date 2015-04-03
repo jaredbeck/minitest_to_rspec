@@ -5,40 +5,15 @@ module MinitestToRspec
   module Subprocessors
     class Class < Base
       class << self
-
-        # Examples of S-expressions
-        # -------------------------
-        #
-        # An empty class
-        #
-        #     class Derp; end
-        #     s(:class, :Derp, nil)
-        #
-        # A trivial class
-        #
-        #     class Derp; puts; end
-        #     s(:class, :Derp, nil, s(:call, nil, :puts))
-        #
-        # A TestCase
-        #
-        #     s(:class,
-        #       :BananaTest,
-        #       s(:colon2, s(:const, :ActiveSupport), :TestCase),
-        #       s(:iter,
-        #         s(:call, nil, :test, s(:str, "is delicious")),
-        #         s(:args),
-        #         s(:call, nil, :assert,
-        #           s(:call, s(:call, s(:const, :Banana), :new), :delicious?)
-        #         )
-        #       )
-        #     )
-        #
         def process(exp)
           raise ArgumentError unless exp.shift == :class
           name = exp.shift
           parent = exp.shift
           iter = exp.empty? ? nil : exp.shift
-          raise("Unexpected class expression") unless exp.empty?
+          unless exp.empty?
+            raise("Unexpected class expression")
+          end
+          assert_valid_name(name)
           result(name, parent, iter)
         end
 
@@ -48,6 +23,16 @@ module MinitestToRspec
           parent.length == 3 &&
             parent[1] == s(:const, :ActiveSupport) &&
             parent[2] == :TestCase
+        end
+
+        def assert_valid_name(name)
+          if name.is_a?(Symbol)
+            # noop. all is well
+          elsif name.sexp_type == :colon2
+            raise ModuleShorthandError
+          else
+            raise ProcessingError, "Unexpected class expression: #{name}"
+          end
         end
 
         # Given a `test_class_name` like `BananaTest`, returns the

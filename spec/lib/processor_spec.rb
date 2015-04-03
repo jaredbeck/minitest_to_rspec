@@ -19,7 +19,7 @@ module MinitestToRspec
       let(:delegate) { Subprocessors::Class }
 
       it "delegates" do
-        input = s(:class)
+        input = s(:class, :Banana)
         allow(delegate).to receive(:process).and_call_original
         processor.process(input)
         expect(delegate).to have_received(:process).with(input)

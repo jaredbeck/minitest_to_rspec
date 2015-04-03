@@ -9,6 +9,12 @@ Road Map
 
 More assertions. Contributions welcome.
 
+0.2.1
+-----
+
+### Fixed
+- Declare ruby2ruby as a runtime dependency
+
 0.2.0
 -----
 

@@ -11,17 +11,15 @@ module MinitestToRspec
           parent = exp.shift
           assert_valid_name(name)
           block = shift_into_block(exp)
-          result(name, parent, block)
+          build(name, parent, block)
         end
 
         private
 
-        def shift_into_block(exp)
-          block = s(:block)
-          until exp.empty?
-            block << full_process(exp.shift)
-          end
-          block
+        def build(name, parent, block)
+          result = build_root(name, parent)
+          result.push(block) if block.length > 1
+          result
         end
 
         def active_support_test_case?(parent)
@@ -50,17 +48,9 @@ module MinitestToRspec
           exp.sexp_type == :colon2
         end
 
-        # TODO: there has to be a better name for this method
-        def result(name, parent, block)
-          x = container(name, parent)
-          if block.length > 1
-            x << block
-          end
-          x
-        end
-
-        # TODO: there has to be a better name for this method
-        def container(name, parent)
+        # Returns the root of the result: either an :iter representing
+        # an `RSpec.describe` or, if it's not a test case, a :class.
+        def build_root(name, parent)
           if parent && test_case?(parent)
             rspec_describe_block(name)
           else
@@ -76,6 +66,14 @@ module MinitestToRspec
         def rspec_describe_block(name)
           arg = s(:const, described_class(name))
           s(:iter, rspec_describe(arg), s(:args))
+        end
+
+        def shift_into_block(exp)
+          block = s(:block)
+          until exp.empty?
+            block << full_process(exp.shift)
+          end
+          block
         end
 
         # TODO: Obviously, there are test case parent classes

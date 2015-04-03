@@ -4,10 +4,14 @@ Change Log
 This project follows [semver 2.0.0][1] and the recommendations
 of [keepachangelog.com][2].
 
-Road Map
---------
+0.3.0 (Unreleased)
+------------------
 
-More assertions. Contributions welcome.
+### Added
+- Support for `setup` and `teardown`
+
+### Fixed
+- Improved error message for class definition using module shorthand
 
 0.2.1
 -----

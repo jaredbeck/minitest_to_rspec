@@ -6,7 +6,6 @@ module MinitestToRspec
   class Converter
     def initialize
       @processor = Processor.new
-      @ruby2ruby = Ruby2Ruby.new
     end
 
     def convert(input)
@@ -51,7 +50,13 @@ module MinitestToRspec
     # Given an AST representing an rspec file, returns a string
     # of ruby code.
     def render(exp)
-      @ruby2ruby.process(exp)
+      ruby2ruby.process(exp)
+    end
+
+    def ruby2ruby
+      Ruby2Ruby.new(hash_syntax: :ruby19)
+    rescue ArgumentError
+      Ruby2Ruby.new
     end
   end
 end

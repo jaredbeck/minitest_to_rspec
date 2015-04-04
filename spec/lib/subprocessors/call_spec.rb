@@ -77,6 +77,25 @@ module MinitestToRspec
             parse('expect(kiwi).to(be_nil)')
           )
         end
+
+        it "does not change factory call" do
+          input = -> {
+            s(:call,
+              nil,
+              :create,
+              s(:lit, :banana),
+              s(:hash,
+                s(:lit, :peel),
+                s(:call, nil, :peel),
+                s(:lit, :color),
+                s(:str, "yellow"),
+                s(:lit, :delicious),
+                s(:true)
+              )
+            )
+          }
+          expect(process(input.call)).to eq(input.call)
+        end
       end
     end
   end

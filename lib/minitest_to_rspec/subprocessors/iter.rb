@@ -61,6 +61,13 @@ module MinitestToRspec
           expect_to_not(raise_error, block, false)
         end
 
+        def process_assert_raise(exp)
+          block = exp[3]
+          call = Exp::Call.new(exp[1])
+          err = call.arguments.first
+          expect_to(raise_error(err), block, false)
+        end
+
         def process_assert_raises(exp)
           block = exp[3]
           call = Exp::Call.new(exp[1])

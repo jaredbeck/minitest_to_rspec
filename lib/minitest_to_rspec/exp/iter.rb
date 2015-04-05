@@ -27,6 +27,10 @@ module MinitestToRspec
         !empty? && Exp::Call.assert_nothing_raised?(@exp[1])
       end
 
+      def assert_raise?
+        !empty? && Exp::Call.assert_raise?(@exp[1])
+      end
+
       def assert_raises?
         !empty? && Exp::Call.assert_raises?(@exp[1])
       end

@@ -56,19 +56,20 @@ Selected assertions from minitest, Test::Unit, and ActiveSupport.
 See [doc/supported_assertions.md][5] for rationale.  Contributions
 are welcome.
 
-Assertion                   | Arity
---------------------------- | -----
-assert                      |
-assert_difference           | 1
-assert_difference           | 2
-assert_equal                |
-assert_match                |
-assert_nil                  |
-assert_no_difference        |
-[assert_nothing_raised][10] |
-assert_raises               |
-refute                      |
-refute_equal                |
+Assertion                   | Arity | Source
+--------------------------- | ----- | ------
+assert                      |       |
+assert_difference           | 1     |
+assert_difference           | 2     |
+assert_equal                |       |
+assert_match                |       |
+assert_nil                  |       |
+[assert_no_difference][12]  |       | ActiveSupport
+[assert_nothing_raised][10] |       | Test::Unit
+[assert_raise][11]          |       | Test::Unit
+[assert_raises][13]         |       | Minitest
+refute                      |       |
+refute_equal                |       |
 
 [1]: https://travis-ci.org/jaredbeck/minitest_to_rspec.svg
 [2]: https://travis-ci.org/jaredbeck/minitest_to_rspec
@@ -80,3 +81,6 @@ refute_equal                |
 [8]: https://github.com/jaredbeck/minitest_to_rspec/blob/master/doc/minitest.md
 [9]: https://github.com/jaredbeck/minitest_to_rspec/blob/master/doc/rspec.md
 [10]: http://www.rubydoc.info/gems/test-unit/3.0.9/Test/Unit/Assertions#assert_nothing_raised-instance_method
+[11]: http://ruby-doc.org/stdlib-2.1.0/libdoc/test/unit/rdoc/Test/Unit/Assertions.html#method-i-assert_raise
+[12]: http://api.rubyonrails.org/classes/ActiveSupport/Testing/Assertions.html#method-i-assert_no_difference
+[13]: http://www.rubydoc.info/gems/minitest/5.5.1/Minitest/Assertions#assert_raises-instance_method

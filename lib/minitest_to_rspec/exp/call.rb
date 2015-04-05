@@ -26,6 +26,10 @@ module MinitestToRspec
           exp.sexp_type == :call && new(exp).assert_nothing_raised?
         end
 
+        def assert_raise?(exp)
+          exp.sexp_type == :call && new(exp).assert_raise?
+        end
+
         def assert_raises?(exp)
           exp.sexp_type == :call && new(exp).assert_raises?
         end
@@ -56,6 +60,12 @@ module MinitestToRspec
 
       def assert_nothing_raised?
         method_name == :assert_nothing_raised && arguments.empty?
+      end
+
+      def assert_raise?
+        method_name == :assert_raise &&
+          arguments.length == 1 &&
+          arguments[0].sexp_type == :const
       end
 
       def assert_raises?

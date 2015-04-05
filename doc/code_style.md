@@ -10,6 +10,6 @@ To clean up the style a bit afterwards, here are some tips.
 1. Remove parenthesis around `describe` and `it` arguments.
 
 ```
-Find: (describe|it)\((['"])(.*)['"]\) do
+Find: (context|describe|it)\((['"])(.*)['"]\) do
 Replace: $1 $2$3$2 do
 ```

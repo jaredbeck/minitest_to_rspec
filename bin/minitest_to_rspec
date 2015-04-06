@@ -10,8 +10,10 @@ module MinitestToRspec
 
     def initialize(args)
       check_usage(args)
-      @source = args[0]
-      @target = args[1]
+      @target = args.pop
+      @source = args.pop
+      @rails_helper = false
+      parse_options(args)
     end
 
     def run
@@ -37,18 +39,30 @@ module MinitestToRspec
     end
 
     def check_usage(args)
-      unless args.length == 2
+      unless (2..3).cover?(args.length)
         print_usage
         exit(E_USAGE)
       end
     end
 
     def converter
-      Converter.new
+      Converter.new(rails_helper: @rails_helper)
+    end
+
+    def parse_options(args)
+      raise ArgumentError unless args.length <= 1
+      args.each do |arg|
+        case arg
+        when "--rails"
+          @rails_helper = true
+        else
+          raise ArgumentError, "Unexpected option: #{arg}"
+        end
+      end
     end
 
     def print_usage
-      $stderr.puts "Usage: minitest_to_rspec source_file target_file"
+      $stderr.puts "Usage: minitest_to_rspec --rails source_file target_file"
     end
 
     def read_source

@@ -4,8 +4,9 @@ require_relative "processor"
 
 module MinitestToRspec
   class Converter
-    def initialize
-      @processor = Processor.new
+    def initialize(options)
+      @options = options
+      @processor = Processor.new(@options[:rails_helper])
     end
 
     def convert(input)

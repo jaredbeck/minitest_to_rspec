@@ -38,7 +38,7 @@ Usage
 
 ```bash
 gem install minitest_to_rspec
-minitest_to_rspec source_file target_file
+minitest_to_rspec --rails source_file target_file
 ```
 
 ### Ruby

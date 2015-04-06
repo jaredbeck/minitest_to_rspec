@@ -15,13 +15,22 @@ module MinitestToRspec
           RubyParser.new.parse(ruby)
         end
 
-        def process(input)
-          described_class.process(input)
+        def process(input, rails_helper = false)
+          described_class.process(input, rails_helper)
         end
 
-        it "replaces `test_helper` with `spec_helper`" do
-          input = exp(:require, "test_helper")
-          expect(process(input)).to eq(exp(:require, "spec_helper"))
+        context "rails_helper is false" do
+          it "replaces test_helper with spec_helper" do
+            input = exp(:require, "test_helper")
+            expect(process(input, false)).to eq(exp(:require, "spec_helper"))
+          end
+        end
+
+        context "rails_helper is true" do
+          it "replaces test_helper with rails_helper" do
+            input = exp(:require, "test_helper")
+            expect(process(input, true)).to eq(exp(:require, "rails_helper"))
+          end
         end
 
         it "replaces `test` with `it`" do

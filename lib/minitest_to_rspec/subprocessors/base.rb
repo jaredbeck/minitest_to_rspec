@@ -45,7 +45,7 @@ module MinitestToRspec
         # turns out to be uninteresting, we still want to fully process its
         # sub-expressions. TODO: `full_process` may not be the best name.
         def full_process(exp)
-          Processor.new.process(exp)
+          Processor.new(false).process(exp)
         end
 
         def matcher(name, *args)

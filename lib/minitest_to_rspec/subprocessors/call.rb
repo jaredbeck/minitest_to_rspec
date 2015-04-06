@@ -15,10 +15,10 @@ module MinitestToRspec
       ]
 
       class << self
-        def process(sexp)
+        def process(sexp, rails_helper)
           exp = Exp::Call.new(sexp)
           sexp.clear
-          process_exp(exp)
+          process_exp(exp, rails_helper)
         end
 
         private
@@ -86,9 +86,9 @@ module MinitestToRspec
         end
 
         # Given a `Exp::Call`, returns a `Sexp`
-        def process_exp(exp)
+        def process_exp(exp, rails_helper)
           if exp.require_test_helper?
-            require_spec_helper
+            require_spec_helper(rails_helper)
           elsif processable?(exp)
             process_method(exp)
           else
@@ -100,8 +100,9 @@ module MinitestToRspec
           send("method_#{exp.method_name}".to_sym, exp)
         end
 
-        def require_spec_helper
-          s(:call, nil, :require, s(:str, "spec_helper"))
+        def require_spec_helper(rails_helper)
+          prefix = rails_helper ? "rails" : "spec"
+          s(:call, nil, :require, s(:str, "#{prefix}_helper"))
         end
       end
     end

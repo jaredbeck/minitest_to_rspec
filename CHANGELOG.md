@@ -9,6 +9,8 @@ of [keepachangelog.com][2].
 
 ### Added
 - Support for `setup` and `teardown`
+- CLI option: `--rails` will `require("rails_helper")` instead
+  of `"spec_helper"`
 
 ### Fixed
 - Improved error message for class definition using module shorthand

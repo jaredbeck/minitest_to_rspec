@@ -40,7 +40,7 @@ module MinitestToRspec
       end
 
       def arguments
-        @exp[3..-1]
+        @exp[3..-1] || []
       end
 
       def argument_types

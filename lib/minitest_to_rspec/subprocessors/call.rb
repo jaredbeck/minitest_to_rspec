@@ -1,19 +1,10 @@
 require_relative "../exp/call"
+require_relative "../exp/calls/returns"
 require_relative "base"
 
 module MinitestToRspec
   module Subprocessors
     class Call < Base
-
-      ASSERTIONS = %i[
-        assert
-        assert_equal
-        assert_match
-        assert_nil
-        refute
-        refute_equal
-      ]
-
       class << self
         def process(sexp, rails_helper)
           exp = Exp::Call.new(sexp)
@@ -23,8 +14,8 @@ module MinitestToRspec
 
         private
 
-        def assertion?(exp)
-          ASSERTIONS.include?(exp.method_name)
+        def allow_receive_and_return(msg_recipient, msg, return_values)
+          allow_to(msg_recipient, receive_and_return(msg, return_values))
         end
 
         def be_falsey
@@ -77,12 +68,25 @@ module MinitestToRspec
           expect_to_not(eq(unexpected), calculated, true)
         end
 
+        def method_returns(exp)
+          r = Exp::Calls::Returns.new(exp.original)
+          if r.known_variant?
+            allow_receive_and_return(r.msg_recipient, r.message, r.values)
+          else
+            exp.original
+          end
+        end
+
         def method_test(exp)
           s(:call, nil, :it, *exp.arguments)
         end
 
+        def name_of_processing_method(exp)
+          "method_#{exp.method_name}".to_sym
+        end
+
         def processable?(exp)
-          exp.method_name == :test || assertion?(exp)
+          respond_to?(name_of_processing_method(exp), true)
         end
 
         # Given a `Exp::Call`, returns a `Sexp`
@@ -90,19 +94,27 @@ module MinitestToRspec
           if exp.require_test_helper?
             require_spec_helper(rails_helper)
           elsif processable?(exp)
-            process_method(exp)
+            send_to_processing_method(exp)
           else
             exp.original
           end
         end
 
-        def process_method(exp)
-          send("method_#{exp.method_name}".to_sym, exp)
+        def receive(message)
+          s(:call, nil, :receive, message)
+        end
+
+        def receive_and_return(message, return_values)
+          s(:call, receive(message), :and_return, *return_values)
         end
 
         def require_spec_helper(rails_helper)
           prefix = rails_helper ? "rails" : "spec"
           s(:call, nil, :require, s(:str, "#{prefix}_helper"))
+        end
+
+        def send_to_processing_method(exp)
+          send(name_of_processing_method(exp), exp)
         end
       end
     end

@@ -11,6 +11,7 @@ of [keepachangelog.com][2].
 - Support for `setup` and `teardown`
 - CLI option: `--rails` will `require("rails_helper")` instead
   of `"spec_helper"`
+- Experimental, limited conversion of mocha to rspec-mocks
 
 ### Fixed
 - Improved error message for class definition using module shorthand

@@ -82,6 +82,10 @@ module MinitestToRspec
         arguments.length == 1 && string?(arguments[0])
       end
 
+      def receiver
+        @exp[1]
+      end
+
       def require_test_helper?
         method_name == :require &&
           one_string_argument? &&

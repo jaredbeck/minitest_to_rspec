@@ -105,6 +105,51 @@ module MinitestToRspec
           }
           expect(process(input.call)).to eq(input.call)
         end
+
+        it "replaces stubs/returns with expect to receive" do
+          expect(
+            process(parse("Banana.stubs(:delicious?).returns(true)"))
+          ).to eq(
+            parse("allow(Banana).to receive(:delicious?).and_return(true)")
+          )
+        end
+
+        it "does not replace every method named 'returns'" do
+          # In this example, `returns` does not represent a mocha stub.
+          input = -> { parse("Banana.returns(peel)") }
+          expect(process(input.call)).to eq(input.call)
+        end
+
+        it "replaces stub with double" do
+          skip "Not yet implemented"
+          expect(
+            process(parse("stub(:delicious? => true)"))
+          ).to eq(
+            parse('double("Untitled", :delicious? => true)')
+          )
+        end
+
+        context "stub_everything" do
+          it "replaces with double as_null_object" do
+            skip "Not yet implemented"
+            expect(
+              process(parse("stub_everything"))
+            ).to eq(
+              parse('double("Untitled").as_null_object')
+            )
+          end
+
+          context "with specific allowed methods" do
+            it "replaces with double as_null_object" do
+              skip "Not yet implemented"
+              expect(
+                process(parse("stub_everything(:delicious? => false)"))
+              ).to eq(
+                parse('double("Untitled", :delicious? => false).as_null_object')
+              )
+            end
+          end
+        end
       end
     end
   end

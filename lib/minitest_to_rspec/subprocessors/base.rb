@@ -3,6 +3,12 @@ module MinitestToRspec
     class Base
       class << self
 
+        # Returns a s-expression representing an rspec-mocks stub.
+        def allow_to(msg_recipient, matcher)
+          target = s(:call, nil, :allow, msg_recipient)
+          s(:call, target, :to, matcher)
+        end
+
         # Returns a s-expression representing an RSpec expectation, i.e. the
         # combination of an "expectation target" and a matcher.
         def expect(target, eager, phase, matcher)

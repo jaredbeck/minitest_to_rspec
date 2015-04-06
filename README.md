@@ -4,6 +4,9 @@ Converts [minitest][8] files to [rspec][9].
 
 [![Build Status][1]][2] [![Code Climate][3]][4] [![Test Coverage][7]][4]
 
+Uses [ruby_parser][14], [sexp_processor][15], and [ruby2ruby][16],
+in that order.  Thank you, [Ryan Davis][17]!
+
 Example
 -------
 
@@ -11,6 +14,8 @@ Input:
 
 ```ruby
 require 'test_helper'
+
+# This comment will be discarded!
 class BananaTest < ActiveSupport::TestCase
   test "is delicious" do
     assert Banana.new.delicious?
@@ -26,6 +31,8 @@ RSpec.describe(Banana) do
   it("is delicious") { expect(Banana.new.delicious?).to(be_truthy) }
 end
 ```
+
+[RubyParser][14] discards all comments.
 
 The code style is whatever [ruby2ruby][6] feels like printing,
 and is not configurable.  The goal is not style, but to get to
@@ -84,3 +91,7 @@ refute_equal                |       |
 [11]: http://ruby-doc.org/stdlib-2.1.0/libdoc/test/unit/rdoc/Test/Unit/Assertions.html#method-i-assert_raise
 [12]: http://api.rubyonrails.org/classes/ActiveSupport/Testing/Assertions.html#method-i-assert_no_difference
 [13]: http://www.rubydoc.info/gems/minitest/5.5.1/Minitest/Assertions#assert_raises-instance_method
+[14]: https://github.com/seattlerb/ruby_parser
+[15]: https://github.com/seattlerb/sexp_processor
+[16]: https://github.com/seattlerb/ruby2ruby
+[17]: https://github.com/zenspider

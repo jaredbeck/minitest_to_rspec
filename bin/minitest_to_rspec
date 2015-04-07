@@ -7,6 +7,7 @@ module MinitestToRspec
     E_USAGE = 1
     E_FILE_NOT_FOUND = 2
     E_FILE_ALREADY_EXISTS = 3
+    E_CONVERT_FAIL = 4
 
     def initialize(args)
       check_usage(args)
@@ -20,6 +21,9 @@ module MinitestToRspec
       assert_file_exists(@source)
       assert_file_does_not_exist(@target)
       write_target(converter.convert(read_source))
+    rescue Error => e
+      $stderr.puts "Failed to convert: #{e}"
+      exit E_CONVERT_FAIL
     end
 
     private

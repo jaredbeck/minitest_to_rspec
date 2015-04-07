@@ -1,6 +1,7 @@
 require "ruby_parser"
 require "ruby2ruby"
 require_relative "processor"
+require_relative "errors"
 
 module MinitestToRspec
   class Converter

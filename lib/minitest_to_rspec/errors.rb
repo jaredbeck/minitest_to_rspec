@@ -1,6 +1,7 @@
 module MinitestToRspec
-  class ProcessingError < StandardError; end
-  class NotImplemented < StandardError; end
+  class Error < StandardError; end
+  class ProcessingError < Error; end
+  class NotImplemented < Error; end
 
   class ModuleShorthandError < NotImplemented
     def message

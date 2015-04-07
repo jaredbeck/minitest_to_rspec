@@ -11,19 +11,19 @@ module MinitestToRspec
       described_class.new(options).convert(input)
     end
 
-    def input(fixture)
+    def read_input(fixture)
       File.read(File.join(fixture, "in.rb"))
     end
 
-    def output(fixture)
+    def read_output(fixture)
       File.read(File.join(fixture, "out.rb"))
     end
 
     describe "#convert" do
       FIXTURE_DIRS.each do |fixture|
         it "converts: #{fixture}" do
-          expected = output(fixture).strip
-          calculated = convert(input(fixture)).strip
+          expected = read_output(fixture).strip
+          calculated = convert(read_input(fixture)).strip
           expect(calculated).to eq(expected)
         end
       end

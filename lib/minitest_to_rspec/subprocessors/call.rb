@@ -77,6 +77,14 @@ module MinitestToRspec
           end
         end
 
+        def method_stub(exp)
+          if exp.receiver.nil?
+            s(:call, nil, :double, *exp.arguments)
+          else
+            exp.original
+          end
+        end
+
         def method_test(exp)
           s(:call, nil, :it, *exp.arguments)
         end

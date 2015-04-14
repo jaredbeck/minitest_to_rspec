@@ -121,11 +121,10 @@ module MinitestToRspec
         end
 
         it "replaces stub with double" do
-          skip "Not yet implemented"
           expect(
             process(parse("stub(:delicious? => true)"))
           ).to eq(
-            parse('double("Untitled", :delicious? => true)')
+            parse('double(:delicious? => true)')
           )
         end
 

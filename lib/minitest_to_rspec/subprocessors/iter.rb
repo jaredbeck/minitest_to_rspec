@@ -66,15 +66,11 @@ module MinitestToRspec
         end
 
         def method_setup(exp)
-          iter = s(:iter, s(:call, nil, :before))
-          exp.each do |e| iter << full_process(e) end
-          iter
+          replace_method_name(exp, :before)
         end
 
         def method_teardown(exp)
-          iter = s(:iter, s(:call, nil, :after))
-          exp.each do |e| iter << full_process(e) end
-          iter
+          replace_method_name(exp, :after)
         end
 
         def name_of_processing_method(iter)
@@ -120,6 +116,12 @@ module MinitestToRspec
         def raise_error(*args)
           args.pop if !args.empty? && args.last.sexp_type == :str
           matcher(:raise_error, *args)
+        end
+
+        def replace_method_name(exp, new_method)
+          iter = s(:iter, s(:call, nil, new_method))
+          exp.each do |e| iter << full_process(e) end
+          iter
         end
 
         def send_to_processing_method(exp)

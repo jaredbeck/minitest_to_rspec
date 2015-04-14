@@ -43,6 +43,7 @@ module MinitestToRspec
         @exp[1]
       end
 
+      # Not to be confused with block arguments.
       def call_arguments
         call_obj.arguments
       end
@@ -51,6 +52,9 @@ module MinitestToRspec
         Exp::Call.new(call)
       end
 
+      # Enumerates children, skipping the base `call` and
+      # starting with the block arguments, then each `:call` in
+      # the block.
       def each
         @exp[2..-1].each do |e| yield(e) end
       end

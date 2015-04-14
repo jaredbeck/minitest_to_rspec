@@ -130,21 +130,19 @@ module MinitestToRspec
 
         context "stub_everything" do
           it "replaces with double as_null_object" do
-            skip "Not yet implemented"
             expect(
               process(parse("stub_everything"))
             ).to eq(
-              parse('double("Untitled").as_null_object')
+              parse('double.as_null_object')
             )
           end
 
           context "with specific allowed methods" do
             it "replaces with double as_null_object" do
-              skip "Not yet implemented"
               expect(
                 process(parse("stub_everything(:delicious? => false)"))
               ).to eq(
-                parse('double("Untitled", :delicious? => false).as_null_object')
+                parse('double(:delicious? => false).as_null_object')
               )
             end
           end

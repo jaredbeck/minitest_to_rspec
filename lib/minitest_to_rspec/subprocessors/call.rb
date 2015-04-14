@@ -77,9 +77,31 @@ module MinitestToRspec
           end
         end
 
+        # Happily, the no-block signatures of [stub][3] are the
+        # same as [double][2].
+        #
+        # - (name)
+        # - (stubs)
+        # - (name, stubs)
+
         def method_stub(exp)
           if exp.receiver.nil?
             s(:call, nil, :double, *exp.arguments)
+          else
+            exp.original
+          end
+        end
+
+        # [stub_everything][1] responds to all messages with nil.
+        # [double.as_null_object][4] responds with self.  Not a
+        # drop-in replacement, but will work in many situations.
+        # RSpec doesn't provide an equivalent to `stub_everything`,
+        # AFAIK.
+
+        def method_stub_everything(exp)
+          if exp.receiver.nil?
+            d = s(:call, nil, :double, *exp.arguments)
+            s(:call, d, :as_null_object, )
           else
             exp.original
           end
@@ -128,3 +150,8 @@ module MinitestToRspec
     end
   end
 end
+
+# [1]: http://bit.ly/1yll6ND
+# [2]: http://bit.ly/1CRdmP3
+# [3]: http://bit.ly/1aY2mJN
+# [4]: http://bit.ly/1OtwDOY

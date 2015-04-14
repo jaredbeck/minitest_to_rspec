@@ -36,11 +36,7 @@ module MinitestToRspec
           )
         end
 
-        def parse(str)
-          RubyParser.new.parse(str)
-        end
-
-        def process_assert_difference(exp)
+        def method_assert_difference(exp)
           call = exp[1]
           block = exp[3]
           by = call[4]
@@ -49,39 +45,69 @@ module MinitestToRspec
           expect_to(matcher, block, false)
         end
 
-        def process_assert_no_difference(exp)
+        def method_assert_no_difference(exp)
           call = exp[1]
           block = exp[3]
           what = parse(call[3][1])
           expect_to_not(change(what), block, false)
         end
 
-        def process_assert_nothing_raised(exp)
+        def method_assert_nothing_raised(exp)
           block = exp[3]
           expect_to_not(raise_error, block, false)
         end
 
-        def process_assert_raise(exp)
+        def method_assert_raise(exp)
           block = exp[3]
           call = Exp::Call.new(exp[1])
           err = call.arguments.first
           expect_to(raise_error(err), block, false)
         end
 
-        def process_assert_raises(exp)
+        def method_assert_raises(exp)
           block = exp[3]
           call = Exp::Call.new(exp[1])
           err = call.arguments.first
           expect_to(raise_error(err), block, false)
+        end
+
+        def method_setup(exp)
+          iter = s(:iter, s(:call, nil, :before))
+          exp.each do |e| iter << full_process(e) end
+          iter
+        end
+
+        def method_teardown(exp)
+          iter = s(:iter, s(:call, nil, :after))
+          exp.each do |e| iter << full_process(e) end
+          iter
+        end
+
+        def name_of_processing_method(iter)
+          method_name = iter[1][2]
+          "method_#{method_name}".to_sym
+        end
+
+        def parse(str)
+          RubyParser.new.parse(str)
         end
 
         # Given a `Exp::Iter`, returns a `Sexp`
         def process_exp(exp)
-          m = processing_method(exp)
-          if m.nil?
-            process_uninteresting_iter(exp.sexp)
+          if processable?(exp)
+            send_to_processing_method(exp)
           else
-            send(m, exp)
+            process_uninteresting_iter(exp.sexp)
+          end
+        end
+
+        def processable?(iter)
+          if !iter.empty? && iter[1].sexp_type == :call
+            method_name = iter[1][2]
+            decision = "#{method_name}?".to_sym
+            iter.respond_to?(decision) && iter.public_send(decision)
+          else
+            false
           end
         end
 
@@ -93,32 +119,12 @@ module MinitestToRspec
           iter
         end
 
-        def process_setup(exp)
-          iter = s(:iter, s(:call, nil, :before))
-          exp.each do |e| iter << full_process(e) end
-          iter
-        end
-
-        def process_teardown(exp)
-          iter = s(:iter, s(:call, nil, :after))
-          exp.each do |e| iter << full_process(e) end
-          iter
-        end
-
-        # Returns the name of a method in this subprocessor, or nil if
-        # this iter is not processable.
-        def processing_method(iter)
-          if !iter.empty? && iter[1].sexp_type == :call
-            method_name = iter[1][2]
-            decision = "#{method_name}?".to_sym
-            if iter.respond_to?(decision) && iter.public_send(decision)
-              "process_#{method_name}".to_sym
-            end
-          end
-        end
-
         def raise_error(*args)
           matcher(:raise_error, *args)
+        end
+
+        def send_to_processing_method(exp)
+          send(name_of_processing_method(exp), exp)
         end
       end
     end

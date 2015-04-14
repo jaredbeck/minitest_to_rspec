@@ -88,9 +88,9 @@ module MinitestToRspec
 
         it "replaces teardown with after" do
           expect(
-            process(parse('teardown { peel_bananas }'))
+            process(parse('teardown { compost_the_banana_peels }'))
           ).to eq(
-            parse('after { peel_bananas }')
+            parse('after { compost_the_banana_peels }')
           )
         end
 

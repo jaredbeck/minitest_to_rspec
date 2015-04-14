@@ -120,12 +120,23 @@ module MinitestToRspec
           expect(process(input.call)).to eq(input.call)
         end
 
-        it "replaces stub with double" do
-          expect(
-            process(parse("stub(:delicious? => true)"))
-          ).to eq(
-            parse('double(:delicious? => true)')
-          )
+        context "stub" do
+          it "replaces stub with double" do
+            expect(process(parse("stub"))).to eq(parse('double'))
+          end
+
+          it "replaces stub(hash) with double" do
+            expect(
+              process(parse("stub(:delicious? => true)"))
+            ).to eq(
+              parse('double(:delicious? => true)')
+            )
+          end
+
+          it "does not replace explicit receiver stub" do
+            input = -> { parse("pencil.stub") }
+            expect(process(input.call)).to eq(input.call)
+          end
         end
 
         context "stub_everything" do
@@ -135,6 +146,13 @@ module MinitestToRspec
             ).to eq(
               parse('double.as_null_object')
             )
+          end
+
+          context "with explicit receiver" do
+            it "does not replace" do
+              input = -> { parse("pencil.stub_everything") }
+              expect(process(input.call)).to eq(input.call)
+            end
           end
 
           context "with specific allowed methods" do

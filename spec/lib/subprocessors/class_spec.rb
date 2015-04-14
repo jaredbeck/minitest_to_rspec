@@ -14,9 +14,17 @@ module MinitestToRspec
           described_class.process(exp)
         end
 
+        context "unexpected class expression" do
+          it "raises ProcessingError" do
+            expect {
+              process(s(:class, "Derp", nil))
+            }.to raise_error(ProcessingError)
+          end
+        end
+
         context "input class is not test case" do
           it "does not convert empty class" do
-            input = ->{ s(:class, :Derp, nil) }
+            input = -> { s(:class, :Derp, nil) }
             expect(process(input.call)).to eq(input.call)
           end
 

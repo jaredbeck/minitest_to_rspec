@@ -4,6 +4,16 @@ require "ruby_parser"
 module MinitestToRspec
   module Subprocessors
     RSpec.describe Iter do
+      describe ".new" do
+        context "not an :iter" do
+          it "raises ArgumentError" do
+            expect {
+              described_class.new(s(:nil))
+            }.to raise_error(ArgumentError)
+          end
+        end
+      end
+
       describe ".process" do
 
         def parse(ruby)

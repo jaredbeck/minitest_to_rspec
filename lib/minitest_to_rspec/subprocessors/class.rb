@@ -31,7 +31,7 @@ module MinitestToRspec
         def assert_valid_name(name)
           if name.is_a?(Symbol)
             # noop. all is well
-          elsif name.sexp_type == :colon2
+          elsif name.respond_to?(:sexp_type) && name.sexp_type == :colon2
             raise ModuleShorthandError
           else
             raise ProcessingError, "Unexpected class expression: #{name}"

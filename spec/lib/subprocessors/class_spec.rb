@@ -78,7 +78,7 @@ module MinitestToRspec
         end
 
         context "class definition with module shorthand" do
-          it "converts a class with module shorthand" do
+          it "raises ModuleShorthandError" do
             expect {
               process(
                 s(:class,

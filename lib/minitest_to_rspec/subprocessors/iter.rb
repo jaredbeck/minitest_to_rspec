@@ -57,18 +57,12 @@ module MinitestToRspec
           expect_to_not(raise_error, block, false)
         end
 
-        def method_assert_raise(exp)
-          block = exp[3]
-          call = Exp::Call.new(exp[1])
-          err = call.arguments.first
-          expect_to(raise_error(err), block, false)
+        def method_assert_raise(iter)
+          method_assert_raises(iter)
         end
 
-        def method_assert_raises(exp)
-          block = exp[3]
-          call = Exp::Call.new(exp[1])
-          err = call.arguments.first
-          expect_to(raise_error(err), block, false)
+        def method_assert_raises(iter)
+          expect_to(raise_error(*iter.call_arguments), iter.block, false)
         end
 
         def method_setup(exp)
@@ -119,7 +113,12 @@ module MinitestToRspec
           iter
         end
 
+        # Given `args` which came from an `assert_raise` or an
+        # `assert_raises`, return a `raise_error` matcher.
+        # When the last argument is a string, it represents the
+        # assertion failure message, and is discarded.
         def raise_error(*args)
+          args.pop if !args.empty? && args.last.sexp_type == :str
           matcher(:raise_error, *args)
         end
 

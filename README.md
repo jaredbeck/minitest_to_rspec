@@ -66,15 +66,14 @@ are welcome.
 Assertion                   | Arity | Source
 --------------------------- | ----- | ------
 assert                      |       |
-assert_difference           | 1     |
-assert_difference           | 2     |
+assert_difference           | 1,2   |
 assert_equal                |       |
 assert_match                |       |
 assert_nil                  |       |
 [assert_no_difference][12]  |       | ActiveSupport
 [assert_nothing_raised][10] |       | Test::Unit
-[assert_raise][11]          |       | Test::Unit
-[assert_raises][13]         |       | Minitest
+[assert_raise][11]          | 0..2  | Test::Unit
+[assert_raises][13]         | 0..2  | Minitest
 refute                      |       |
 refute_equal                |       |
 

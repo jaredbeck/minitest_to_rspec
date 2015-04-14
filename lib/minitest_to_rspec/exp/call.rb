@@ -63,15 +63,11 @@ module MinitestToRspec
       end
 
       def assert_raise?
-        method_name == :assert_raise &&
-          arguments.length == 1 &&
-          arguments[0].sexp_type == :const
+        method_name == :assert_raise && raise_error_args?
       end
 
       def assert_raises?
-        method_name == :assert_raises &&
-          arguments.length == 1 &&
-          arguments[0].sexp_type == :const
+        method_name == :assert_raises && raise_error_args?
       end
 
       def method_name
@@ -80,6 +76,14 @@ module MinitestToRspec
 
       def one_string_argument?
         arguments.length == 1 && string?(arguments[0])
+      end
+
+      # Returns true if arguments can be processed into RSpec's `raise_error`
+      # matcher.  When the last argument is a string, it represents the
+      # assertion failure message, which will be discarded later.
+      def raise_error_args?
+        arg_types = arguments.map(&:sexp_type)
+        [[], [:str], [:const], [:const, :str]].include?(arg_types)
       end
 
       def receiver

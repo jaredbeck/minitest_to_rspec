@@ -35,6 +35,22 @@ module MinitestToRspec
         !empty? && Exp::Call.assert_raises?(@exp[1])
       end
 
+      def block
+        @exp[3]
+      end
+
+      def call
+        @exp[1]
+      end
+
+      def call_arguments
+        call_obj.arguments
+      end
+
+      def call_obj
+        Exp::Call.new(call)
+      end
+
       def each
         @exp[2..-1].each do |e| yield(e) end
       end

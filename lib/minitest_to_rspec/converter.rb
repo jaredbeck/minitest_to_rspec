@@ -55,6 +55,8 @@ module MinitestToRspec
       ruby2ruby.process(exp)
     end
 
+    # Try to specify ruby 1.9 hash_syntax if ruby2ruby supports it.
+    # https://github.com/seattlerb/ruby2ruby/pull/37
     def ruby2ruby
       Ruby2Ruby.new(hash_syntax: :ruby19)
     rescue ArgumentError

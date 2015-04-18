@@ -11,7 +11,7 @@ module MinitestToRspec
 
         def assert_sexp_type(type, exp)
           unless sexp_type?(type, exp)
-            raise TypeError, "Expected #{type} s-expression, got #{exp}"
+            raise TypeError, "Expected #{type} s-expression, got #{exp.inspect}"
           end
         end
 

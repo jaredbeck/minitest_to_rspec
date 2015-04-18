@@ -8,7 +8,7 @@ of [keepachangelog.com][2].
 ------------------
 
 ### Added
-- Support for `setup` and `teardown`
+- Converts `setup` and `teardown` to `before` and `after`
 - CLI option: `--rails` will `require("rails_helper")` instead
   of `"spec_helper"`
 - Experimental, limited conversion of mocha to rspec-mocks

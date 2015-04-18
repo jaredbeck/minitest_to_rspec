@@ -106,6 +106,21 @@ module MinitestToRspec
             ))
           end
         end
+
+        context "class that inherits from ActiveSupport::TestCase" do
+          it "converts to describe with :type => :model" do
+            inp = <<-EOS
+              class BananaTest < ActiveSupport::TestCase
+              end
+            EOS
+            expect(process(parse(inp), true)).to eq(parse(
+              <<-EOS
+                RSpec.describe(Banana, :type => :model) do
+                end
+              EOS
+            ))
+          end
+        end
       end
     end
   end

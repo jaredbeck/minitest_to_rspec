@@ -22,7 +22,7 @@ module MinitestToRspec
         input = s(:class, :Banana)
         allow(delegate).to receive(:process).and_call_original
         processor.process(input)
-        expect(delegate).to have_received(:process).with(input)
+        expect(delegate).to have_received(:process).with(input, false)
       end
     end
 

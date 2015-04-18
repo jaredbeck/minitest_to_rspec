@@ -10,8 +10,8 @@ module MinitestToRspec
           RubyParser.new.parse(str)
         end
 
-        def process(exp)
-          described_class.process(exp)
+        def process(exp, rails = false)
+          described_class.process(exp, rails)
         end
 
         context "unexpected class expression" do
@@ -89,6 +89,21 @@ module MinitestToRspec
             }.to raise_error(ModuleShorthandError,
               /Please convert your class definition to use nested modules/
             )
+          end
+        end
+
+        context "class that inherits from ActionController::TestCase" do
+          it "converts to describe with :type => :controller" do
+            inp = <<-EOS
+              class BananasControllerTest < ActionController::TestCase
+              end
+            EOS
+            expect(process(parse(inp), true)).to eq(parse(
+              <<-EOS
+                RSpec.describe(BananasController, :type => :controller) do
+                end
+              EOS
+            ))
           end
         end
       end

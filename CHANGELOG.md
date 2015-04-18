@@ -9,8 +9,9 @@ of [keepachangelog.com][2].
 
 ### Added
 - Converts `setup` and `teardown` to `before` and `after`
-- CLI option: `--rails` will `require("rails_helper")` instead
-  of `"spec_helper"`
+- CLI option: `--rails`
+  - Prints `rails_helper` instead of `spec_helper`
+  - Adds `:type` metadata, eg. `:type => :controller`
 - Experimental, limited conversion of mocha to rspec-mocks
 
 ### Fixed

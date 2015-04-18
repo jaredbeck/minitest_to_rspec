@@ -13,7 +13,7 @@ module MinitestToRspec
       check_usage(args)
       @target = args.pop
       @source = args.pop
-      @rails_helper = false
+      @rails = false
       parse_options(args)
     end
 
@@ -50,7 +50,7 @@ module MinitestToRspec
     end
 
     def converter
-      Converter.new(rails_helper: @rails_helper)
+      Converter.new(rails: @rails)
     end
 
     def parse_options(args)
@@ -58,7 +58,7 @@ module MinitestToRspec
       args.each do |arg|
         case arg
         when "--rails"
-          @rails_helper = true
+          @rails = true
         else
           raise ArgumentError, "Unexpected option: #{arg}"
         end

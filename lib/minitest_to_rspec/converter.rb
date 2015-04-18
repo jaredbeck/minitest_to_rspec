@@ -7,7 +7,7 @@ module MinitestToRspec
   class Converter
     def initialize(options)
       @options = options
-      @processor = Processor.new(@options[:rails_helper])
+      @processor = Processor.new(@options[:rails])
     end
 
     def convert(input)

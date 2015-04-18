@@ -6,18 +6,18 @@ require_relative "subprocessors/iter"
 
 module MinitestToRspec
   class Processor < SexpProcessor
-    def initialize(rails_helper)
+    def initialize(rails)
       super()
       self.strict = false
-      @rails_helper = rails_helper
+      @rails = rails
     end
 
     def process_call(exp)
-      Subprocessors::Call.process(exp, @rails_helper)
+      Subprocessors::Call.process(exp, @rails)
     end
 
     def process_class(exp)
-      Subprocessors::Class.process(exp)
+      Subprocessors::Class.process(exp, @rails)
     end
 
     def process_iter(exp)

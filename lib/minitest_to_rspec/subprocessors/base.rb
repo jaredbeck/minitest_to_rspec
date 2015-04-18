@@ -9,6 +9,12 @@ module MinitestToRspec
           s(:call, target, :to, matcher)
         end
 
+        def assert_sexp_type(type, exp)
+          unless sexp_type?(type, exp)
+            raise TypeError, "Expected #{type} s-expression, got #{exp}"
+          end
+        end
+
         # Returns a s-expression representing an RSpec expectation, i.e. the
         # combination of an "expectation target" and a matcher.
         def expect(target, eager, phase, matcher)
@@ -57,6 +63,10 @@ module MinitestToRspec
         def matcher(name, *args)
           exp = s(:call, nil, name)
           exp.concat(args)
+        end
+
+        def sexp_type?(type, exp)
+          exp.is_a?(Sexp) && exp.sexp_type == type.to_sym
         end
       end
     end

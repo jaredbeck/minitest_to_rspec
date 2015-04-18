@@ -1,13 +1,12 @@
+require_relative "base"
+
 module MinitestToRspec
   module Exp
 
     # Data object.  Represents an `:iter` s-expression.
-    class Iter
-
+    class Iter < Base
       def initialize(exp)
-        unless exp.sexp_type == :iter
-          raise ArgumentError, "Expected iter, got #{exp.sexp_type}"
-        end
+        assert_sexp_type(:iter, exp)
         @exp = exp.dup
       end
 

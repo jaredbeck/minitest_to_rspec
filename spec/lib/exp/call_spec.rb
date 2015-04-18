@@ -3,10 +3,10 @@ module MinitestToRspec
     RSpec.describe Call do
       describe ".new" do
         context "sexp_type is not :call" do
-          it "raises ArgumentError" do
+          it "raises TypeError" do
             expect {
               described_class.new(s(:str, "derp"))
-            }.to raise_error(ArgumentError)
+            }.to raise_error(TypeError)
           end
         end
       end

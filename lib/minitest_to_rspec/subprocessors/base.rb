@@ -1,18 +1,16 @@
+require_relative "../sexp_assertions"
+
 module MinitestToRspec
   module Subprocessors
     class Base
+      extend SexpAssertions
+
       class << self
 
         # Returns a s-expression representing an rspec-mocks stub.
         def allow_to(msg_recipient, matcher)
           target = s(:call, nil, :allow, msg_recipient)
           s(:call, target, :to, matcher)
-        end
-
-        def assert_sexp_type(type, exp)
-          unless sexp_type?(type, exp)
-            raise TypeError, "Expected #{type} s-expression, got #{exp.inspect}"
-          end
         end
 
         # Returns a s-expression representing an RSpec expectation, i.e. the
@@ -63,10 +61,6 @@ module MinitestToRspec
         def matcher(name, *args)
           exp = s(:call, nil, name)
           exp.concat(args)
-        end
-
-        def sexp_type?(type, exp)
-          exp.is_a?(Sexp) && exp.sexp_type == type.to_sym
         end
       end
     end

@@ -1,14 +1,14 @@
+require_relative "base"
+
 module MinitestToRspec
   module Exp
 
     # Data object.  Represents a `:call` s-expression.
-    class Call
+    class Call < Base
       attr_reader :original
 
       def initialize(exp)
-        unless exp.sexp_type == :call
-          raise ArgumentError, "Expected call, got #{exp.sexp_type}"
-        end
+        assert_sexp_type(:call, exp)
         @exp = exp.dup
         @original = exp.dup
       end

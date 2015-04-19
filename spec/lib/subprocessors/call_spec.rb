@@ -4,7 +4,7 @@ require "ruby_parser"
 module MinitestToRspec
   module Subprocessors
     RSpec.describe Call do
-      describe ".process" do
+      describe "#process" do
 
         # Returns an S-expression representing a method call.
         def exp(method_name, argument)
@@ -16,7 +16,7 @@ module MinitestToRspec
         end
 
         def process(input, rails = false)
-          described_class.process(input, rails)
+          described_class.new(input, rails).process
         end
 
         describe "rails option" do

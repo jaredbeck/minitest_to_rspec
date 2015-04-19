@@ -6,22 +6,21 @@ module MinitestToRspec
     RSpec.describe Iter do
       describe ".new" do
         context "not an :iter" do
-          it "raises ArgumentError" do
+          it "raises error" do
             expect {
               described_class.new(s(:nil))
-            }.to raise_error(ArgumentError)
+            }.to raise_error(TypeError)
           end
         end
       end
 
-      describe ".process" do
-
+      describe "#process" do
         def parse(ruby)
           RubyParser.new.parse(ruby)
         end
 
         def process(input)
-          described_class.process(input)
+          described_class.new(input).process
         end
 
         it "replaces assert_difference with expect to change" do
@@ -143,14 +142,6 @@ module MinitestToRspec
           ).to eq(
             parse('after { compost_the_banana_peels }')
           )
-        end
-
-        context "sexp_type is not :iter" do
-          it "raises ArgumentError" do
-            expect {
-              described_class.new(s(:str, "derp"))
-            }.to raise_error(ArgumentError)
-          end
         end
       end
     end

@@ -4,14 +4,14 @@ require "ruby_parser"
 module MinitestToRspec
   module Subprocessors
     RSpec.describe Class do
-      describe ".process" do
+      describe "#process" do
 
         def parse(str)
           RubyParser.new.parse(str)
         end
 
         def process(exp, rails = false)
-          described_class.process(exp, rails)
+          described_class.new(exp, rails).process
         end
 
         context "unexpected class expression" do

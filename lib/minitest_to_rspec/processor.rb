@@ -13,15 +13,15 @@ module MinitestToRspec
     end
 
     def process_call(exp)
-      Subprocessors::Call.process(exp, @rails)
+      Subprocessors::Call.new(exp, @rails).process
     end
 
     def process_class(exp)
-      Subprocessors::Class.process(exp, @rails)
+      Subprocessors::Class.new(exp, @rails).process
     end
 
     def process_iter(exp)
-      Subprocessors::Iter.process(exp)
+      Subprocessors::Iter.new(exp).process
     end
   end
 end

@@ -3,7 +3,7 @@ require "ruby_parser"
 
 module MinitestToRspec
   module Subprocessors
-    RSpec.describe Class do
+    RSpec.describe Klass do
       describe "#process" do
 
         def parse(str)

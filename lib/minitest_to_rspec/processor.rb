@@ -1,7 +1,7 @@
 require "ruby_parser"
 require "sexp_processor"
 require_relative "subprocessors/call"
-require_relative "subprocessors/class"
+require_relative "subprocessors/klass"
 require_relative "subprocessors/iter"
 
 module MinitestToRspec
@@ -17,7 +17,7 @@ module MinitestToRspec
     end
 
     def process_class(exp)
-      Subprocessors::Class.new(exp, @rails).process
+      Subprocessors::Klass.new(exp, @rails).process
     end
 
     def process_iter(exp)

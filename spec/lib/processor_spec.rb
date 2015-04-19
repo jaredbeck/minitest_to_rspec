@@ -16,7 +16,7 @@ module MinitestToRspec
     end
 
     describe "#process_class" do
-      let(:delegate) { Subprocessors::Class }
+      let(:delegate) { Subprocessors::Klass }
 
       it "delegates" do
         input = s(:class, :Banana)

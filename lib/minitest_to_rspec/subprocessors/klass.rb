@@ -3,7 +3,7 @@ require_relative "base"
 
 module MinitestToRspec
   module Subprocessors
-    class Class < Base
+    class Klass < Base
 
       # Takes `sexp`, a `:class` s-expression, and `rails`, a
       # boolean indicating that `rspec-rails` conventions (like

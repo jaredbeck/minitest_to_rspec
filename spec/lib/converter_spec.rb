@@ -35,6 +35,10 @@ module MinitestToRspec
     end
 
     describe "#convert" do
+
+      # To run just one of the following programmatically
+      # generated examples, use RSpec's `--example` flag, e.g.
+      # `rspec --example "17" spec/lib/converter_spec.rb`
       FIXTURE_DIRS.each do |fixture|
         it "converts: #{fixture}" do
           expected = read_output(fixture).strip

@@ -4,8 +4,13 @@ Change Log
 This project follows [semver 2.0.0][1] and the recommendations
 of [keepachangelog.com][2].
 
-0.3.1 (Unreleased)
+0.4.0 (Unreleased)
 ------------------
+
+### Added
+- Experimental
+  - Conversion of mocha to rspec-mocks
+    - expects
 
 ### Fixed
 - NoMethodError when input contains stabby lambda

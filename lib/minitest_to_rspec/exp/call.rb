@@ -74,6 +74,10 @@ module MinitestToRspec
         @exp[2]
       end
 
+      def num_arguments
+        arguments.length
+      end
+
       def one_string_argument?
         arguments.length == 1 && string?(arguments[0])
       end

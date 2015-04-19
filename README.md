@@ -82,11 +82,12 @@ Supported Mocha
 
 Mocha                 | Arity | Block | Notes
 --------------------- | ----- | ----- | -------
+[expects][21]         | 1     | n/a   |
 [stub][19]            | 0,1,2 | no    |
 [stub_everything][18] | 0,1,2 | no    | Uses `as_null_object`, not the same.
 [stubs][20]           | 1     | n/a   |
 
-Notably not yet supported: `expects`, `any_instance`
+Notably not yet supported: `any_instance`
 
 [1]: https://travis-ci.org/jaredbeck/minitest_to_rspec.svg
 [2]: https://travis-ci.org/jaredbeck/minitest_to_rspec
@@ -108,3 +109,4 @@ Notably not yet supported: `expects`, `any_instance`
 [18]: http://www.rubydoc.info/github/floehopper/mocha/Mocha/API:stub_everything
 [19]: http://www.rubydoc.info/github/floehopper/mocha/Mocha/API#stub-instance_method
 [20]: http://www.rubydoc.info/github/floehopper/mocha/Mocha/ObjectMethods#stubs-instance_method
+[21]: http://www.rubydoc.info/github/floehopper/mocha/Mocha/ObjectMethods:expects

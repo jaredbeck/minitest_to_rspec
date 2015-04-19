@@ -172,6 +172,55 @@ module MinitestToRspec
             end
           end
         end
+
+        context "expects" do
+          it "converts single expects to receive" do
+            expect(
+              process(parse("Banana.expects(:delicious?).returns(true)"))
+            ).to eq(
+              parse("expect(Banana).to receive(:delicious?).and_return(true)")
+            )
+          end
+
+          it "converts hash-expects to many receives" do
+            expect(process(parse(
+              'Banana.expects(edible: true, color: "yellow")'
+            ))).to eq(parse(
+              <<-EOS
+                lambda {
+                  "Sorry for the pointless lambda here."
+                  expect(Banana).to(receive(:edible).and_return(true))
+                  expect(Banana).to(receive(:color).and_return("yellow"))
+                }.call
+              EOS
+            ))
+          end
+
+          it "converts expects without return" do
+            expect(
+              process(parse("Banana.expects(:delicious?)"))
+            ).to eq(
+              parse("expect(Banana).to receive(:delicious?).and_call_original")
+            )
+          end
+
+          context "variants which should not be converted" do
+            it "does not replace non-mocha returns" do
+              input = -> { parse("tax.returns") }
+              expect(process(input.call)).to eq(input.call)
+            end
+
+            it "does not replace expects with arity > 1" do
+              input = -> { parse("tax.expects(:arm, :leg)") }
+              expect(process(input.call)).to eq(input.call)
+            end
+
+            it "does not replace expects with unknown argument type" do
+              input = -> { parse("foo.expects(a_call_exp)") }
+              expect(process(input.call)).to eq(input.call)
+            end
+          end
+        end
       end
     end
   end

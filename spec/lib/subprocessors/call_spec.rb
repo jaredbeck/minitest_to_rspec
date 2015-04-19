@@ -19,6 +19,11 @@ module MinitestToRspec
           described_class.new(input, rails).process
         end
 
+        it "does not replace unknown requires" do
+          input = -> { parse("require 'a_shrubbery'") }
+          expect(process(input.call)).to eq(input.call)
+        end
+
         describe "rails option" do
           context "option is false" do
             it "replaces test_helper with spec_helper" do

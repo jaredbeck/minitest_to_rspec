@@ -4,15 +4,24 @@ Change Log
 This project follows [semver 2.0.0][1] and the recommendations
 of [keepachangelog.com][2].
 
-0.3.0 (Unreleased)
-------------------
+0.3.0
+-----
 
 ### Added
-- Converts `setup` and `teardown` to `before` and `after`
+- Converts
+  - `setup` and `teardown` to `before` and `after`
+  - `assert_raise`, `assert_raises`
 - CLI option: `--rails`
   - Prints `rails_helper` instead of `spec_helper`
   - Adds `:type` metadata, eg. `:type => :controller`
-- Experimental, limited conversion of mocha to rspec-mocks
+    - So far, only supports `:model` and `:controller`
+- Experimental
+  - Limited conversion of mocha to rspec-mocks
+    - returns
+    - stub
+    - stub_everything
+    - stubs
+  - Ruby 1.9 hash syntax (See [ruby2ruby PR 37][3])
 
 ### Fixed
 - Improved error message for class definition using module shorthand
@@ -36,3 +45,4 @@ Initial release.  11 assertions are supported.
 
 [1]: http://semver.org/spec/v2.0.0.html
 [2]: http://keepachangelog.com/
+[3]: https://github.com/seattlerb/ruby2ruby/pull/37

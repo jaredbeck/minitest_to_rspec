@@ -4,6 +4,12 @@ Change Log
 This project follows [semver 2.0.0][1] and the recommendations
 of [keepachangelog.com][2].
 
+0.3.1 (Unreleased)
+------------------
+
+### Fixed
+- NoMethodError when input contains stabby lambda
+
 0.3.0
 -----
 

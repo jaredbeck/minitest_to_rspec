@@ -46,14 +46,19 @@ module MinitestToRspec
         )
       end
 
-      # Run `exp` through a new `Processor`.  This is useful for expressions
-      # that cannot be fully understood by a single subprocessor.  For
-      # example, we process :iter expressions, because we're interested in
-      # :iter that contain e.g. an `assert_difference`.  However, if the :iter
-      # turns out to be uninteresting, we still want to fully process its
-      # sub-expressions. TODO: `full_process` may not be the best name.
-      def full_process(exp)
-        Processor.new(false).process(exp)
+      # If it's a `Sexp`, run `obj` through a new `Processor`.  Otherwise,
+      # return `obj`.
+      #
+      # This is useful for expressions that cannot be fully understood by a
+      # single subprocessor.  For example, we must begin processing all :iter
+      # expressions, because some :iter represent calls we're interested in,
+      # e.g. `assert_difference`.  However, if the :iter turns out to be
+      # uninteresting (perhaps it has no assertions) we still want to fully
+      # process its sub-expressions.
+      #
+      # TODO: `full_process` may not be the best name.
+      def full_process(obj)
+        obj.is_a?(Sexp) ? Processor.new(false).process(obj) : obj
       end
 
       def matcher(name, *args)

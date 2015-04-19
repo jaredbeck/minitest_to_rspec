@@ -1,4 +1,5 @@
 require_relative "../errors"
+require_relative "../exp/klass"
 require_relative "base"
 
 module MinitestToRspec
@@ -9,26 +10,19 @@ module MinitestToRspec
       # boolean indicating that `rspec-rails` conventions (like
       # `:type` metadata) should be used.
       def initialize(sexp, rails)
-        raise ArgumentError unless sexp.shift == :class
+        @exp = Exp::Klass.new(sexp)
+        sexp.clear
         @rails = rails
-        @sexp = sexp
       end
 
       def process
-        name = @sexp.shift
-        parent = @sexp.shift
-        assert_valid_name(name)
-        block = shift_into_block(@sexp)
-        build(name, parent, block)
-      end
-
-      private
-
-      def build(name, parent, block)
-        result = build_root(name, parent)
+        result = build_root(@exp.name, @exp.parent)
+        block = build_block(@exp.block)
         result.push(block) if block.length > 1
         result
       end
+
+      private
 
       def action_controller_test_case?(exp)
         lineage?(exp, [:ActionController, :TestCase])
@@ -42,16 +36,6 @@ module MinitestToRspec
         assert_sexp_type(:colon2, exp)
         ancestor = exp[index + 1]
         sexp_type?(:const, ancestor) ? ancestor[1] : ancestor
-      end
-
-      def assert_valid_name(name)
-        if name.is_a?(Symbol)
-          # noop. all is well
-        elsif name.respond_to?(:sexp_type) && name.sexp_type == :colon2
-          raise ModuleShorthandError
-        else
-          raise ProcessingError, "Unexpected class expression: #{name}"
-        end
       end
 
       # Returns the root of the result: either an :iter representing
@@ -122,12 +106,10 @@ module MinitestToRspec
         end
       end
 
-      def shift_into_block(exp)
-        block = s(:block)
-        until exp.empty?
-          block << full_process(exp.shift)
-        end
-        block
+      # "Fully" process `lines`, a collection of Sexp representing
+      # the contents of the class.
+      def build_block(lines)
+        s(:block) + lines.map { |line| full_process(line) }
       end
 
       # TODO: Obviously, there are other test case parent classes

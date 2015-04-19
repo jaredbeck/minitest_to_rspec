@@ -12,7 +12,7 @@ module MinitestToRspec
       end
 
       def process
-        process_exp(@exp, @rails)
+        process_exp(@exp)
       end
 
       private
@@ -80,6 +80,14 @@ module MinitestToRspec
         end
       end
 
+      def method_require(exp)
+        if exp.require_test_helper?
+          require_spec_helper
+        else
+          exp.original
+        end
+      end
+
       # Happily, the no-block signatures of [stub][3] are the
       # same as [double][2].
       #
@@ -123,10 +131,8 @@ module MinitestToRspec
       end
 
       # Given a `Exp::Call`, returns a `Sexp`
-      def process_exp(exp, rails)
-        if exp.require_test_helper?
-          require_spec_helper(rails)
-        elsif processable?(exp)
+      def process_exp(exp)
+        if processable?(exp)
           send_to_processing_method(exp)
         else
           exp.original
@@ -141,8 +147,8 @@ module MinitestToRspec
         s(:call, receive(message), :and_return, *return_values)
       end
 
-      def require_spec_helper(rails)
-        prefix = rails ? "rails" : "spec"
+      def require_spec_helper
+        prefix = @rails ? "rails" : "spec"
         s(:call, nil, :require, s(:str, "#{prefix}_helper"))
       end
 

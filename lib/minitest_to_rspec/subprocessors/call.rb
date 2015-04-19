@@ -11,8 +11,13 @@ module MinitestToRspec
         @rails = rails
       end
 
+      # Given a `Exp::Call`, returns a `Sexp`
       def process
-        process_exp(@exp)
+        if respond_to?(name_of_processing_method, true)
+          send(name_of_processing_method)
+        else
+          @exp.original
+        end
       end
 
       private
@@ -41,50 +46,50 @@ module MinitestToRspec
         matcher(:match, pattern)
       end
 
-      def method_assert(exp)
-        expect_to(be_truthy, exp.arguments[0], true)
+      def method_assert
+        expect_to(be_truthy, @exp.arguments[0], true)
       end
 
-      def method_assert_equal(exp)
-        expected = exp.arguments[0]
-        calculated = exp.arguments[1]
+      def method_assert_equal
+        expected = @exp.arguments[0]
+        calculated = @exp.arguments[1]
         expect_to(eq(expected), calculated, true)
       end
 
-      def method_assert_match(exp)
-        pattern = exp.arguments[0]
-        string = exp.arguments[1]
+      def method_assert_match
+        pattern = @exp.arguments[0]
+        string = @exp.arguments[1]
         expect_to(match(pattern), string, true)
       end
 
-      def method_assert_nil(exp)
-        expect_to(be_nil, exp.arguments[0], true)
+      def method_assert_nil
+        expect_to(be_nil, @exp.arguments[0], true)
       end
 
-      def method_refute(exp)
-        expect_to(be_falsey, exp.arguments[0], true)
+      def method_refute
+        expect_to(be_falsey, @exp.arguments[0], true)
       end
 
-      def method_refute_equal(exp)
-        unexpected = exp.arguments[0]
-        calculated = exp.arguments[1]
+      def method_refute_equal
+        unexpected = @exp.arguments[0]
+        calculated = @exp.arguments[1]
         expect_to_not(eq(unexpected), calculated, true)
       end
 
-      def method_returns(exp)
-        r = Exp::Calls::Returns.new(exp.original)
+      def method_returns
+        r = Exp::Calls::Returns.new(@exp.original)
         if r.known_variant?
           allow_receive_and_return(r.msg_recipient, r.message, r.values)
         else
-          exp.original
+          @exp.original
         end
       end
 
-      def method_require(exp)
-        if exp.require_test_helper?
+      def method_require
+        if @exp.require_test_helper?
           require_spec_helper
         else
-          exp.original
+          @exp.original
         end
       end
 
@@ -95,11 +100,11 @@ module MinitestToRspec
       # - (stubs)
       # - (name, stubs)
 
-      def method_stub(exp)
-        if exp.receiver.nil?
-          s(:call, nil, :double, *exp.arguments)
+      def method_stub
+        if @exp.receiver.nil?
+          s(:call, nil, :double, *@exp.arguments)
         else
-          exp.original
+          @exp.original
         end
       end
 
@@ -109,34 +114,21 @@ module MinitestToRspec
       # RSpec doesn't provide an equivalent to `stub_everything`,
       # AFAIK.
 
-      def method_stub_everything(exp)
-        if exp.receiver.nil?
-          d = s(:call, nil, :double, *exp.arguments)
+      def method_stub_everything
+        if @exp.receiver.nil?
+          d = s(:call, nil, :double, *@exp.arguments)
           s(:call, d, :as_null_object, )
         else
-          exp.original
+          @exp.original
         end
       end
 
-      def method_test(exp)
-        s(:call, nil, :it, *exp.arguments)
+      def method_test
+        s(:call, nil, :it, *@exp.arguments)
       end
 
-      def name_of_processing_method(exp)
-        "method_#{exp.method_name}".to_sym
-      end
-
-      def processable?(exp)
-        respond_to?(name_of_processing_method(exp), true)
-      end
-
-      # Given a `Exp::Call`, returns a `Sexp`
-      def process_exp(exp)
-        if processable?(exp)
-          send_to_processing_method(exp)
-        else
-          exp.original
-        end
+      def name_of_processing_method
+        "method_#{@exp.method_name}".to_sym
       end
 
       def receive(message)
@@ -150,10 +142,6 @@ module MinitestToRspec
       def require_spec_helper
         prefix = @rails ? "rails" : "spec"
         s(:call, nil, :require, s(:str, "#{prefix}_helper"))
-      end
-
-      def send_to_processing_method(exp)
-        send(name_of_processing_method(exp), exp)
       end
     end
   end

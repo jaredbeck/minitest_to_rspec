@@ -77,6 +77,8 @@ assert_nil                  |       |
 refute                      |       |
 refute_equal                |       |
 
+Notably not yet supported: `assert_not_equal`
+
 Supported Mocha
 ---------------
 

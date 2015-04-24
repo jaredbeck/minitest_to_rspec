@@ -182,6 +182,14 @@ module MinitestToRspec
             )
           end
 
+          it "converts single expects with call receiver, to receive" do
+            expect(
+              process(parse("a_b.expects(:c?).returns(:d)"))
+            ).to eq(
+              parse("expect(a_b).to receive(:c?).and_return(:d)")
+            )
+          end
+
           it "converts hash-expects to many receives" do
             expect(process(parse(
               'Banana.expects(edible: true, color: "yellow")'

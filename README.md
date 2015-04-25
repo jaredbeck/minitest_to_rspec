@@ -85,12 +85,13 @@ Supported Mocha
 
 Mocha                 | Arity | Block | Notes
 --------------------- | ----- | ----- | -------
+[any_instance][29]    | 0     | n/a   |
 [expects][21]         | 1     | n/a   |
 [stub][19]            | 0,1,2 | no    |
 [stub_everything][18] | 0,1,2 | no    | Uses `as_null_object`, not the same.
 [stubs][20]           | 1     | n/a   |
 
-Notably not yet supported: `any_instance`
+Notably not supported yet: [at_least, once, never, raises, etc.][30]
 
 Acknowledgements
 ----------------
@@ -126,3 +127,5 @@ by [Ryan Davis][17].
 [26]: http://test-unit.github.io/
 [27]: https://rubygems.org/gems/activesupport
 [28]: http://gofreerange.com/mocha/docs/
+[29]: http://www.rubydoc.info/github/floehopper/mocha/Mocha/ClassMethods#any_instance-instance_method
+[30]: http://www.rubydoc.info/github/floehopper/mocha/Mocha/Expectation

@@ -9,9 +9,20 @@ module MinitestToRspec
       # from `mocha`.
       class Returns < Call
         KNOWN_RECEIVERS = %i[stubs expects]
+        RSPEC_MOCK_METHODS = { expects: :expect, stubs: :allow }
 
         def initialize(exp)
           @exp = exp
+          raise UnknownVariant unless known_variant?
+        end
+
+        def any_instance?
+          rcr = receiver_call.receiver
+          if !rcr.nil? && sexp_type?(:call, rcr)
+            Call.new(rcr).method_name == :any_instance
+          else
+            false
+          end
         end
 
         # The message recipient
@@ -35,14 +46,19 @@ module MinitestToRspec
         # To avoid a `ProcessingError` please check `known_variant?`
         # before calling `rspec_mocks_method`.
         def rspec_mocks_method
-          case receiver_call.method_name
-          when :expects
-            :expect
-          when :stubs
-            :allow
-          else
-            raise ProcessingError, "Unknown variant of returns"
-          end
+          RSPEC_MOCK_METHODS[receiver_call.method_name]
+        end
+
+        # Returns `Sexp` representing the object that will receive
+        # the stubbed message.  Examples:
+        #
+        #     banana.stubs(:delicious?).returns(true)
+        #     Kiwi.any_instance.stubs(:delicious?).returns(false)
+        #
+        # The `rspec_msg_recipient` is `banana` and `Kiwi`, respectively.
+        #
+        def rspec_msg_recipient
+          any_instance? ? Call.new(msg_recipient).receiver : msg_recipient
         end
 
         # The return values

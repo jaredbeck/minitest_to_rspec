@@ -1,3 +1,5 @@
+require "spec_helper"
+
 module MinitestToRspec
   module Exp
     RSpec.describe Call do

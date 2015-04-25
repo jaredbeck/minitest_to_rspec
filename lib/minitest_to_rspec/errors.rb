@@ -1,6 +1,15 @@
 module MinitestToRspec
   class Error < StandardError; end
   class ProcessingError < Error; end
+
+  # Raise `UnknownVariant` to indicate that an expression is
+  # not recognized.  This exception should always be rescued,
+  # and the original expression should be used in the output.
+  class UnknownVariant < Error; end
+
+  # Raise `NotImplemented` to indicate that an expression is
+  # recognized (not an `UnknownVariant`) but that `minitest_to_rspec`
+  # does not (yet) implement a conversion.
   class NotImplemented < Error; end
 
   class ModuleShorthandError < NotImplemented

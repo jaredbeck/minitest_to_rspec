@@ -11,6 +11,7 @@ of [keepachangelog.com][2].
 - Experimental
   - Conversion of mocha to rspec-mocks
     - expects
+    - any_instance
 
 ### Fixed
 - NoMethodError when input contains stabby lambda

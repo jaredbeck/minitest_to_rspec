@@ -23,8 +23,12 @@ module MinitestToRspec
 
       private
 
-      def allow_receive_and_return(msg_recipient, msg, return_values)
-        allow_to(msg_recipient, receive_and_return(msg, return_values))
+      # - msg_rcp.  Message recipient.  The object to be stubbed.
+      # - msg.  Message.  The name of the stubbed method.
+      # - ret_vals.  Return values.
+      # - any_ins.  Any instance?  True if this is an `any_instance` stub.
+      def allow_receive_and_return(msg_rcp, msg, ret_vals, any_ins = false)
+        allow_to(msg_rcp, receive_and_return(msg, ret_vals), any_ins)
       end
 
       def be_falsey
@@ -43,8 +47,12 @@ module MinitestToRspec
         matcher(:eq, exp)
       end
 
-      def expect_receive_and_return(msg_recipient, msg, return_values)
-        expect_to(receive_and_return(msg, return_values), msg_recipient, true)
+      # - msg_rcp.  Message recipient.  The object to be stubbed.
+      # - msg.  Message.  The name of the stubbed method.
+      # - ret_vals.  Return values.
+      # - any_ins.  Any instance?  True if this is an `any_instance` stub.
+      def expect_receive_and_return(msg_rcp, msg, ret_vals, any_ins = false)
+        expect_to(receive_and_return(msg, ret_vals), msg_rcp, true, any_ins)
       end
 
       # Given a `Sexp` representing a `Hash` of message expectations,
@@ -107,13 +115,9 @@ module MinitestToRspec
       end
 
       def method_returns
-        r = Exp::Calls::Returns.new(@exp.original)
-        if r.known_variant?
-          m = "#{r.rspec_mocks_method}_receive_and_return"
-          send(m, r.msg_recipient, r.message, r.values)
-        else
-          @exp.original
-        end
+        mocha_returns(Exp::Calls::Returns.new(@exp.original))
+      rescue UnknownVariant
+        @exp.original
       end
 
       def method_require
@@ -177,6 +181,18 @@ module MinitestToRspec
       def mocha_expects_lit(lit_sexp)
         assert_sexp_type(:lit, lit_sexp)
         expect_to(receive_and_call_original(lit_sexp), @exp.receiver, true)
+      end
+
+      # Given `r`, a `Exp::Calls::Returns`, return a `Sexp` representing
+      # the equivalent stub or message expectation in RSpec.
+      def mocha_returns(r)
+        subprocessor_method = "#{r.rspec_mocks_method}_receive_and_return"
+        send(subprocessor_method,
+          r.rspec_msg_recipient,
+          r.message,
+          r.values,
+          r.any_instance?
+        )
       end
 
       def name_of_processing_method

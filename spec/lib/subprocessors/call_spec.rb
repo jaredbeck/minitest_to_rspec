@@ -141,18 +141,36 @@ module MinitestToRspec
           expect(process(input.call)).to eq(input.call)
         end
 
-        it "replaces stubs/returns with expect to receive" do
-          expect(
-            process(parse("Banana.stubs(:delicious?).returns(true)"))
-          ).to eq(
-            parse("allow(Banana).to receive(:delicious?).and_return(true)")
-          )
-        end
+        context "returns" do
+          it "replaces stubs/returns with expect to receive" do
+            expect(
+              process(parse("Banana.stubs(:delicious?).returns(true)"))
+            ).to eq(
+              parse("allow(Banana).to receive(:delicious?).and_return(true)")
+            )
+          end
 
-        it "does not replace every method named 'returns'" do
-          # In this example, `returns` does not represent a mocha stub.
-          input = -> { parse("Banana.returns(peel)") }
-          expect(process(input.call)).to eq(input.call)
+          it "converts any_instance.expects" do
+            expect(
+              process(parse("Banana.any_instance.stubs(:delicious?).returns(true)"))
+            ).to eq(
+              parse("allow_any_instance_of(Banana).to receive(:delicious?).and_return(true)")
+            )
+          end
+
+          it "converts any_instance.stubs" do
+            expect(
+              process(parse("Banana.any_instance.expects(:delicious?).returns(true)"))
+            ).to eq(
+              parse("expect_any_instance_of(Banana).to receive(:delicious?).and_return(true)")
+            )
+          end
+
+          it "does not replace every method named 'returns'" do
+            # In this example, `returns` does not represent a mocha stub.
+            input = -> { parse("Banana.returns(peel)") }
+            expect(process(input.call)).to eq(input.call)
+          end
         end
 
         context "stub" do

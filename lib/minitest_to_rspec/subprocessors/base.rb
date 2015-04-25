@@ -6,36 +6,42 @@ module MinitestToRspec
       include SexpAssertions
 
       # Returns a s-expression representing an rspec-mocks stub.
-      def allow_to(msg_recipient, matcher)
-        target = s(:call, nil, :allow, msg_recipient)
+      def allow_to(msg_recipient, matcher, any_instance = false)
+        allow_method = any_instance ? :allow_any_instance_of : :allow
+        target = s(:call, nil, allow_method, msg_recipient)
         s(:call, target, :to, matcher)
       end
 
       # Returns a s-expression representing an RSpec expectation, i.e. the
       # combination of an "expectation target" and a matcher.
-      def expect(target, eager, phase, matcher)
-        s(:call, expectation_target(target, eager), phase, matcher)
+      def expect(target, eager, phase, matcher, any_instance)
+        et = expectation_target(target, eager, any_instance)
+        s(:call, et, phase, matcher)
       end
 
-      def expect_to(matcher, target, eager)
-        expect(target, eager, :to, matcher)
+      def expect_to(matcher, target, eager, any_instance = false)
+        expect(target, eager, :to, matcher, any_instance)
       end
 
       def expect_to_not(matcher, target, eager)
-        expect(target, eager, :to_not, matcher)
+        expect(target, eager, :to_not, matcher, false)
       end
 
       # In RSpec, `expect` returns an "expectation target".  This
       # can be based on an expression, as in `expect(1 + 1)` or it
       # can be based on a block, as in `expect { raise }`.  Either
       # way, it's called an "expectation target".
-      def expectation_target(exp, eager = true)
-        m = "expectation_target_%s" % [eager ? "eager" : "lazy"]
-        send(m, exp)
+      def expectation_target(exp, eager, any_instance)
+        if eager
+          expectation_target_eager(exp, any_instance)
+        else
+          expectation_target_lazy(exp)
+        end
       end
 
-      def expectation_target_eager(exp)
-        s(:call, nil, :expect, exp)
+      def expectation_target_eager(exp, any_instance)
+        expect_method = any_instance ? :expect_any_instance_of : :expect
+        s(:call, nil, expect_method, exp)
       end
 
       def expectation_target_lazy(block)

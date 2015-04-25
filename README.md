@@ -67,7 +67,8 @@ Assertion                   | Arity | Source
 --------------------------- | ----- | ------
 assert                      |       |
 assert_difference           | 1,2   |
-assert_equal                |       |
+[assert_equal][23]          | 2,3   | Test::Unit
+[assert_not_equal][22]      | 2,3   | Test::Unit
 assert_match                |       |
 assert_nil                  |       |
 [assert_no_difference][12]  |       | ActiveSupport
@@ -76,8 +77,6 @@ assert_nil                  |       |
 [assert_raises][13]         | 0..2  | Minitest
 refute                      |       |
 refute_equal                |       |
-
-Notably not yet supported: `assert_not_equal`
 
 Supported Mocha
 ---------------
@@ -112,3 +111,5 @@ Notably not yet supported: `any_instance`
 [19]: http://www.rubydoc.info/github/floehopper/mocha/Mocha/API#stub-instance_method
 [20]: http://www.rubydoc.info/github/floehopper/mocha/Mocha/ObjectMethods#stubs-instance_method
 [21]: http://www.rubydoc.info/github/floehopper/mocha/Mocha/ObjectMethods:expects
+[22]: http://www.rubydoc.info/gems/test-unit/3.0.9/Test/Unit/Assertions#assert_not_equal-instance_method
+[23]: http://www.rubydoc.info/gems/test-unit/3.0.9/Test/Unit/Assertions#assert_equal-instance_method

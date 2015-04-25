@@ -62,12 +62,40 @@ module MinitestToRspec
           )
         end
 
-        it "replaces assert_equal with expect to eq" do
-          expect(
-            process(parse("assert_equal false, Kiwi.new.delicious?"))
-          ).to eq(
-            parse("expect(Kiwi.new.delicious?).to eq(false)")
-          )
+        context "assert_equal" do
+          it "replaces assert_equal (two args) with expect to eq" do
+            expect(
+              process(parse("assert_equal false, Kiwi.new.delicious?"))
+            ).to eq(
+              parse("expect(Kiwi.new.delicious?).to eq(false)")
+            )
+          end
+
+          it "replaces assert_equal (three args) with expect to eq" do
+            expect(
+              process(parse("assert_equal false, Kiwi.new.delicious?, 'asdf'"))
+            ).to eq(
+              parse("expect(Kiwi.new.delicious?).to eq(false)")
+            )
+          end
+        end
+
+        context "assert_not_equal" do
+          it "replaces assert_not_equal (two args) with expect to_not eq" do
+            expect(
+              process(parse("assert_not_equal(:banana, :kiwi)"))
+            ).to eq(
+              parse("expect(:kiwi).to_not eq(:banana)")
+            )
+          end
+
+          it "replaces assert_not_equal (three args) with expect to_not eq" do
+            expect(
+              process(parse("assert_not_equal(:banana, :kiwi, 'asdf')"))
+            ).to eq(
+              parse("expect(:kiwi).to_not eq(:banana)")
+            )
+          end
         end
 
         it "replaces refute_equal with expect to_not eq" do

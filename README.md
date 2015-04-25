@@ -4,8 +4,9 @@ Converts [minitest][8] files to [rspec][9].
 
 [![Build Status][1]][2] [![Code Climate][3]][4] [![Test Coverage][7]][4]
 
-Uses [ruby_parser][14], [sexp_processor][15], and [ruby2ruby][16],
-in that order.  Thank you, [Ryan Davis][17]!
+Selected assertions from [Test::Unit][26], [minitest][8], and
+[ActiveSupport][27] are converted to [rspec-expectations][25].
+Selected methods from [mocha][28] are converted to [rspec-mocks][24].
 
 Example
 -------
@@ -14,11 +15,12 @@ Input:
 
 ```ruby
 require 'test_helper'
-
-# This comment will be discarded!
-class BananaTest < ActiveSupport::TestCase
-  test "is delicious" do
-    assert Banana.new.delicious?
+class ArrayTest < ActiveSupport::TestCase
+  test "changes length" do
+    ary = []
+    assert_difference "ary.length" do
+      ary.push(:x)
+    end
   end
 end
 ```
@@ -27,16 +29,16 @@ Output:
 
 ```ruby
 require("spec_helper")
-RSpec.describe(Banana) do
-  it("is delicious") { expect(Banana.new.delicious?).to(be_truthy) }
+RSpec.describe(Array) do
+  it("changes length") do
+    ary = []
+    expect { ary.push(:x) }.to(change { ary.length })
+  end
 end
 ```
 
-[RubyParser][14] discards all comments.
-
 The code style is whatever [ruby2ruby][6] feels like printing,
-and is not configurable.  The goal is not style, but to get to
-rspec quickly.
+and is not configurable.  Comments are discarded.
 
 Usage
 -----
@@ -45,7 +47,7 @@ Usage
 
 ```bash
 gem install minitest_to_rspec
-minitest_to_rspec --rails source_file target_file
+bundle exec minitest_to_rspec --rails source_file target_file
 ```
 
 ### Ruby
@@ -90,6 +92,12 @@ Mocha                 | Arity | Block | Notes
 
 Notably not yet supported: `any_instance`
 
+Acknowledgements
+----------------
+
+Uses [ruby_parser][14], [sexp_processor][15], and [ruby2ruby][16]
+by [Ryan Davis][17].
+
 [1]: https://travis-ci.org/jaredbeck/minitest_to_rspec.svg
 [2]: https://travis-ci.org/jaredbeck/minitest_to_rspec
 [3]: https://codeclimate.com/github/jaredbeck/minitest_to_rspec/badges/gpa.svg
@@ -113,3 +121,8 @@ Notably not yet supported: `any_instance`
 [21]: http://www.rubydoc.info/github/floehopper/mocha/Mocha/ObjectMethods:expects
 [22]: http://www.rubydoc.info/gems/test-unit/3.0.9/Test/Unit/Assertions#assert_not_equal-instance_method
 [23]: http://www.rubydoc.info/gems/test-unit/3.0.9/Test/Unit/Assertions#assert_equal-instance_method
+[24]: https://github.com/rspec/rspec-mocks
+[25]: https://github.com/rspec/rspec-expectations
+[26]: http://test-unit.github.io/
+[27]: https://rubygems.org/gems/activesupport
+[28]: http://gofreerange.com/mocha/docs/

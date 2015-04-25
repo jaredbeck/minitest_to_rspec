@@ -4,8 +4,8 @@ Change Log
 This project follows [semver 2.0.0][1] and the recommendations
 of [keepachangelog.com][2].
 
-0.4.0 (Unreleased)
-------------------
+0.4.0
+-----
 
 ### Added
 - Experimental

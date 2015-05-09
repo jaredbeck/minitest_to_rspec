@@ -4,6 +4,12 @@ Change Log
 This project follows [semver 2.0.0][1] and the recommendations
 of [keepachangelog.com][2].
 
+0.5.0 (Unreleased)
+------------------
+
+### Changed
+- Renamed executable from `minitest_to_rspec` to `mt2rspec`
+
 0.4.0
 -----
 

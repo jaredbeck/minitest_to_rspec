@@ -4,9 +4,9 @@ Converts [minitest][8] files to [rspec][9].
 
 [![Build Status][1]][2] [![Code Climate][3]][4] [![Test Coverage][7]][4]
 
-Selected assertions from [Test::Unit][26], [minitest][8], and
-[ActiveSupport][27] are converted to [rspec-expectations][25].
-Selected methods from [mocha][28] are converted to [rspec-mocks][24].
+- Selected assertions from [Test::Unit][26], [minitest][8],
+  and [ActiveSupport][27] are converted to [rspec-expectations][25].
+- Selected methods from [mocha][28] are converted to [rspec-mocks][24].
 
 Example
 -------
@@ -46,8 +46,8 @@ Usage
 ### CLI
 
 ```bash
-gem install minitest_to_rspec
-bundle exec minitest_to_rspec --rails source_file target_file
+gem install mt2rspec
+bundle exec mt2rspec --rails source_file target_file
 ```
 
 ### Ruby

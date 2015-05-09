@@ -9,6 +9,16 @@ module MinitestToRspec
     E_FILE_ALREADY_EXISTS = 3
     E_CONVERT_FAIL = 4
 
+    USAGE = <<EOS
+Usage: mt2rspec --rails source_file target_file
+
+Reads source_file, writes target_file.
+
+--rails    Require rails_helper instead of spec_helper.
+           Pass :type metadatum to RSpec.describe.
+
+EOS
+
     def initialize(args)
       check_usage(args)
       @target = args.pop
@@ -66,7 +76,7 @@ module MinitestToRspec
     end
 
     def print_usage
-      $stderr.puts "Usage: minitest_to_rspec --rails source_file target_file"
+      $stderr.puts USAGE
     end
 
     def read_source

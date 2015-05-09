@@ -8,7 +8,9 @@ of [keepachangelog.com][2].
 ------------------
 
 ### Changed
-- Renamed executable from `minitest_to_rspec` to `mt2rspec`
+- Executable
+  - Renamed from `minitest_to_rspec` to `mt2rspec`
+  - The `target_file` argument is now optional
 
 0.4.0
 -----

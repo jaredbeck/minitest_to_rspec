@@ -47,7 +47,8 @@ Usage
 
 ```bash
 gem install mt2rspec
-bundle exec mt2rspec --rails source_file target_file
+bundle exec mt2rspec [--rails] source_file [target_file]
+bundle exec mt2rspec --help
 ```
 
 ### Ruby

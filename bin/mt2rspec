@@ -1,30 +1,52 @@
 #!/usr/bin/env ruby
 
-require 'minitest_to_rspec'
+require "minitest_to_rspec"
+require "trollop"
+
+# https://github.com/ManageIQ/trollop/issues/57
+module Trollop
+  def self.educate_without_exiting
+    @last_parser.educate
+  end
+end
 
 module MinitestToRspec
   class CLI
-    E_USAGE = 1
-    E_FILE_NOT_FOUND = 2
-    E_FILE_ALREADY_EXISTS = 3
-    E_CONVERT_FAIL = 4
+    E_USAGE               = 1.freeze
+    E_FILE_NOT_FOUND      = 2.freeze
+    E_FILE_ALREADY_EXISTS = 3.freeze
+    E_CONVERT_FAIL        = 4.freeze
 
-    USAGE = <<EOS
+    BANNER = <<EOS.freeze
 Usage: mt2rspec --rails source_file target_file
 
 Reads source_file, writes target_file.
 
---rails    Require rails_helper instead of spec_helper.
-           Pass :type metadatum to RSpec.describe.
+Options:
+EOS
 
+    OPT_RAILS = <<EOS.gsub(/\n/, " ").freeze
+Requires rails_helper instead of spec_helper.
+Passes :type metadatum to RSpec.describe.
 EOS
 
     def initialize(args)
-      check_usage(args)
-      @target = args.pop
-      @source = args.pop
-      @rails = false
-      parse_options(args)
+      opts = Trollop::options(args) do
+        version MinitestToRspec::VERSION
+        banner BANNER
+        opt :rails, OPT_RAILS, short: :none
+      end
+
+      @rails = opts[:rails]
+      case args.length
+      when 2
+        @source, @target = args
+      when 1
+        @source = args[0]
+      else
+        Trollop.educate_without_exiting
+        exit(E_USAGE)
+      end
     end
 
     def run
@@ -52,27 +74,8 @@ EOS
       end
     end
 
-    def check_usage(args)
-      unless (2..3).cover?(args.length)
-        print_usage
-        exit(E_USAGE)
-      end
-    end
-
     def converter
       Converter.new(rails: @rails)
-    end
-
-    def parse_options(args)
-      raise ArgumentError unless args.length <= 1
-      args.each do |arg|
-        case arg
-        when "--rails"
-          @rails = true
-        else
-          raise ArgumentError, "Unexpected option: #{arg}"
-        end
-      end
     end
 
     def print_usage

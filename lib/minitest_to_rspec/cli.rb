@@ -4,7 +4,7 @@ require "trollop"
 # https://github.com/ManageIQ/trollop/issues/57
 module Trollop
   def self.educate_without_exiting
-    @last_parser.educate
+    @last_parser.educate($stderr)
   end
 end
 
@@ -85,10 +85,6 @@ EOS
       source.
         gsub(/\Atest/, "spec").
         gsub(/_test.rb\Z/, "_spec.rb")
-    end
-
-    def print_usage
-      $stderr.puts USAGE
     end
 
     def read_source

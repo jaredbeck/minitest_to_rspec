@@ -16,37 +16,16 @@ module MinitestToRspec
       end
 
       def process
-        result = build_root(@exp.name, @exp.parent)
-        block = build_block(@exp.block)
-        result.push(block) if block.length > 1
-        result
+        sexp = head
+        sexp << block if @exp.block?
+        sexp
       end
 
       private
 
-      def action_controller_test_case?(exp)
-        lineage?(exp, [:ActionController, :TestCase])
-      end
-
-      def active_support_test_case?(exp)
-        lineage?(exp, [:ActiveSupport, :TestCase])
-      end
-
-      def ancestor_name(exp, index)
-        assert_sexp_type(:colon2, exp)
-        ancestor = exp[index + 1]
-        sexp_type?(:const, ancestor) ? ancestor[1] : ancestor
-      end
-
-      # Returns the root of the result: either an :iter representing
-      # an `RSpec.describe` or, if it's not a test case, a :class.
-      def build_root(name, parent)
-        if parent && test_case?(parent)
-          md = rspec_describe_metadata(parent)
-          rspec_describe_block(name, md)
-        else
-          s(:class, name, parent)
-        end
+      # Returns a :block S-expression, the contents of the class.
+      def block
+        s(:block) + @exp.block.map { |line| full_process(line) }
       end
 
       # Given a `test_class_name` like `BananaTest`, returns the
@@ -55,34 +34,20 @@ module MinitestToRspec
         test_class_name.to_s.gsub(/Test\Z/, "").to_sym
       end
 
-      def lineage?(exp, names)
-        assert_sexp_type(:colon2, exp)
-        exp.length == names.length + 1 &&
-          names.each_with_index.all? { |name, ix|
-            name.to_sym == ancestor_name(exp, ix).to_sym
-          }
-      end
-
-      def rspec_describe(arg, metadata)
-        call = s(:call, s(:const, :RSpec), :describe, arg)
-        unless metadata.nil?
-          call << metadata
-        end
-        call
-      end
-
-      # Returns a S-expression representing a call to RSpec.describe
-      def rspec_describe_block(name, metadata)
-        const = s(:const, described_class(name))
-        s(:iter, rspec_describe(const, metadata), s(:args))
-      end
-
-      def rspec_describe_metadata(exp)
-        if @rails
-          s(:hash, s(:lit, :type), s(:lit, rdm_type(exp)))
+      # Returns the head of the output Sexp.  If it's a test case,
+      # an :iter representing an `RSpec.describe`.  Otherwise, a :class.
+      def head
+        if @exp.test_case?
+          rspec_describe_block
         else
-          nil
+          s(:class, @exp.name, @exp.parent)
         end
+      end
+
+      # Returns an S-expression representing the
+      # RDM (RSpec Describe Metadata) hash
+      def rdm
+        s(:hash, s(:lit, :type), s(:lit, rdm_type))
       end
 
       # Returns the RDM (RSpec Describe Metadata) type.
@@ -98,25 +63,24 @@ module MinitestToRspec
       # > http://bit.ly/1G5w7CJ
       #
       # TODO: Obviously, they're not all supported yet.
-      def rdm_type(exp)
-        if action_controller_test_case?(exp)
+      def rdm_type
+        if @exp.action_controller_test_case?
           :controller
         else
           :model
         end
       end
 
-      # "Fully" process `lines`, a collection of Sexp representing
-      # the contents of the class.
-      def build_block(lines)
-        s(:block) + lines.map { |line| full_process(line) }
+      def rspec_describe
+        const = s(:const, described_class(@exp.name))
+        call = s(:call, s(:const, :RSpec), :describe, const)
+        call << rdm if @rails
+        call
       end
 
-      # TODO: Obviously, there are other test case parent classes
-      # not supported yet.
-      def test_case?(exp)
-        assert_sexp_type(:colon2, exp)
-        active_support_test_case?(exp) || action_controller_test_case?(exp)
+      # Returns a S-expression representing a call to RSpec.describe
+      def rspec_describe_block
+        s(:iter, rspec_describe, s(:args))
       end
     end
   end

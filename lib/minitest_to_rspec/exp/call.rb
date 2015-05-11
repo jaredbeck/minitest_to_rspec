@@ -94,6 +94,23 @@ module MinitestToRspec
         @exp[1]
       end
 
+      # While `#receiver` returns a `Sexp`, `#receiver_call`
+      # returns a `Exp::Call`.
+      def receiver_call
+        if sexp_type?(:call, receiver)
+          rvc = Exp::Call.new(receiver)
+
+          # TODO: Seems like a factory pattern
+          if rvc.method_name == :returns
+            Exp::Calls::Returns.new(receiver)
+          else
+            rvc
+          end
+        else
+          raise TypeError
+        end
+      end
+
       def require_test_helper?
         method_name == :require &&
           one_string_argument? &&

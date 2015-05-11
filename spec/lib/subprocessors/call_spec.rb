@@ -162,6 +162,16 @@ module MinitestToRspec
         end
       end
 
+      context "once" do
+        it "replaces once with expect to receive once" do
+          expect(
+            process(parse("a.expects(:b).once"))
+          ).to eq(
+            parse("expect(a).to receive(:b).and_call_original.once")
+          )
+        end
+      end
+
       context "refute" do
         it "replaces `refute` with `expect` to be falsey" do
           expect(
@@ -286,6 +296,16 @@ module MinitestToRspec
           argument = "is delicious"
           input = exp(:test, argument)
           expect(process(input)).to eq(exp(:it, argument))
+        end
+      end
+
+      context "twice" do
+        it "replaces twice with expect to receive twice" do
+          expect(
+            process(parse("a.expects(:b).twice"))
+          ).to eq(
+            parse("expect(a).to receive(:b).and_call_original.twice")
+          )
         end
       end
     end

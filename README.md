@@ -88,17 +88,19 @@ Mocha                 | Arity | Block | Notes
 --------------------- | ----- | ----- | -------
 [any_instance][29]    | 0     | n/a   |
 [expects][21]         | 1     | n/a   |
+[once][31]            | 0     | n/a   |
 [stub][19]            | 0,1,2 | no    |
 [stub_everything][18] | 0,1,2 | no    | Uses `as_null_object`, not the same.
 [stubs][20]           | 1     | n/a   |
+[twice][32]           | 0     | n/a   |
 
-Notably not supported yet: [at_least, once, never, raises, etc.][30]
+Notably not supported yet: [at_least, never, raises, etc.][30]
 
 Acknowledgements
 ----------------
 
-Uses [ruby_parser][14], [sexp_processor][15], and [ruby2ruby][16]
-by [Ryan Davis][17].
+This project would not be possible without [ruby_parser][14],
+[sexp_processor][15], and [ruby2ruby][16] by [Ryan Davis][17].
 
 [1]: https://travis-ci.org/jaredbeck/minitest_to_rspec.svg
 [2]: https://travis-ci.org/jaredbeck/minitest_to_rspec
@@ -130,3 +132,5 @@ by [Ryan Davis][17].
 [28]: http://gofreerange.com/mocha/docs/
 [29]: http://www.rubydoc.info/github/floehopper/mocha/Mocha/ClassMethods#any_instance-instance_method
 [30]: http://www.rubydoc.info/github/floehopper/mocha/Mocha/Expectation
+[31]: http://www.rubydoc.info/github/floehopper/mocha/Mocha/Expectation#once-instance_method
+[32]: http://www.rubydoc.info/github/floehopper/mocha/Mocha/Expectation#twice-instance_method

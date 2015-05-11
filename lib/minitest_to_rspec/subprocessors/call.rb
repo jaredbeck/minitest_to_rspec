@@ -31,6 +31,15 @@ module MinitestToRspec
         allow_to(msg_rcp, receive_and_return(msg, ret_vals), any_ins)
       end
 
+      # Given `exp`, an S-expression representing an rspec-mocks statement
+      # (expect or allow) apply `ordinal`, which is either `:once` or `:twice`.
+      # This feels like a hack.  No other processing "re-opens" an "output
+      # sexp".
+      def apply_expectation_count_to(exp, ordinal)
+        exp[3] = s(:call, exp[3], ordinal)
+        exp
+      end
+
       def be_falsey
         matcher(:be_falsey)
       end
@@ -98,10 +107,14 @@ module MinitestToRspec
 
       def method_expects
         if @exp.num_arguments == 1
-          mocha_expects
+          mocha_expects(@exp)
         else
           @exp.original
         end
+      end
+
+      def method_once
+        mocha_once(@exp)
       end
 
       def method_refute
@@ -136,11 +149,7 @@ module MinitestToRspec
       # - (name, stubs)
 
       def method_stub
-        if @exp.receiver.nil?
-          s(:call, nil, :double, *@exp.arguments)
-        else
-          @exp.original
-        end
+        mocha_stub(@exp)
       end
 
       # [stub_everything][1] responds to all messages with nil.
@@ -162,30 +171,53 @@ module MinitestToRspec
         s(:call, nil, :it, *@exp.arguments)
       end
 
-      def mocha_expects
-        arg = @exp.arguments.first
+      def method_twice
+        mocha_twice(@exp)
+      end
+
+      def mocha_expects(exp)
+        raise ArgumentError unless exp.is_a?(Exp::Call)
+        arg = exp.arguments.first
         if sexp_type?(:hash, arg)
-          mocha_expects_hash(arg)
+          mocha_expects_hash(exp, arg)
         elsif sexp_type?(:lit, arg)
-          mocha_expects_lit(arg)
+          mocha_expects_lit(exp, arg)
         else
-          @exp.original
+          exp.original
         end
       end
 
-      def mocha_expects_hash(hash_sexp)
+      def mocha_expects_hash(exp, hash_sexp)
         assert_sexp_type(:hash, hash_sexp)
-        pointless_lambda(hash_to_expectations(hash_sexp, @exp.receiver))
+        pointless_lambda(hash_to_expectations(hash_sexp, exp.receiver))
       end
 
-      def mocha_expects_lit(lit_sexp)
+      def mocha_expects_lit(exp, lit_sexp)
         assert_sexp_type(:lit, lit_sexp)
-        expect_to(receive_and_call_original(lit_sexp), @exp.receiver, true)
+        expect_to(receive_and_call_original(lit_sexp), exp.receiver, true)
+      end
+
+      def mocha_expectation_count(exp, ordinal)
+        raise ArgumentError unless exp.is_a?(Exp::Call)
+        raise ArgumentError unless %i[once twice].include?(ordinal)
+        rvc = exp.receiver_call
+        receiver_processing_method = "mocha_#{rvc.method_name}".to_sym
+        if respond_to?(receiver_processing_method, true)
+          x = send(receiver_processing_method, rvc)
+          apply_expectation_count_to(x, ordinal)
+        else
+          exp.original
+        end
+      end
+
+      def mocha_once(exp)
+        mocha_expectation_count(exp, :once)
       end
 
       # Given `r`, a `Exp::Calls::Returns`, return a `Sexp` representing
       # the equivalent stub or message expectation in RSpec.
       def mocha_returns(r)
+        raise ArgumentError unless r.is_a?(Exp::Calls::Returns)
         subprocessor_method = "#{r.rspec_mocks_method}_receive_and_return"
         send(subprocessor_method,
           r.rspec_msg_recipient,
@@ -193,6 +225,19 @@ module MinitestToRspec
           r.values,
           r.any_instance?
         )
+      end
+
+      def mocha_stub(exp)
+        raise ArgumentError unless exp.is_a?(Exp::Call)
+        if exp.receiver.nil?
+          s(:call, nil, :double, *exp.arguments)
+        else
+          exp.original
+        end
+      end
+
+      def mocha_twice(exp)
+        mocha_expectation_count(exp, :twice)
       end
 
       def name_of_processing_method

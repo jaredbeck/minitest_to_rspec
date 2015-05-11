@@ -65,14 +65,6 @@ module MinitestToRspec
         def values
           arguments
         end
-
-        private
-
-        # The receiver of the `:returns` message is a `:call`
-        # either to `#stubs` or `#expects`.
-        def receiver_call
-          Call.new(receiver)
-        end
       end
     end
   end

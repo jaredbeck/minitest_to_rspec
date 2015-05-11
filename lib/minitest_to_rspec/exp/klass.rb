@@ -39,6 +39,10 @@ module MinitestToRspec
         @_block ||= @exp[3..-1] || []
       end
 
+      def draper_test_case?
+        lineage?(parent, [:Draper, :TestCase])
+      end
+
       # Returns the name of the class.  Examples:
       #
       # - Banana #=> :Banana
@@ -66,7 +70,8 @@ module MinitestToRspec
       def test_case?
         return false unless sexp_type?(:colon2, parent)
         active_support_test_case? ||
-          action_controller_test_case?
+          action_controller_test_case? ||
+          draper_test_case?
       end
 
       private

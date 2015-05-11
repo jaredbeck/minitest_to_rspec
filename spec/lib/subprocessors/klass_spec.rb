@@ -51,6 +51,13 @@ module MinitestToRspec
           expect(call).to eq(parse("RSpec.describe(Banana)"))
         end
 
+        it "converts a Draper::TestCase" do
+          input = parse("class BananaDecoratorTest < Draper::TestCase; end")
+          expect(process(input, true)).to eq(parse(
+            "RSpec.describe(BananaDecorator, type: :decorator) do; end"
+          ))
+        end
+
         it "converts a class with more than just a single test" do
           expect(process(parse(
             <<-EOS

@@ -10,6 +10,7 @@ of [keepachangelog.com][2].
 ### Added
 - Converts
   - Draper::TestCase
+  - ActionMailer::TestCase
 - Experimental
   - mocha: once, twice
 

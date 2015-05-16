@@ -15,6 +15,10 @@ module MinitestToRspec
         lineage?(parent, [:ActionController, :TestCase])
       end
 
+      def action_mailer_test_case?
+        lineage?(parent, [:ActionMailer, :TestCase])
+      end
+
       def active_support_test_case?
         lineage?(parent, [:ActiveSupport, :TestCase])
       end
@@ -71,6 +75,7 @@ module MinitestToRspec
         return false unless sexp_type?(:colon2, parent)
         active_support_test_case? ||
           action_controller_test_case? ||
+          action_mailer_test_case? ||
           draper_test_case?
       end
 

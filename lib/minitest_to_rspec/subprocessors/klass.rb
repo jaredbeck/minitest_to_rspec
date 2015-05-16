@@ -68,6 +68,8 @@ module MinitestToRspec
           :controller
         elsif @exp.draper_test_case?
           :decorator
+        elsif @exp.action_mailer_test_case?
+          :mailer
         else
           :model
         end

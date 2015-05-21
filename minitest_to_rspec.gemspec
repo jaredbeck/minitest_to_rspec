@@ -27,7 +27,10 @@ ruby2ruby.
 
   spec.add_runtime_dependency "ruby_parser", "~> 3.6"
   spec.add_runtime_dependency "ruby2ruby", "~> 2.1"
-  spec.add_runtime_dependency "trollop", "~> 2.1"
+
+  # Required runtime dep: trollop > f7009b45,
+  # but gemspec does not support git :(
+  # spec.add_runtime_dependency "trollop", "~> 2.1"
 
   spec.add_development_dependency "bundler", "~> 1.7"
   spec.add_development_dependency "cane", "~> 2.6"

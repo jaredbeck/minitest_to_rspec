@@ -1,13 +1,6 @@
 require "minitest_to_rspec"
 require "trollop"
 
-# https://github.com/ManageIQ/trollop/issues/57
-module Trollop
-  def self.educate_without_exiting
-    @last_parser.educate($stderr)
-  end
-end
-
 module MinitestToRspec
   class CLI
     E_USAGE               = 1.freeze
@@ -33,7 +26,10 @@ EOS
     attr_reader :rails, :source, :target
 
     def initialize(args)
+      assert_trollop_version
+
       opts = Trollop::options(args) do
+        educate_on_error
         version MinitestToRspec::VERSION
         banner BANNER
         opt :rails, OPT_RAILS, short: :none
@@ -47,8 +43,7 @@ EOS
         @source = args[0]
         @target = infer_target_from @source
       else
-        Trollop.educate_without_exiting
-        exit(E_USAGE)
+        Trollop.die("Please specify source file", nil, E_USAGE)
       end
     end
 
@@ -74,6 +69,17 @@ EOS
       if File.exist?(file)
         $stderr.puts "File already exists: #{file}"
         exit(E_FILE_ALREADY_EXISTS)
+      end
+    end
+
+    # Temporary assertion. It would be nice if gemspec supported git.
+    def assert_trollop_version
+      unless Trollop.method(:die).arity == -2
+        warn "Please use trollop version f7009b45 or greater."
+        warn "This manual version constraint will be removed when"
+        warn "https://github.com/ManageIQ/trollop/pull/63"
+        warn "is included in an official trollop release."
+        exit(-1)
       end
     end
 

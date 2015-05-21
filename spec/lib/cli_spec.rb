@@ -16,10 +16,14 @@ module MinitestToRspec
       end
 
       context "no arguments" do
-        it "educates the user" do
+        it "exits with status code E_USAGE" do
+          # It also prints usage, but rspec `output` matcher only partially
+          # works when combined with `raise_error(SystemExit)` matcher.
           expect {
-            expect { described_class.new([]) }.to output(/Usage/).to_stderr
-          }.to raise_error(SystemExit)
+            expect { described_class.new([]) }.to output.to_stderr
+          }.to raise_error(SystemExit) { |e|
+            expect(e.status).to eq(described_class::E_USAGE)
+          }
         end
       end
     end

@@ -81,6 +81,8 @@ assert_nil                  |       |
 refute                      |       |
 refute_equal                |       |
 
+To do: assert_not_nil
+
 Supported Mocha
 ---------------
 
@@ -94,7 +96,7 @@ Mocha                 | Arity | Block | Notes
 [stubs][20]           | 1     | n/a   |
 [twice][32]           | 0     | n/a   |
 
-Notably not supported yet: [at_least, never, raises, etc.][30]
+To do: [at_least, never, raises, etc.][30]
 
 Acknowledgements
 ----------------

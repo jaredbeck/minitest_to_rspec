@@ -1,5 +1,5 @@
 require "ruby_parser"
-require "ruby2ruby"
+require "sexp2ruby"
 require_relative "processor"
 require_relative "errors"
 
@@ -16,28 +16,8 @@ module MinitestToRspec
 
     private
 
-    # Parses an input string using the `ruby_parser` gem, and
-    # returns an Abstract Syntax Tree (AST) in the form of
-    # S-expressions.
-    #
-    # Example of AST
-    # --------------
-    #
-    # s(:block,
-    #   s(:call, nil, :require, s(:str, "test_helper")),
-    #   s(:class,
-    #     :BananaTest,
-    #     s(:colon2, s(:const, :ActiveSupport), :TestCase),
-    #     s(:iter,
-    #       s(:call, nil, :test, s(:str, "is delicious")),
-    #       s(:args),
-    #       s(:call, nil, :assert,
-    #         s(:call, s(:call, s(:const, :Banana), :new), :delicious?)
-    #       )
-    #     )
-    #   )
-    # )
-    #
+    # Parses input string and returns Abstract Syntax Tree (AST)
+    # as an S-expression.
     def parse(input)
       RubyParser.new.parse(input)
     end
@@ -52,15 +32,11 @@ module MinitestToRspec
     # Given an AST representing an rspec file, returns a string
     # of ruby code.
     def render(exp)
-      ruby2ruby.process(exp)
+      renderer.process(exp)
     end
 
-    # Try to specify ruby 1.9 hash_syntax if ruby2ruby supports it.
-    # https://github.com/seattlerb/ruby2ruby/pull/37
-    def ruby2ruby
-      Ruby2Ruby.new(hash_syntax: :ruby19)
-    rescue ArgumentError
-      Ruby2Ruby.new
+    def renderer
+      Sexp2Ruby::Processor.new(hash_syntax: :ruby19)
     end
   end
 end

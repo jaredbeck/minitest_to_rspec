@@ -17,7 +17,12 @@ module MinitestToRspec
 
       def process
         sexp = head
-        sexp << block if @exp.block?
+        ebk = @exp.block
+        if ebk.length > 1
+          sexp << block
+        elsif ebk.length == 1
+          sexp << full_process(ebk[0])
+        end
         sexp
       end
 
@@ -84,7 +89,7 @@ module MinitestToRspec
 
       # Returns a S-expression representing a call to RSpec.describe
       def rspec_describe_block
-        s(:iter, rspec_describe, s(:args))
+        s(:iter, rspec_describe, 0)
       end
     end
   end

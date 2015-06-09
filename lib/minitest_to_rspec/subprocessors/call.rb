@@ -265,7 +265,7 @@ module MinitestToRspec
         s(:call,
           s(:iter,
             s(:call, nil, :lambda),
-            s(:args),
+            0,
             s(:block,
               s(:str, "Sorry for the pointless lambda here."),
               *array_of_calls

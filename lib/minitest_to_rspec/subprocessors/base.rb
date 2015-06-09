@@ -47,7 +47,7 @@ module MinitestToRspec
       def expectation_target_lazy(block)
         s(:iter,
           s(:call, nil, :expect),
-          s(:args),
+          0,
           full_process(block)
         )
       end

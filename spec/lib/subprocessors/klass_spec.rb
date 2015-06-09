@@ -29,26 +29,48 @@ module MinitestToRspec
           end
 
           it "does not convert trivial class" do
-            # Actually, we wrap the one call in a block, but it
-            # still prints the same.
-            expect(process(
-              s(:class, :Derp, nil, s(:call, nil, :puts))
-            )).to eq(
-              s(:class, :Derp, nil, s(:block, s(:call, nil, :puts)))
-            )
+            input = -> { s(:class, :Derp, nil, s(:call, nil, :puts)) }
+            expect(process(input.call)).to eq(input.call)
           end
         end
 
-        it "converts an ActiveSupport::TestCase" do
-          input = s(:class,
-            :BananaTest,
-            s(:colon2, s(:const, :ActiveSupport), :TestCase)
-          )
-          iter = process(input)
-          expect(iter.sexp_type).to eq(:iter)
-          expect(iter.length).to eq(3) # type, call, args
-          call = iter[1]
-          expect(call).to eq(parse("RSpec.describe(Banana)"))
+        context "ActiveSupport::TestCase" do
+          context "emtpy" do
+            it "converts" do
+              input = s(:class,
+                :BananaTest,
+                s(:colon2, s(:const, :ActiveSupport), :TestCase)
+              )
+              iter = process(input)
+              expect(iter.sexp_type).to eq(:iter)
+              expect(iter.length).to eq(3) # type, call, args
+              call = iter[1]
+              expect(call).to eq(parse("RSpec.describe(Banana)"))
+            end
+          end
+
+          context "not empty" do
+            it "converts" do
+              inp = s(:class,
+                :BananaTest,
+                s(:colon2, s(:const, :ActiveSupport), :TestCase),
+                s(:iter,
+                  s(:call, nil, :test, s(:str, "is delicious")),
+                  0,
+                  s(:call, nil, :puts)
+                )
+              )
+              expect(process(inp)).to eq(parse(
+                <<-EOS
+                  RSpec.describe(Banana) do
+                    it "is delicious" do
+                      puts
+                    end
+                  end
+                EOS
+              ))
+            end
+          end
         end
 
         it "converts a ActionMailer::TestCase" do

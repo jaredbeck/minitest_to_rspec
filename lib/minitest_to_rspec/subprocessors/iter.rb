@@ -33,7 +33,7 @@ module MinitestToRspec
       def matcher_with_block(matcher_name, block)
         s(:iter,
           s(:call, nil, matcher_name),
-          s(:args),
+          0,
           block
         )
       end

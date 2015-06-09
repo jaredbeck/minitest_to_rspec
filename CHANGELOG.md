@@ -4,8 +4,8 @@ Change Log
 This project follows [semver 2.0.0][1] and the recommendations
 of [keepachangelog.com][2].
 
-0.6.0 (Unreleased)
-------------------
+0.6.0
+-----
 
 ### Added
 - Converts
@@ -13,6 +13,9 @@ of [keepachangelog.com][2].
   - ActionMailer::TestCase
 - Experimental
   - mocha: once, twice
+- Switch from ruby2ruby to sexp2ruby
+  - Will have better output, e.g. ruby 1.9.3 hash syntax
+  - Upgrade to ruby_parser 3.7
 
 0.5.0
 -----

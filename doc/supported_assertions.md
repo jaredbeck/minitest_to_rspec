@@ -4,16 +4,6 @@ Supported Assertions
 A quick survey of one mid-sized test suite (14 kilolines) found
 the following assertions in use.
 
-```bash
-find test -type f -name '*.rb' | xargs cat > all_tests;
-for a in $( cat ~/Desktop/assertions ); do
-  echo -n $a
-  ggrep -E "\\b$a\\b" all_tests | wc -l
-done |
-awk '{print $2 " " $1}' |
-sort -nr
-```
-
 ```
 625 assert
 530 assert_equal
@@ -58,3 +48,16 @@ sort -nr
 
 Assertions which are not used in the targeted test suite
 are not yet supported, but contributions are welcome.
+
+A Script to Count Assertions
+----------------------------
+
+```bash
+find test -type f -name '*.rb' | xargs cat > all_tests;
+for a in $( cat ~/Desktop/assertions ); do
+  echo -n $a
+  ggrep -E "\\b$a\\b" all_tests | wc -l
+done |
+awk '{print $2 " " $1}' |
+sort -nr
+```

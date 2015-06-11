@@ -4,6 +4,12 @@ Change Log
 This project follows [semver 2.0.0][1] and the recommendations
 of [keepachangelog.com][2].
 
+0.6.2 (Unreleased)
+-----
+
+### Fixed
+- Improve output: Fewer unnecessary parentheses: to, to_not
+
 0.6.1
 -----
 

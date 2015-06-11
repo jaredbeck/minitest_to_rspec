@@ -3,5 +3,5 @@ it "doing something should not change Banana count" do
   before = λ.call
   do_something
   after = λ.call
-  expect(after).to(eq(before))
+  expect(after).to eq(before)
 end

@@ -15,6 +15,8 @@ module MinitestToRspec
       post
       put
       require
+      to
+      to_not
     ]
 
     def initialize(options)

@@ -5,6 +5,18 @@ require_relative "errors"
 
 module MinitestToRspec
   class Converter
+    NO_PAREN_METHODS = %i[
+      context
+      delete
+      describe
+      get
+      include
+      it
+      post
+      put
+      require
+    ]
+
     def initialize(options)
       @options = options
       @processor = Processor.new(@options[:rails])
@@ -36,7 +48,10 @@ module MinitestToRspec
     end
 
     def renderer
-      Sexp2Ruby::Processor.new(hash_syntax: :ruby19)
+      Sexp2Ruby::Processor.new(
+        hash_syntax: :ruby19,
+        no_paren_methods: NO_PAREN_METHODS
+      )
     end
   end
 end

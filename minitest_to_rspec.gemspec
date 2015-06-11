@@ -26,7 +26,7 @@ ruby2ruby.
   spec.required_ruby_version = ">= 2.0.0"
 
   spec.add_runtime_dependency "ruby_parser", "~> 3.7"
-  spec.add_runtime_dependency "sexp2ruby", "~> 0.0.2"
+  spec.add_runtime_dependency "sexp2ruby", "~> 0.0.3"
 
   # Required runtime dep: trollop > f7009b45,
   # but gemspec does not support git :(

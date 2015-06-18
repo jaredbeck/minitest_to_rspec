@@ -28,8 +28,7 @@ EOS
     def initialize(args)
       assert_trollop_version
 
-      opts = Trollop::options(args) do
-        educate_on_error
+      opts = Trollop.options(args) do
         version MinitestToRspec::VERSION
         banner BANNER
         opt :rails, OPT_RAILS, short: :none
@@ -43,7 +42,8 @@ EOS
         @source = args[0]
         @target = infer_target_from @source
       else
-        Trollop.die("Please specify source file", nil, E_USAGE)
+        warn "Please specify source file"
+        exit E_USAGE
       end
     end
 

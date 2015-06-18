@@ -8,6 +8,7 @@ of [keepachangelog.com][2].
 -----
 
 ### Fixed
+- Make runtime dependency on trollop explicit: declare in gemspec
 - Improve output: Fewer unnecessary parentheses: to, to_not
 
 0.6.1

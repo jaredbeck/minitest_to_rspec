@@ -28,17 +28,14 @@ end
 Output:
 
 ```ruby
-require("spec_helper")
-RSpec.describe(Array) do
-  it("changes length") do
+require "spec_helper"
+RSpec.describe Array do
+  it "changes length" do
     ary = []
-    expect { ary.push(:x) }.to(change { ary.length })
+    expect { ary.push(:x) }.to change { ary.length }
   end
 end
 ```
-
-The code style is whatever [ruby2ruby][6] feels like printing,
-and is not configurable.  Comments are discarded.
 
 Usage
 -----
@@ -46,7 +43,6 @@ Usage
 ### CLI
 
 ```bash
-gem install mt2rspec
 bundle exec mt2rspec [--rails] source_file [target_file]
 bundle exec mt2rspec --help
 ```
@@ -59,12 +55,23 @@ MinitestToRspec::Converter.new.convert("assert('banana')")
 #=> "expect(\"banana\").to(be_truthy)"
 ```
 
+Output
+------
+
+The primary goal is correctness, but code style is also important. We have
+switched from [ruby2ruby][6] to [sexp2ruby][33] because code style
+is one of its goals. As [sexp2ruby][33] adds more configuration options, we'll
+make use of them.
+
+Comments are discarded by [ruby_parser][14], so we have no way of
+preserving them.
+
 Supported Assertions
 --------------------
 
-Selected assertions from minitest, Test::Unit, and ActiveSupport.
-See [doc/supported_assertions.md][5] for rationale.  Contributions
-are welcome.
+Selected assertions from [minitest][8], [Test::Unit][26], and
+[ActiveSupport][27]. See [doc/supported_assertions.md][5] for rationale.
+Contributions are welcome.
 
 Assertion                   | Arity | Source
 --------------------------- | ----- | ------
@@ -136,3 +143,4 @@ This project would not be possible without [ruby_parser][14],
 [30]: http://www.rubydoc.info/github/floehopper/mocha/Mocha/Expectation
 [31]: http://www.rubydoc.info/github/floehopper/mocha/Mocha/Expectation#once-instance_method
 [32]: http://www.rubydoc.info/github/floehopper/mocha/Mocha/Expectation#twice-instance_method
+[33]: https://github.com/jaredbeck/sexp2ruby

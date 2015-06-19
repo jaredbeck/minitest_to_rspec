@@ -48,7 +48,7 @@ EOS
     def run
       assert_file_exists(source)
       assert_file_does_not_exist(target)
-      write_target(converter.convert(read_source))
+      write_target(converter.convert(read_source, source))
     rescue Error => e
       $stderr.puts "Failed to convert: #{e}"
       exit E_CONVERT_FAIL

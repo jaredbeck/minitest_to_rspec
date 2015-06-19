@@ -19,21 +19,25 @@ module MinitestToRspec
       to_not
     ]
 
-    def initialize(options)
+    def initialize(options = {})
       @options = options
       @processor = Processor.new(@options[:rails])
     end
 
-    def convert(input)
-      render process parse input
+    # - `input` - Contents of a ruby file.
+    # - `file_path` - Optional. Value will replace any `__FILE__`
+    #   keywords in the input.
+    def convert(input, file_path = nil)
+      render process parse(input, file_path)
     end
 
     private
 
     # Parses input string and returns Abstract Syntax Tree (AST)
     # as an S-expression.
-    def parse(input)
-      RubyParser.new.parse(input)
+    def parse(input, file_path)
+      file_path ||= "No file path provided to #{self.class}#convert"
+      RubyParser.new.parse(input, file_path)
     end
 
     # Processes an AST (S-expressions) representing a minitest

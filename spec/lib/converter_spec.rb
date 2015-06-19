@@ -13,13 +13,21 @@ module MinitestToRspec
     # Directories under `spec/fixtures`
     FIXTURE_DIRS = Dir.glob("#{SPEC_FIXTURES}/*")
 
-    def convert(input, options = nil)
+    def convert(input, file_path, options = nil)
       options ||= { rails: false }
-      described_class.new(options).convert(input)
+      described_class.new(options).convert(input, file_path)
+    end
+
+    def input_file_path(fixture)
+      File.join(fixture, "in.rb")
     end
 
     def fixture_number(fixture)
       File.basename(fixture).split('_').first.to_i
+    end
+
+    def output_file_path(fixture)
+      File.join(fixture, "out.rb")
     end
 
     def rails?(fixture)
@@ -27,11 +35,11 @@ module MinitestToRspec
     end
 
     def read_input(fixture)
-      File.read(File.join(fixture, "in.rb"))
+      File.read(input_file_path(fixture))
     end
 
     def read_output(fixture)
-      File.read(File.join(fixture, "out.rb"))
+      File.read(output_file_path(fixture))
     end
 
     describe "#convert" do
@@ -43,15 +51,31 @@ module MinitestToRspec
         it "converts: #{fixture}" do
           expected = read_output(fixture).strip
           options = { rails: rails?(fixture) }
-          calculated = convert(read_input(fixture), options).strip
+          input = read_input(fixture)
+          path = input_file_path(fixture)
+          calculated = convert(input, path, options).strip
           expect(calculated).to eq(expected)
         end
       end
 
       it "supports rails option" do
         expect(
-          convert("require 'test_helper'", rails: true)
+          convert("require 'test_helper'", nil, rails: true)
         ).to eq('require "rails_helper"')
+      end
+
+      context "__FILE__ keyword" do
+        it "replaces with the given file path" do
+          expect(
+            convert("__FILE__", "/banana/kiwi/mango")
+          ).to eq('"/banana/kiwi/mango"')
+        end
+
+        it "replaces with helpful message when not provided" do
+          expect(
+            convert("__FILE__", nil)
+          ).to match(/No file path provided/)
+        end
       end
     end
   end

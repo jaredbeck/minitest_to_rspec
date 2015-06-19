@@ -26,8 +26,6 @@ EOS
     attr_reader :rails, :source, :target
 
     def initialize(args)
-      assert_trollop_version
-
       opts = Trollop.options(args) do
         version MinitestToRspec::VERSION
         banner BANNER
@@ -69,17 +67,6 @@ EOS
       if File.exist?(file)
         $stderr.puts "File already exists: #{file}"
         exit(E_FILE_ALREADY_EXISTS)
-      end
-    end
-
-    # Temporary assertion. It would be nice if gemspec supported git.
-    def assert_trollop_version
-      unless Trollop.method(:die).arity == -2
-        warn "Please use trollop version f7009b45 or greater."
-        warn "This manual version constraint will be removed when"
-        warn "https://github.com/ManageIQ/trollop/pull/63"
-        warn "is included in an official trollop release."
-        exit(-1)
       end
     end
 

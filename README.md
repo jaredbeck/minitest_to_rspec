@@ -81,14 +81,13 @@ assert_difference           | 1,2   |
 [assert_not_equal][22]      | 2,3   | Test::Unit
 assert_match                |       |
 assert_nil                  |       |
+assert_not_nil              |       |
 [assert_no_difference][12]  |       | ActiveSupport
 [assert_nothing_raised][10] |       | Test::Unit
 [assert_raise][11]          | 0..2  | Test::Unit
 [assert_raises][13]         | 0..2  | Minitest
 refute                      |       |
 refute_equal                |       |
-
-To do: assert_not_nil
 
 Supported Mocha
 ---------------

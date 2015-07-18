@@ -99,6 +99,10 @@ module MinitestToRspec
         expect_to(be_nil, @exp.arguments[0], true)
       end
 
+      def method_assert_not_nil
+        expect_to_not(be_nil, @exp.arguments[0], true)
+      end
+
       def method_assert_not_equal
         expected = @exp.arguments[0]
         calculated = @exp.arguments[1]

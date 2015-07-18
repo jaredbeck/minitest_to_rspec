@@ -4,8 +4,11 @@ Change Log
 This project follows [semver 2.0.0][1] and the recommendations
 of [keepachangelog.com][2].
 
-0.6.3 (Unreleased)
+Unreleased
 -----
+
+### Added
+- Converts assert_not_nil
 
 ### Fixed
 - `__FILE__` keyword in input

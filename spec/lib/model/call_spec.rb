@@ -1,7 +1,7 @@
 require "spec_helper"
 
 module MinitestToRspec
-  module Exp
+  module Model
     RSpec.describe Call do
       describe ".new" do
         context "sexp_type is not :call" do

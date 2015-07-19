@@ -1,18 +1,18 @@
-require_relative "../exp/call"
-require_relative "../exp/calls/returns"
-require_relative "../exp/hash_exp"
+require_relative "../model/call"
+require_relative "../model/calls/returns"
+require_relative "../model/hash_exp"
 require_relative "base"
 
 module MinitestToRspec
   module Subprocessors
     class Call < Base
       def initialize(sexp, rails)
-        @exp = Exp::Call.new(sexp)
+        @exp = Model::Call.new(sexp)
         sexp.clear
         @rails = rails
       end
 
-      # Given a `Exp::Call`, returns a `Sexp`
+      # Given a `Model::Call`, returns a `Sexp`
       def process
         if respond_to?(name_of_processing_method, true)
           send(name_of_processing_method)
@@ -53,7 +53,7 @@ module MinitestToRspec
       end
 
       def call_to_question_mark?(exp)
-        sexp_type?(:call, exp) && Exp::Call.new(exp).question_mark_method?
+        sexp_type?(:call, exp) && Model::Call.new(exp).question_mark_method?
       end
 
       def eq(exp)
@@ -72,7 +72,7 @@ module MinitestToRspec
       # return an array of `Sexp`, each representing an expectation
       # in rspec-mocks syntax.
       def hash_to_expectations(sexp, receiver)
-        Exp::HashExp.new(sexp).to_h.map { |msg, ret_val|
+        Model::HashExp.new(sexp).to_h.map { |msg, ret_val|
           expect_receive_and_return(
             receiver.deep_clone, msg, wrap_sexp(ret_val)
           )
@@ -140,7 +140,7 @@ module MinitestToRspec
       end
 
       def method_returns
-        mocha_returns(Exp::Calls::Returns.new(@exp.original))
+        mocha_returns(Model::Calls::Returns.new(@exp.original))
       rescue UnknownVariant
         @exp.original
       end
@@ -188,7 +188,7 @@ module MinitestToRspec
       end
 
       def mocha_expects(exp)
-        raise ArgumentError unless exp.is_a?(Exp::Call)
+        raise ArgumentError unless exp.is_a?(Model::Call)
         arg = exp.arguments.first
         if sexp_type?(:hash, arg)
           mocha_expects_hash(exp, arg)
@@ -210,7 +210,7 @@ module MinitestToRspec
       end
 
       def mocha_expectation_count(exp, ordinal)
-        raise ArgumentError unless exp.is_a?(Exp::Call)
+        raise ArgumentError unless exp.is_a?(Model::Call)
         raise ArgumentError unless %i[once twice].include?(ordinal)
         rvc = exp.receiver_call
         receiver_processing_method = "mocha_#{rvc.method_name}".to_sym
@@ -226,10 +226,10 @@ module MinitestToRspec
         mocha_expectation_count(exp, :once)
       end
 
-      # Given `r`, a `Exp::Calls::Returns`, return a `Sexp` representing
+      # Given `r`, a `Model::Calls::Returns`, return a `Sexp` representing
       # the equivalent stub or message expectation in RSpec.
       def mocha_returns(r)
-        raise ArgumentError unless r.is_a?(Exp::Calls::Returns)
+        raise ArgumentError unless r.is_a?(Model::Calls::Returns)
         subprocessor_method = "#{r.rspec_mocks_method}_receive_and_return"
         send(subprocessor_method,
           r.rspec_msg_recipient,
@@ -240,7 +240,7 @@ module MinitestToRspec
       end
 
       def mocha_stub(exp)
-        raise ArgumentError unless exp.is_a?(Exp::Call)
+        raise ArgumentError unless exp.is_a?(Model::Call)
         if exp.receiver.nil?
           s(:call, nil, :double, *exp.arguments)
         else

@@ -1,7 +1,7 @@
 require_relative "base"
 
 module MinitestToRspec
-  module Exp
+  module Model
 
     # Data object.  Represents an `:iter` s-expression.
     class Iter < Base
@@ -15,23 +15,23 @@ module MinitestToRspec
       end
 
       def assert_difference?
-        !empty? && Exp::Call.assert_difference?(@exp[1])
+        !empty? && Model::Call.assert_difference?(@exp[1])
       end
 
       def assert_no_difference?
-        !empty? && Exp::Call.assert_no_difference?(@exp[1])
+        !empty? && Model::Call.assert_no_difference?(@exp[1])
       end
 
       def assert_nothing_raised?
-        !empty? && Exp::Call.assert_nothing_raised?(@exp[1])
+        !empty? && Model::Call.assert_nothing_raised?(@exp[1])
       end
 
       def assert_raise?
-        !empty? && Exp::Call.assert_raise?(@exp[1])
+        !empty? && Model::Call.assert_raise?(@exp[1])
       end
 
       def assert_raises?
-        !empty? && Exp::Call.assert_raises?(@exp[1])
+        !empty? && Model::Call.assert_raises?(@exp[1])
       end
 
       def block
@@ -48,7 +48,7 @@ module MinitestToRspec
       end
 
       def call_obj
-        Exp::Call.new(call)
+        Model::Call.new(call)
       end
 
       # Enumerates children, skipping the base `call` and
@@ -63,11 +63,11 @@ module MinitestToRspec
       end
 
       def setup?
-        !empty? && Exp::Call.method_name?(@exp[1], :setup)
+        !empty? && Model::Call.method_name?(@exp[1], :setup)
       end
 
       def teardown?
-        !empty? && Exp::Call.method_name?(@exp[1], :teardown)
+        !empty? && Model::Call.method_name?(@exp[1], :teardown)
       end
 
       def sexp

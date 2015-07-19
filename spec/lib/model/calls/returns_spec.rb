@@ -2,7 +2,7 @@ require "spec_helper"
 require "ruby_parser"
 
 module MinitestToRspec
-  module Exp
+  module Model
     module Calls
       RSpec.describe Returns do
 

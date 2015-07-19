@@ -2,7 +2,7 @@ require_relative "../call"
 require_relative "../../errors"
 
 module MinitestToRspec
-  module Exp
+  module Model
     module Calls
       class Once < Call
       end

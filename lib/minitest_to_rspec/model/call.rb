@@ -1,7 +1,7 @@
 require_relative "base"
 
 module MinitestToRspec
-  module Exp
+  module Model
 
     # Data object.  Represents a `:call` s-expression.
     class Call < Base
@@ -95,14 +95,14 @@ module MinitestToRspec
       end
 
       # While `#receiver` returns a `Sexp`, `#receiver_call`
-      # returns a `Exp::Call`.
+      # returns a `Model::Call`.
       def receiver_call
         if sexp_type?(:call, receiver)
-          rvc = Exp::Call.new(receiver)
+          rvc = Model::Call.new(receiver)
 
           # TODO: Seems like a factory pattern
           if rvc.method_name == :returns
-            Exp::Calls::Returns.new(receiver)
+            Model::Calls::Returns.new(receiver)
           else
             rvc
           end

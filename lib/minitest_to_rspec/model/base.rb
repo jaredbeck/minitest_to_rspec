@@ -1,7 +1,7 @@
 require_relative "../sexp_assertions"
 
 module MinitestToRspec
-  module Exp
+  module Model
 
     # Classes inheriting `Base` are simple data objects
     # representing the S-expressions they are named after.

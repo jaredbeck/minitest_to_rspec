@@ -1,5 +1,5 @@
 require_relative "../errors"
-require_relative "../exp/klass"
+require_relative "../model/klass"
 require_relative "base"
 
 module MinitestToRspec
@@ -10,7 +10,7 @@ module MinitestToRspec
       # boolean indicating that `rspec-rails` conventions (like
       # `:type` metadata) should be used.
       def initialize(sexp, rails)
-        @exp = Exp::Klass.new(sexp)
+        @exp = Model::Klass.new(sexp)
         sexp.clear
         @rails = rails
       end

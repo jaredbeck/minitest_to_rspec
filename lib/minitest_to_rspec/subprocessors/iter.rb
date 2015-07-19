@@ -1,11 +1,11 @@
 require_relative "base"
-require_relative "../exp/iter"
+require_relative "../model/iter"
 
 module MinitestToRspec
   module Subprocessors
     class Iter < Base
       def initialize(sexp)
-        @exp = Exp::Iter.new(sexp)
+        @exp = Model::Iter.new(sexp)
         sexp.clear
       end
 
@@ -84,7 +84,7 @@ module MinitestToRspec
         RubyParser.new.parse(str)
       end
 
-      # Given a `Exp::Iter`, returns a `Sexp`
+      # Given a `Model::Iter`, returns a `Sexp`
       def process_exp(exp)
         if processable?(exp)
           send_to_processing_method(exp)

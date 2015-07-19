@@ -1,5 +1,5 @@
 module MinitestToRspec
-  module Exp
+  module Model
 
     # Data object.  Represents a `:hash` S-expression.
     class HashExp < Base

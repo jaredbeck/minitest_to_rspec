@@ -1,3 +1,4 @@
+require "fileutils"
 require "minitest_to_rspec"
 require "trollop"
 
@@ -7,6 +8,7 @@ module MinitestToRspec
     E_FILE_NOT_FOUND      = 2.freeze
     E_FILE_ALREADY_EXISTS = 3.freeze
     E_CONVERT_FAIL        = 4.freeze
+    E_CANNOT_CREATE_TARGET_DIR = 5.freeze
 
     BANNER = <<EOS.freeze
 Usage: mt2rspec --rails source_file [target_file]
@@ -48,6 +50,7 @@ EOS
     def run
       assert_file_exists(source)
       assert_file_does_not_exist(target)
+      ensure_target_directory(target)
       write_target(converter.convert(read_source, source))
     rescue Error => e
       $stderr.puts "Failed to convert: #{e}"
@@ -72,6 +75,18 @@ EOS
 
     def converter
       Converter.new(rails: rails)
+    end
+
+    def ensure_target_directory(target)
+      dir = File.dirname(target)
+      return if Dir.exist?(dir)
+      begin
+        FileUtils.mkdir_p(dir)
+      rescue SystemCallError => e
+        $stderr.puts "Cannot create target dir: #{dir}"
+        $stderr.puts e.message
+        exit E_CANNOT_CREATE_TARGET_DIR
+      end
     end
 
     def infer_target_from(source)

@@ -7,6 +7,19 @@ module MinitestToRspec
     let(:source) { "spec/fixtures/01_trivial_assertion/in.rb" }
     let(:target) { "/dev/null" }
 
+    before(:all) do
+      # Tests require certain files to exist
+      # http://pubs.opengroup.org/onlinepubs/000095399/basedefs/xbd_chap10.html
+      unless File.exist?("/dev/null") && Dir.exist?("/tmp")
+        fail "Tests require a POSIX OS"
+      end
+    end
+
+    before(:each) do
+      # Don't actually write target file
+      allow(cli).to receive(:write_target)
+    end
+
     describe ".new" do
       context "target omitted" do
         it "infers target" do
@@ -65,6 +78,30 @@ module MinitestToRspec
               "File not found: #{source}"
             ).to_stderr
           }.to raise_error(SystemExit)
+        end
+      end
+    end
+
+    describe "#ensure_target_directory" do
+      context "when dir exists" do
+        let(:target) { "/tmp/banana_spec.rb" }
+
+        it "returns nil and does not call mkdir_p" do
+          expect(FileUtils).to_not receive(:mkdir_p)
+          cli.run
+        end
+      end
+
+      context "when dir does not exist" do
+        let(:target) {
+          "/tmp/3819e90182546cf5da27f193d0f3000164/banana_spec.rb"
+        }
+
+        it "calls mkdir_p" do
+          expect(FileUtils).to receive(:mkdir_p).with(
+            "/tmp/3819e90182546cf5da27f193d0f3000164"
+          )
+          cli.run
         end
       end
     end

@@ -9,6 +9,7 @@ Unreleased
 
 ### Added
 - Converts assert_not_nil
+- CLI: creates `target_file` directory if it does not exist
 
 ### Fixed
 - `__FILE__` keyword in input

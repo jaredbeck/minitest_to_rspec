@@ -113,9 +113,7 @@ module MinitestToRspec
       end
 
       def method_assert
-        actual = @exp.arguments[0]
-        matcher = call_to_question_mark?(actual) ? eq(s(:true)) : be_truthy
-        expect_to(matcher, actual, true)
+        refsert eq(s(:true)), be_truthy
       end
 
       def method_assert_equal
@@ -157,9 +155,7 @@ module MinitestToRspec
       end
 
       def method_refute
-        actual = @exp.arguments[0]
-        matcher = call_to_question_mark?(actual) ? eq(s(:false)) : be_falsey
-        expect_to(matcher, actual, true)
+        refsert eq(s(:false)), be_falsey
       end
 
       def method_refute_equal
@@ -332,6 +328,14 @@ module MinitestToRspec
 
       def receive_and_return(message, return_values, with = [])
         s(:call, receive(message, with), :and_return, *return_values)
+      end
+
+      # `refsert` - Code shared by refute and assert. I could also have gone
+      # with `assfute`. Wooo .. time for bed.
+      def refsert(exact, fuzzy)
+        actual = @exp.arguments[0]
+        matcher = call_to_question_mark?(actual) ? exact : fuzzy
+        expect_to(matcher, actual, true)
       end
 
       def require_spec_helper

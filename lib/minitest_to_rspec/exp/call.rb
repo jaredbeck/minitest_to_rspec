@@ -117,6 +117,10 @@ module MinitestToRspec
           arguments[0][1] == "test_helper"
       end
 
+      def question_mark_method?
+        method_name.to_s.end_with?("?")
+      end
+
       private
 
       def string?(exp)

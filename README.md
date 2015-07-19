@@ -58,10 +58,10 @@ MinitestToRspec::Converter.new.convert("assert('banana')")
 Output
 ------
 
-The primary goal is correctness, but code style is also important. We have
-switched from [ruby2ruby][6] to [sexp2ruby][33] because code style
-is one of its goals. As [sexp2ruby][33] adds more configuration options, we'll
-make use of them.
+The primary goal is correctness, but [code style][34] is also important. To
+allow us to configure our output, we use [sexp2ruby][33] instead of
+[ruby2ruby][6]. As [sexp2ruby][33] adds more configuration options, we'll make
+use of them.
 
 Comments are discarded by [ruby_parser][14], so we have no way of
 preserving them.
@@ -143,3 +143,4 @@ This project would not be possible without [ruby_parser][14],
 [31]: http://www.rubydoc.info/github/floehopper/mocha/Mocha/Expectation#once-instance_method
 [32]: http://www.rubydoc.info/github/floehopper/mocha/Mocha/Expectation#twice-instance_method
 [33]: https://github.com/jaredbeck/sexp2ruby
+[34]: https://github.com/bbatsov/ruby-style-guide

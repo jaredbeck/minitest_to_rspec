@@ -19,11 +19,19 @@ module MinitestToRspec
       end
 
       context "assert" do
-        it "replaces `assert` with `expect` to be truthy" do
+        it "replaces `assert` with `expect` to be_truthy" do
           expect(
-            process(parse("assert Banana.new.delicious?"))
+            process(parse("assert Banana"))
           ).to eq(
-            parse("expect(Banana.new.delicious?).to be_truthy")
+            parse("expect(Banana).to be_truthy")
+          )
+        end
+
+        it "replaces question-mark `assert` with `expect` to eq(true)" do
+          expect(
+            process(parse("assert Banana.delicious?"))
+          ).to eq(
+            parse("expect(Banana.delicious?).to eq(true)")
           )
         end
       end
@@ -173,12 +181,20 @@ module MinitestToRspec
       end
 
       context "refute" do
-        it "replaces `refute` with `expect` to be falsey" do
+        it "replaces `refute` with `expect` to be_falsey" do
           expect(
-            process(parse("refute Kiwi.new.delicious?"))
+            process(parse("refute Kiwi"))
           ).to eq(
-            parse("expect(Kiwi.new.delicious?).to be_falsey")
+            parse("expect(Kiwi).to be_falsey")
           )
+        end
+
+        it "replaces question-mark `refute` with `expect` to be falsey" do
+          expect(
+            process(parse("refute Kiwi.delicious?"))
+          ).to eq(
+              parse("expect(Kiwi.delicious?).to eq(false)")
+            )
         end
       end
 

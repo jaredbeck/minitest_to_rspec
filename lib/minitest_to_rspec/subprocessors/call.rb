@@ -52,6 +52,10 @@ module MinitestToRspec
         matcher(:be_truthy)
       end
 
+      def call_to_question_mark?(exp)
+        sexp_type?(:call, exp) && Exp::Call.new(exp).question_mark_method?
+      end
+
       def eq(exp)
         matcher(:eq, exp)
       end
@@ -80,7 +84,9 @@ module MinitestToRspec
       end
 
       def method_assert
-        expect_to(be_truthy, @exp.arguments[0], true)
+        actual = @exp.arguments[0]
+        matcher = call_to_question_mark?(actual) ? eq(s(:true)) : be_truthy
+        expect_to(matcher, actual, true)
       end
 
       def method_assert_equal
@@ -122,7 +128,9 @@ module MinitestToRspec
       end
 
       def method_refute
-        expect_to(be_falsey, @exp.arguments[0], true)
+        actual = @exp.arguments[0]
+        matcher = call_to_question_mark?(actual) ? eq(s(:false)) : be_falsey
+        expect_to(matcher, actual, true)
       end
 
       def method_refute_equal

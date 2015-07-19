@@ -1,4 +1,7 @@
 require "spec_helper"
 RSpec.describe Banana do
-  it "is delicious" { expect(Banana.new.delicious?).to be_truthy }
+  it "is delicious" do
+    expect(Banana).to be_truthy
+    expect(Banana.new.delicious?).to eq(true)
+  end
 end

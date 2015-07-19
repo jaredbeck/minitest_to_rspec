@@ -106,7 +106,7 @@ module MinitestToRspec
                 fend_off_the_monkeys
                 peel_bananas
                 it "is delicious" do
-                  expect(Banana.new.delicious?).to be_truthy
+                  expect(Banana.new.delicious?).to eq(true)
                 end
               end
             EOS

@@ -7,6 +7,12 @@ of [keepachangelog.com][2].
 Unreleased
 -----
 
+### Changed
+- `assert` on a question-mark method converts to `eq(true)` instead
+  of `be_truthy`. Likewise, `refute` converts to `eq(false)`. This is not
+  guaranteed to be the same as minitest's fuzzy `assert`, but the convention of
+  question-mark methods returning real booleans is strong.
+
 ### Added
 - Converts assert_not_nil
 - CLI: creates `target_file` directory if it does not exist

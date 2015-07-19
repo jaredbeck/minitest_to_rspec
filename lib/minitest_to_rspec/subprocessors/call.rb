@@ -27,8 +27,13 @@ module MinitestToRspec
       # - msg.  Message.  The name of the stubbed method.
       # - ret_vals.  Return values.
       # - any_ins.  Any instance?  True if this is an `any_instance` stub.
-      def allow_receive_and_return(msg_rcp, msg, ret_vals, any_ins = false)
-        allow_to(msg_rcp, receive_and_return(msg, ret_vals), any_ins)
+      # - with. Allowed arguments.
+      def allow_receive_and_return(msg_rcp, msg, ret_vals, any_ins, with)
+        allow_to(
+          msg_rcp,
+          receive_and_return(msg, ret_vals, with),
+          any_ins
+        )
       end
 
       # Given `exp`, an S-expression representing an rspec-mocks statement
@@ -64,8 +69,14 @@ module MinitestToRspec
       # - msg.  Message.  The name of the stubbed method.
       # - ret_vals.  Return values.
       # - any_ins.  Any instance?  True if this is an `any_instance` stub.
-      def expect_receive_and_return(msg_rcp, msg, ret_vals, any_ins = false)
-        expect_to(receive_and_return(msg, ret_vals), msg_rcp, true, any_ins)
+      # - with. Allowed arguments.
+      def expect_receive_and_return(msg_rcp, msg, ret_vals, any_ins, with)
+        expect_to(
+          receive_and_return(msg, ret_vals, with),
+          msg_rcp,
+          true,
+          any_ins
+        )
       end
 
       # Given a `Sexp` representing a `Hash` of message expectations,
@@ -74,7 +85,7 @@ module MinitestToRspec
       def hash_to_expectations(sexp, receiver)
         Model::HashExp.new(sexp).to_h.map { |msg, ret_val|
           expect_receive_and_return(
-            receiver.deep_clone, msg, wrap_sexp(ret_val)
+            receiver.deep_clone, msg, wrap_sexp(ret_val), false, []
           )
         }
       end
@@ -235,7 +246,8 @@ module MinitestToRspec
           r.rspec_msg_recipient,
           r.message,
           r.values,
-          r.any_instance?
+          r.any_instance?,
+          r.with
         )
       end
 
@@ -287,16 +299,21 @@ module MinitestToRspec
         )
       end
 
-      def receive(message)
-        s(:call, nil, :receive, message)
+      def receive(message, with = [])
+        r = s(:call, nil, :receive, message)
+        if with.empty?
+          r
+        else
+          s(:call, r, :with, *with)
+        end
       end
 
       def receive_and_call_original(message)
         s(:call, s(:call, nil, :receive, message), :and_call_original)
       end
 
-      def receive_and_return(message, return_values)
-        s(:call, receive(message), :and_return, *return_values)
+      def receive_and_return(message, return_values, with = [])
+        s(:call, receive(message, with), :and_return, *return_values)
       end
 
       def require_spec_helper

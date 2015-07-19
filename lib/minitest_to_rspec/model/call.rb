@@ -35,7 +35,7 @@ module MinitestToRspec
         end
 
         def method_name?(exp, name)
-          exp.sexp_type == :call && new(exp).method_name == name
+          exp.sexp_type == :call && new(exp).method_name.to_s == name.to_s
         end
       end
 
@@ -68,6 +68,13 @@ module MinitestToRspec
 
       def assert_raises?
         method_name == :assert_raises && raise_error_args?
+      end
+
+      def calls_in_receiver_chain
+        receiver_chain.
+          compact.
+          select { |r| sexp_type?(:call, r) }.
+          map { |r| Call.new(r) }
       end
 
       def method_name
@@ -109,6 +116,42 @@ module MinitestToRspec
         else
           raise TypeError
         end
+      end
+
+      # Consider the following chain of method calls:
+      #
+      #     @a.b.c
+      #
+      # whose S-expression is
+      #
+      #     s(:call, s(:call, s(:call, nil, :a), :b), :c)
+      #
+      # the "receiver chain" is
+      #
+      #     [
+      #       s(:call, s(:call, nil, :a), :b),
+      #       s(:call, nil, :a),
+      #       nil
+      #     ]
+      #
+      # The order of the returned array matches the order in which
+      # messages are received, i.e. the order of execution.
+      #
+      # Note that the final receiver `nil` is included. This `nil`
+      # represents the implicit receiver, e.g. `self` or `main`.
+      #
+      def receiver_chain
+        receivers = []
+        ptr = @exp
+        while sexp_type?(:call, ptr)
+          receivers << ptr[1]
+          ptr = ptr[1]
+        end
+        receivers
+      end
+
+      def receiver_chain_include?(method_name)
+        receiver_chain.compact.any? { |r| Call.method_name?(r, method_name) }
       end
 
       def require_test_helper?

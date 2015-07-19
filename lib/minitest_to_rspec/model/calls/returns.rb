@@ -8,26 +8,23 @@ module MinitestToRspec
       # Represents a call to `returns`, the stubbing method
       # from `mocha`.
       class Returns < Call
-        KNOWN_RECEIVERS = %i[stubs expects]
-        RSPEC_MOCK_METHODS = { expects: :expect, stubs: :allow }
+        KNOWN_RECEIVERS = %i[stubs expects with]
 
         def initialize(exp)
           @exp = exp
           raise UnknownVariant unless known_variant?
         end
 
-        def any_instance?
-          rcr = receiver_call.receiver
-          if !rcr.nil? && sexp_type?(:call, rcr)
-            Call.new(rcr).method_name == :any_instance
-          else
-            false
-          end
+        def stub?
+          receiver_chain_include?(:stubs)
         end
 
-        # The message recipient
-        def msg_recipient
-          receiver_call.receiver
+        def any_instance?
+          receiver_chain_include?(:any_instance)
+        end
+
+        def expectation?
+          receiver_chain_include?(:expects)
         end
 
         def known_variant?
@@ -40,13 +37,25 @@ module MinitestToRspec
         end
 
         def message
-          receiver_call.arguments[0]
+          calls_in_receiver_chain.
+            find { |c| [:stubs, :expects].include? c.method_name }.
+            arguments[0]
         end
 
         # To avoid a `ProcessingError` please check `known_variant?`
         # before calling `rspec_mocks_method`.
         def rspec_mocks_method
-          RSPEC_MOCK_METHODS[receiver_call.method_name]
+          s = stub?
+          e = expectation?
+          if s && e
+            raise ProcessingError, "Method chain contains stubs and expects"
+          elsif s
+            :allow
+          elsif e
+            :expect
+          else
+            raise ProcessingError, "Found returns without stubs or expects"
+          end
         end
 
         # Returns `Sexp` representing the object that will receive
@@ -55,15 +64,21 @@ module MinitestToRspec
         #     banana.stubs(:delicious?).returns(true)
         #     Kiwi.any_instance.stubs(:delicious?).returns(false)
         #
-        # The `rspec_msg_recipient` is `banana` and `Kiwi`, respectively.
+        # On the first line, the `rspec_msg_recipient` is `banana`. On the
+        # second, `Kiwi`.
         #
         def rspec_msg_recipient
-          any_instance? ? Call.new(msg_recipient).receiver : msg_recipient
+          receiver_chain.compact.last
         end
 
         # The return values
         def values
           arguments
+        end
+
+        def with
+          w = calls_in_receiver_chain.find { |c| c.method_name == :with }
+          w.nil? ? [] : w.arguments
         end
       end
     end

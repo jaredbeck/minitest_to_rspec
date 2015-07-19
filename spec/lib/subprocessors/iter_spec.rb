@@ -8,7 +8,7 @@ module MinitestToRspec
         context "not an :iter" do
           it "raises error" do
             expect {
-              described_class.new(s(:nil))
+              described_class.new(s(:nil), false, false)
             }.to raise_error(TypeError)
           end
         end
@@ -20,7 +20,7 @@ module MinitestToRspec
         end
 
         def process(input)
-          described_class.new(input).process
+          described_class.new(input, true, true).process
         end
 
         it "replaces assert_difference with expect to change" do

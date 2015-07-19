@@ -9,10 +9,10 @@ module MinitestToRspec
       # Takes `sexp`, a `:class` s-expression, and `rails`, a
       # boolean indicating that `rspec-rails` conventions (like
       # `:type` metadata) should be used.
-      def initialize(sexp, rails)
+      def initialize(sexp, rails, mocha)
+        super(rails, mocha)
         @exp = Model::Klass.new(sexp)
         sexp.clear
-        @rails = rails
       end
 
       def process

@@ -7,6 +7,7 @@ Converts [minitest][8] files to [rspec][9].
 - Selected assertions from [Test::Unit][26], [minitest][8],
   and [ActiveSupport][27] are converted to [rspec-expectations][25].
 - Selected methods from [mocha][28] are converted to [rspec-mocks][24].
+  (Experimental)
 
 Example
 -------
@@ -43,7 +44,7 @@ Usage
 ### CLI
 
 ```bash
-bundle exec mt2rspec [--rails] source_file [target_file]
+bundle exec mt2rspec [--rails] [--mocha] source_file [target_file]
 bundle exec mt2rspec --help
 ```
 
@@ -51,7 +52,8 @@ bundle exec mt2rspec --help
 
 ```ruby
 require 'minitest_to_rspec'
-MinitestToRspec::Converter.new.convert("assert('banana')")
+converter = MinitestToRspec::Converter.new(rails: false, mocha: false)
+converter.convert("assert('banana')")
 #=> "expect(\"banana\").to(be_truthy)"
 ```
 

@@ -11,30 +11,33 @@ module MinitestToRspec
     E_CANNOT_CREATE_TARGET_DIR = 5.freeze
 
     BANNER = <<EOS.freeze
-Usage: mt2rspec --rails source_file [target_file]
+Usage: mt2rspec [--rails] [--mocha] source_file [target_file]
 
-Reads source_file, writes target_file.  If target_file is omitted,
-its location will be inferred.  For example, test/fruit/banana_test.rb
-implies spec/fruit/banana_spec.rb.
+Reads source_file, writes target_file. If target_file is omitted,
+its location will be inferred. For example, test/fruit/banana_test.rb
+implies spec/fruit/banana_spec.rb. If the target directory doesn't
+exist, it will be created.
 
 Options:
 EOS
-
+    OPT_MOCHA = "Convert mocha to rspec-mocks. (Experimental)"
     OPT_RAILS = <<EOS.gsub(/\n/, " ").freeze
 Requires rails_helper instead of spec_helper.
 Passes :type metadatum to RSpec.describe.
 EOS
 
-    attr_reader :rails, :source, :target
+    attr_reader :source, :target
 
     def initialize(args)
       opts = Trollop.options(args) do
         version MinitestToRspec::VERSION
         banner BANNER
         opt :rails, OPT_RAILS, short: :none
+        opt :mocha, OPT_MOCHA, short: :none
       end
 
       @rails = opts[:rails]
+      @mocha = opts[:mocha]
       case args.length
       when 2
         @source, @target = args
@@ -74,7 +77,7 @@ EOS
     end
 
     def converter
-      Converter.new(rails: rails)
+      Converter.new(mocha: @mocha, rails: @rails)
     end
 
     def ensure_target_directory(target)

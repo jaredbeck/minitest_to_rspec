@@ -6,19 +6,37 @@ require_relative "base"
 module MinitestToRspec
   module Subprocessors
     class Call < Base
-      def initialize(sexp, rails)
+
+      # Mocha methods will only be processed if `--mocha` flag was given,
+      # i.e. `mocha` argument in constructor is true.
+      MOCHA_METHODS = %i[
+        expects
+        once
+        returns
+        stub
+        stubs
+        stub_everything
+        twice
+      ]
+
+      def initialize(sexp, rails, mocha)
+        super(rails, mocha)
         @exp = Model::Call.new(sexp)
         sexp.clear
-        @rails = rails
       end
 
       # Given a `Model::Call`, returns a `Sexp`
       def process
-        if respond_to?(name_of_processing_method, true)
+        if process?
           send(name_of_processing_method)
         else
           @exp.original
         end
+      end
+
+      def process?
+        respond_to?(name_of_processing_method, true) &&
+          (@mocha || !MOCHA_METHODS.include?(@exp.method_name))
       end
 
       private

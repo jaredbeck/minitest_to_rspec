@@ -4,7 +4,7 @@ Change Log
 This project follows [semver 2.0.0][1] and the recommendations
 of [keepachangelog.com][2].
 
-Unreleased
+0.7.0
 -----
 
 ### Changed
@@ -15,9 +15,12 @@ Unreleased
 
 ### Added
 - Converts assert_not_nil
-- CLI: creates `target_file` directory if it does not exist
+- CLI
+  - Added `--mocha` flag. If present, converts mocha to
+    rspec-mocks. (Experimental)
+  - Creates `target_file` directory if it does not exist
 - Experimental
-  - mocah: with
+  - mocha: with
 
 ### Fixed
 - `__FILE__` keyword in input

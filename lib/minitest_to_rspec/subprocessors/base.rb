@@ -5,6 +5,11 @@ module MinitestToRspec
     class Base
       include SexpAssertions
 
+      def initialize(rails, mocha)
+        @rails = rails
+        @mocha = mocha
+      end
+
       # Returns a s-expression representing an rspec-mocks stub.
       def allow_to(msg_recipient, matcher, any_instance = false)
         allow_method = any_instance ? :allow_any_instance_of : :allow
@@ -64,7 +69,7 @@ module MinitestToRspec
       #
       # TODO: `full_process` may not be the best name.
       def full_process(obj)
-        obj.is_a?(Sexp) ? Processor.new(false).process(obj) : obj
+        obj.is_a?(Sexp) ? Processor.new(@rails, @mocha).process(obj) : obj
       end
 
       def matcher(name, *args)

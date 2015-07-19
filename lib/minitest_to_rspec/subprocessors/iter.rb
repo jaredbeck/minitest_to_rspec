@@ -4,7 +4,8 @@ require_relative "../model/iter"
 module MinitestToRspec
   module Subprocessors
     class Iter < Base
-      def initialize(sexp)
+      def initialize(sexp, rails, mocha)
+        super(rails, mocha)
         @exp = Model::Iter.new(sexp)
         sexp.clear
       end

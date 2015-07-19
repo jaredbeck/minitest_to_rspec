@@ -19,9 +19,8 @@ module MinitestToRspec
       to_not
     ]
 
-    def initialize(options = {})
-      @options = options
-      @processor = Processor.new(@options[:rails])
+    def initialize(rails: false, mocha: false)
+      @processor = Processor.new(rails, mocha)
     end
 
     # - `input` - Contents of a ruby file.

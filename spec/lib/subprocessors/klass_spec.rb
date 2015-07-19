@@ -10,8 +10,8 @@ module MinitestToRspec
           RubyParser.new.parse(str)
         end
 
-        def process(exp, rails = false)
-          described_class.new(exp, rails).process
+        def process(exp, rails = false, mocha = true)
+          described_class.new(exp, rails, mocha).process
         end
 
         context "unexpected class expression" do

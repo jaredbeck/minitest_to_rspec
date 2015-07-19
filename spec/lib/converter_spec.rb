@@ -13,9 +13,8 @@ module MinitestToRspec
     # Directories under `spec/fixtures`
     FIXTURE_DIRS = Dir.glob("#{SPEC_FIXTURES}/*")
 
-    def convert(input, file_path, options = nil)
-      options ||= { rails: false }
-      described_class.new(options).convert(input, file_path)
+    def convert(input, file_path, rails, mocha)
+      described_class.new(rails: rails, mocha: mocha).convert(input, file_path)
     end
 
     def input_file_path(fixture)
@@ -50,30 +49,29 @@ module MinitestToRspec
       FIXTURE_DIRS.each do |fixture|
         it "converts: #{fixture}" do
           expected = read_output(fixture).strip
-          options = { rails: rails?(fixture) }
           input = read_input(fixture)
           path = input_file_path(fixture)
-          calculated = convert(input, path, options).strip
+          calculated = convert(input, path, rails?(fixture), true).strip
           expect(calculated).to eq(expected)
         end
       end
 
       it "supports rails option" do
         expect(
-          convert("require 'test_helper'", nil, rails: true)
+          convert("require 'test_helper'", nil, true, false)
         ).to eq('require "rails_helper"')
       end
 
       context "__FILE__ keyword" do
         it "replaces with the given file path" do
           expect(
-            convert("__FILE__", "/banana/kiwi/mango")
+            convert("__FILE__", "/banana/kiwi/mango", false, false)
           ).to eq('"/banana/kiwi/mango"')
         end
 
         it "replaces with helpful message when not provided" do
           expect(
-            convert("__FILE__", nil)
+            convert("__FILE__", nil, false, false)
           ).to match(/No file path provided/)
         end
       end

@@ -14,8 +14,8 @@ module MinitestToRspec
         RubyParser.new.parse(ruby)
       end
 
-      def process(input, rails = false)
-        described_class.new(input, rails).process
+      def process(input, rails = false, mocha = true)
+        described_class.new(input, rails, mocha).process
       end
 
       context "assert" do

@@ -2,7 +2,7 @@ require "spec_helper"
 
 module MinitestToRspec
   RSpec.describe Processor do
-    let(:processor) { described_class.new(false) }
+    let(:processor) { described_class.new(false, true) }
 
     describe "#process_call" do
       let(:delegate) { Subprocessors::Call }
@@ -11,7 +11,7 @@ module MinitestToRspec
         input = s(:call)
         allow(delegate).to receive(:new).and_call_original
         processor.process(input)
-        expect(delegate).to have_received(:new).with(input, false)
+        expect(delegate).to have_received(:new).with(input, false, true)
       end
     end
 
@@ -22,7 +22,7 @@ module MinitestToRspec
         input = s(:class, :Banana)
         allow(delegate).to receive(:new).and_call_original
         processor.process(input)
-        expect(delegate).to have_received(:new).with(input, false)
+        expect(delegate).to have_received(:new).with(input, false, true)
       end
     end
 
@@ -33,7 +33,7 @@ module MinitestToRspec
         input = s(:iter)
         allow(delegate).to receive(:new).and_call_original
         processor.process(input)
-        expect(delegate).to have_received(:new).with(input)
+        expect(delegate).to have_received(:new).with(input, false, true)
       end
     end
   end

@@ -12,9 +12,7 @@ Gem::Specification.new do |spec|
 
   spec.summary = "Converts minitest files to rspec"
   spec.description = <<-EOS
-A command-line tool for converting minitest files to rspec.  Uses
-Ryan Davis' excellent libraries: ruby_parser, sexp_processor, and
-ruby2ruby.
+A command-line tool for converting minitest files to rspec.
   EOS
   spec.homepage = "https://github.com/jaredbeck/minitest_to_rspec"
   spec.license = "MIT"

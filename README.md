@@ -9,8 +9,7 @@ Converts [minitest][8] files to [rspec][9].
 - Selected methods from [mocha][28] are converted to [rspec-mocks][24].
   (Experimental)
 
-Example
--------
+## Example
 
 Input:
 
@@ -38,14 +37,19 @@ RSpec.describe Array do
 end
 ```
 
-Usage
------
+## Install
+
+```bash
+gem install minitest_to_rspec
+```
+
+## Usage
 
 ### CLI
 
 ```bash
-bundle exec mt2rspec [--rails] [--mocha] source_file [target_file]
-bundle exec mt2rspec --help
+mt2rspec [--rails] [--mocha] source_file [target_file]
+mt2rspec --help
 ```
 
 ### Ruby
@@ -57,8 +61,7 @@ converter.convert("assert('banana')")
 #=> "expect(\"banana\").to(be_truthy)"
 ```
 
-Output
-------
+## Output
 
 The primary goal is correctness, but [code style][34] is also important. To
 allow us to configure our output, we use [sexp2ruby][33] instead of
@@ -68,8 +71,7 @@ use of them.
 Comments are discarded by [ruby_parser][14], so we have no way of
 preserving them.
 
-Supported Assertions
---------------------
+## Supported Assertions
 
 Selected assertions from [minitest][8], [Test::Unit][26], and
 [ActiveSupport][27]. See [doc/supported_assertions.md][5] for rationale.
@@ -91,8 +93,7 @@ assert_not_nil              |       |
 refute                      |       |
 refute_equal                |       |
 
-Supported Mocha
----------------
+## Supported Mocha
 
 Mocha                 | Arity | Block | Notes
 --------------------- | ----- | ----- | -------
@@ -106,8 +107,7 @@ Mocha                 | Arity | Block | Notes
 
 To do: [at_least, never, raises, etc.][30]
 
-Acknowledgements
-----------------
+## Acknowledgements
 
 This project would not be possible without [ruby_parser][14],
 [sexp_processor][15], and [ruby2ruby][16] by [Ryan Davis][17].

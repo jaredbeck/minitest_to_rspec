@@ -1,2 +1,3 @@
 require "spec_helper"
-RSpec.describe Banana { }
+RSpec.describe Banana do
+end

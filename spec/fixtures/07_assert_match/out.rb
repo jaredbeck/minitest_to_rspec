@@ -1,1 +1,3 @@
-it "banana matches nana" { expect("banana").to match(/nana\Z/) }
+it "banana matches nana" do
+  expect("banana").to match(/nana\Z/)
+end

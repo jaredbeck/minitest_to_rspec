@@ -4,6 +4,21 @@ Change Log
 This project follows [semver 2.0.0][1] and the recommendations
 of [keepachangelog.com][2].
 
+0.7.1
+-----
+
+### Changed
+
+None
+
+### Added
+
+None
+
+### Fixed
+
+- Update sexp2ruby to 0.0.4 (was 0.0.3)
+
 0.7.0
 -----
 

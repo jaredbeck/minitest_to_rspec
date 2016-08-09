@@ -2,6 +2,8 @@ require "spec_helper"
 RSpec.describe Banana do
   include Monkeys
   before { fend_off_the_monkeys }
-  it "is delicious" { expect(Banana.new.delicious?).to eq(true) }
+  it "is delicious" do
+    expect(Banana.new.delicious?).to eq(true)
+  end
   after { appologize_to_the_monkeys }
 end

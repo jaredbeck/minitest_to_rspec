@@ -24,7 +24,7 @@ A command-line tool for converting minitest files to rspec.
   spec.required_ruby_version = ">= 2.0.0"
 
   spec.add_runtime_dependency "ruby_parser", "~> 3.7"
-  spec.add_runtime_dependency "sexp2ruby", "~> 0.0.3"
+  spec.add_runtime_dependency "sexp2ruby", "~> 0.0.4"
   spec.add_runtime_dependency "trollop", "~> 2.1"
 
   spec.add_development_dependency "bundler", "~> 1.7"

@@ -1,0 +1,6 @@
+inherit_from: .rubocop_todo.yml
+
+AllCops:
+  Exclude:
+    - spec/fixtures/**/in.rb # we should lint out.rb though
+  TargetRubyVersion: 2.0

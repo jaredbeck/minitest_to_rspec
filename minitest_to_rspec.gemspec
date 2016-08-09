@@ -32,6 +32,7 @@ A command-line tool for converting minitest files to rspec.
   spec.add_development_dependency "codeclimate-test-reporter", "~> 0.4.7"
   spec.add_development_dependency "rake", "~> 10.4"
   spec.add_development_dependency "rspec", "~> 3.2"
+  spec.add_development_dependency "rubocop", "~> 0.42.0"
   spec.add_development_dependency "pry", "~> 0.10.1"
   spec.add_development_dependency "pry-nav", "~> 0.2.4"
 end

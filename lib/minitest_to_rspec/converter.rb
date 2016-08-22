@@ -1,5 +1,6 @@
 require "ruby_parser"
-require "sexp2ruby"
+require "ruby2ruby"
+require "tempfile"
 require_relative "processor"
 require_relative "errors"
 
@@ -27,10 +28,27 @@ module MinitestToRspec
     # - `file_path` - Optional. Value will replace any `__FILE__`
     #   keywords in the input.
     def convert(input, file_path = nil)
-      render process parse(input, file_path)
+      lint render process parse(input, file_path)
     end
 
     private
+
+    def lint(str)
+      f = Tempfile.new("minitest_to_rspec")
+      f.write(str)
+      f.flush
+      system lint_cmd(f)
+      f.rewind
+      f.read
+    ensure
+      f.close
+      f.unlink
+    end
+
+    def lint_cmd(file)
+      bin = Gem.bin_path("rubocop", "rubocop", "~> 0.42.0")
+      format "%s --auto-correct %s &> /dev/null", bin, file.path.shellescape
+    end
 
     # Parses input string and returns Abstract Syntax Tree (AST)
     # as an S-expression.
@@ -53,10 +71,7 @@ module MinitestToRspec
     end
 
     def renderer
-      Sexp2Ruby::Processor.new(
-        hash_syntax: :ruby19,
-        no_paren_methods: NO_PAREN_METHODS
-      )
+      Ruby2Ruby.new
     end
   end
 end

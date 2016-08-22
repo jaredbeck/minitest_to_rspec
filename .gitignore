@@ -1,4 +1,5 @@
 .ruby-version
+.DS_Store
 /.bundle/
 /.yardoc
 /Gemfile.lock

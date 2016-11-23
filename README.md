@@ -112,7 +112,7 @@ To do: [at_least, never, raises, etc.][30]
 This project would not be possible without [ruby_parser][14],
 [sexp_processor][15], and [ruby2ruby][16] by [Ryan Davis][17].
 
-[1]: https://travis-ci.org/jaredbeck/minitest_to_rspec.svg
+[1]: https://travis-ci.org/jaredbeck/minitest_to_rspec.svg?branch=master
 [2]: https://travis-ci.org/jaredbeck/minitest_to_rspec
 [3]: https://codeclimate.com/github/jaredbeck/minitest_to_rspec/badges/gpa.svg
 [4]: https://codeclimate.com/github/jaredbeck/minitest_to_rspec

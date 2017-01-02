@@ -1,18 +1,18 @@
-allow(a).to receive(:x).and_return(1).once
-allow(a).to receive(:x).and_return(1).twice
-allow(a).to receive(:x).with(:y).and_return(1).once
-allow(a).to receive(:x).with(:y).and_return(1).twice
-expect(a).to receive(:x).and_call_original.once
-expect(a).to receive(:x).and_call_original.twice
-expect(a).to receive(:x).and_return(1).once
-expect(a).to receive(:x).and_return(1).twice
-expect(a).to receive(:x).with(:y).and_return(1).once
-expect(a).to receive(:x).with(:y).and_return(1).twice
-allow_any_instance_of(A).to receive(:x).and_return(1).once
-allow_any_instance_of(A).to receive(:x).and_return(1).twice
-expect_any_instance_of(A).to receive(:x).and_return(1).once
-expect_any_instance_of(A).to receive(:x).and_return(1).twice
-allow_any_instance_of(A).to receive(:x).with(:y).and_return(1).once
-allow_any_instance_of(A).to receive(:x).with(:y).and_return(1).twice
-expect_any_instance_of(A).to receive(:x).with(:y).and_return(1).once
-expect_any_instance_of(A).to receive(:x).with(:y).and_return(1).twice
+allow(a).to(receive(:x).and_return(1).once)
+allow(a).to(receive(:x).and_return(1).twice)
+allow(a).to(receive(:x).with(:y).and_return(1).once)
+allow(a).to(receive(:x).with(:y).and_return(1).twice)
+expect(a).to(receive(:x).and_call_original.once)
+expect(a).to(receive(:x).and_call_original.twice)
+expect(a).to(receive(:x).and_return(1).once)
+expect(a).to(receive(:x).and_return(1).twice)
+expect(a).to(receive(:x).with(:y).and_return(1).once)
+expect(a).to(receive(:x).with(:y).and_return(1).twice)
+allow_any_instance_of(A).to(receive(:x).and_return(1).once)
+allow_any_instance_of(A).to(receive(:x).and_return(1).twice)
+expect_any_instance_of(A).to(receive(:x).and_return(1).once)
+expect_any_instance_of(A).to(receive(:x).and_return(1).twice)
+allow_any_instance_of(A).to(receive(:x).with(:y).and_return(1).once)
+allow_any_instance_of(A).to(receive(:x).with(:y).and_return(1).twice)
+expect_any_instance_of(A).to(receive(:x).with(:y).and_return(1).once)
+expect_any_instance_of(A).to(receive(:x).with(:y).and_return(1).twice)

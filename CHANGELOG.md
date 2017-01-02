@@ -4,6 +4,23 @@ Change Log
 This project follows [semver 2.0.0][1] and the recommendations
 of [keepachangelog.com][2].
 
+0.8.0
+-----
+
+### Changed
+
+- No longer care about code style of output. See discussion in readme.
+- Drop support for ruby 2.0
+
+### Added
+
+- Update ruby_parser to 3.8 (was 3.7)
+- Use the official ruby2ruby instead of my sketchy sexp2ruby fork
+
+### Fixed
+
+None
+
 0.7.1
 -----
 

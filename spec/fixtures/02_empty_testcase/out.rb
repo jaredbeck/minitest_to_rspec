@@ -1,3 +1,2 @@
-require "spec_helper"
-RSpec.describe Banana do
-end
+require("spec_helper")
+RSpec.describe(Banana) { }

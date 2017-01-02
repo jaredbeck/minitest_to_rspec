@@ -1,4 +1,3 @@
 module Fruit
-  RSpec.describe BananaDecorator, type: :decorator do
-  end
+  RSpec.describe(BananaDecorator, :type => :decorator) { }
 end

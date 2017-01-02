@@ -59,7 +59,7 @@ module MinitestToRspec
       it "supports rails option" do
         expect(
           convert("require 'test_helper'", nil, true, false)
-        ).to eq('require "rails_helper"')
+        ).to eq('require("rails_helper")')
       end
 
       context "__FILE__ keyword" do

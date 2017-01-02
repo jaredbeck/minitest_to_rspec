@@ -28,14 +28,16 @@ end
 Output:
 
 ```ruby
-require "spec_helper"
-RSpec.describe Array do
-  it "changes length" do
+require("spec_helper")
+RSpec.describe(Array) do
+  it("changes length") do
     ary = []
-    expect { ary.push(:x) }.to change { ary.length }
+    expect { ary.push(:x) }.to(change { ary.length })
   end
 end
 ```
+
+You might not like the code style of the output. More on that below.
 
 ## Install
 
@@ -63,10 +65,12 @@ converter.convert("assert('banana')")
 
 ## Output
 
-The primary goal is correctness, but [code style][34] is also important. To
-allow us to configure our output, we use [sexp2ruby][33] instead of
-[ruby2ruby][6]. As [sexp2ruby][33] adds more configuration options, we'll make
-use of them.
+The only goal is correctness. [Code style][34] is not a consideration.
+Providing the level of configuration necessary to make everyone happy would
+be a huge distraction from the main purpose.
+
+After conversion, I recommend using [rubocop][35]'s awesome `--auto-correct`
+feature to apply your preferred code style.
 
 Comments are discarded by [ruby_parser][14], so we have no way of
 preserving them.
@@ -144,5 +148,5 @@ This project would not be possible without [ruby_parser][14],
 [30]: http://www.rubydoc.info/github/floehopper/mocha/Mocha/Expectation
 [31]: http://www.rubydoc.info/github/floehopper/mocha/Mocha/Expectation#once-instance_method
 [32]: http://www.rubydoc.info/github/floehopper/mocha/Mocha/Expectation#twice-instance_method
-[33]: https://github.com/jaredbeck/sexp2ruby
 [34]: https://github.com/bbatsov/ruby-style-guide
+[35]: https://github.com/bbatsov/rubocop

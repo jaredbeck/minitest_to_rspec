@@ -2,7 +2,7 @@
 
 Converts [minitest][8] files to [rspec][9].
 
-[![Build Status][1]][2] [![Code Climate][3]][4] [![Test Coverage][7]][4]
+[![Build Status][1]][2]
 
 - Selected assertions from [Test::Unit][26], [minitest][8],
   and [ActiveSupport][27] are converted to [rspec-expectations][25].
@@ -118,11 +118,8 @@ This project would not be possible without [ruby_parser][14],
 
 [1]: https://travis-ci.org/jaredbeck/minitest_to_rspec.svg?branch=master
 [2]: https://travis-ci.org/jaredbeck/minitest_to_rspec
-[3]: https://codeclimate.com/github/jaredbeck/minitest_to_rspec/badges/gpa.svg
-[4]: https://codeclimate.com/github/jaredbeck/minitest_to_rspec
 [5]: https://github.com/jaredbeck/minitest_to_rspec/blob/master/doc/supported_assertions.md
 [6]: https://github.com/seattlerb/ruby2ruby
-[7]: https://codeclimate.com/github/jaredbeck/minitest_to_rspec/badges/coverage.svg
 [8]: https://github.com/jaredbeck/minitest_to_rspec/blob/master/doc/minitest.md
 [9]: https://github.com/jaredbeck/minitest_to_rspec/blob/master/doc/rspec.md
 [10]: http://www.rubydoc.info/gems/test-unit/3.0.9/Test/Unit/Assertions#assert_nothing_raised-instance_method

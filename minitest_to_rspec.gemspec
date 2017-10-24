@@ -21,18 +21,21 @@ A command-line tool for converting minitest files to rspec.
     f.match(%r{^(test|spec|features)/})
   }
   spec.require_paths = ["lib"]
-  spec.required_ruby_version = ">= 2.1.0"
+  spec.required_ruby_version = ">= 2.2.0"
 
   spec.add_runtime_dependency "ruby_parser", "~> 3.8"
   spec.add_runtime_dependency "ruby2ruby", "~> 2.3"
   spec.add_runtime_dependency "trollop", "~> 2.1"
 
+  # Temporary runtime dependency. It seems there were breaking changes in
+  # sexp_processor between 4.7 and 4.10. When we have adapted to these breaking
+  # changes, we can lift this constraint.
+  # https://github.com/jaredbeck/minitest_to_rspec/issues/4
+  spec.add_runtime_dependency "sexp_processor", "< 4.8"
+
   spec.add_development_dependency "bundler", "~> 1.7"
-  spec.add_development_dependency "cane", "~> 2.6"
-  spec.add_development_dependency "codeclimate-test-reporter", "~> 0.4.7"
-  spec.add_development_dependency "rake", "~> 10.4"
-  spec.add_development_dependency "rspec", "~> 3.2"
-  spec.add_development_dependency "rubocop", "~> 0.42.0"
-  spec.add_development_dependency "pry", "~> 0.10.1"
-  spec.add_development_dependency "pry-nav", "~> 0.2.4"
+  spec.add_development_dependency "byebug", "~> 9.1"
+  spec.add_development_dependency "rake", "~> 12.1"
+  spec.add_development_dependency "rspec", "~> 3.5"
+  spec.add_development_dependency "rubocop", "~> 0.51.0"
 end

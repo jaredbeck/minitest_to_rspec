@@ -4,6 +4,22 @@ Change Log
 This project follows [semver 2.0.0][1] and the recommendations
 of [keepachangelog.com][2].
 
+Unreleased
+-----
+
+### Breaking Changes
+
+- Drop support for ruby < 2.2
+
+### Added
+
+None
+
+### Fixed
+
+- [#4](https://github.com/jaredbeck/minitest_to_rspec/issues/4) - Constrain
+  dependency: sexp_processor < 4.8
+
 0.8.0
 -----
 

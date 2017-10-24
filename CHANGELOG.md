@@ -17,7 +17,8 @@ None
 
 ### Fixed
 
-None
+- [#4](https://github.com/jaredbeck/minitest_to_rspec/issues/4) - Constrain
+  dependency: sexp_processor < 4.8
 
 0.8.0
 -----

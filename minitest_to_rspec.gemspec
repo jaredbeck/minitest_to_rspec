@@ -27,6 +27,12 @@ A command-line tool for converting minitest files to rspec.
   spec.add_runtime_dependency "ruby2ruby", "~> 2.3"
   spec.add_runtime_dependency "trollop", "~> 2.1"
 
+  # Temporary runtime dependency. It seems there were breaking changes in
+  # sexp_processor between 4.7 and 4.10. When we have adapted to these breaking
+  # changes, we can lift this constraint.
+  # https://github.com/jaredbeck/minitest_to_rspec/issues/4
+  spec.add_runtime_dependency "sexp_processor", "< 4.8"
+
   spec.add_development_dependency "bundler", "~> 1.7"
   spec.add_development_dependency "cane", "~> 2.6"
   spec.add_development_dependency "codeclimate-test-reporter", "~> 0.4.7"

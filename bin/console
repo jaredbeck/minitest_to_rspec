@@ -2,10 +2,6 @@
 
 require "bundler/setup"
 require "minitest_to_rspec"
-
-# You can also use a different console, if you like.
-# require "irb"
-# IRB.start
-
-require "pry"
-Pry.start
+require "byebug"
+require "irb"
+IRB.start

@@ -35,7 +35,7 @@ A command-line tool for converting minitest files to rspec.
 
   spec.add_development_dependency "bundler", "~> 1.7"
   spec.add_development_dependency "byebug", "~> 9.1"
-  spec.add_development_dependency "rake", "~> 10.4"
+  spec.add_development_dependency "rake", "~> 12.1"
   spec.add_development_dependency "rspec", "~> 3.5"
   spec.add_development_dependency "rubocop", "~> 0.42.0"
 end

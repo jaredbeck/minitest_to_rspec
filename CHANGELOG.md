@@ -9,6 +9,21 @@ Unreleased
 
 ### Breaking Changes
 
+- None
+
+### Added
+
+- None
+
+### Fixed
+
+- None
+
+0.9.0 (2017-10-24)
+-----
+
+### Breaking Changes
+
 - Drop support for ruby < 2.2
 
 ### Added

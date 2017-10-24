@@ -4,6 +4,21 @@ Change Log
 This project follows [semver 2.0.0][1] and the recommendations
 of [keepachangelog.com][2].
 
+Unreleased
+-----
+
+### Breaking Changes
+
+- Drop support for ruby < 2.2
+
+### Added
+
+None
+
+### Fixed
+
+None
+
 0.8.0
 -----
 

@@ -7,7 +7,6 @@ module MinitestToRspec
       def initialize(exp)
         assert_sexp_type(:defn, exp)
         @exp = exp.dup
-        @original = exp.dup
       end
 
       def body

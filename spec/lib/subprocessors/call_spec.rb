@@ -1,17 +1,15 @@
 require "spec_helper"
 require "ruby_parser"
+require 'helpers'
 
 module MinitestToRspec
   module Subprocessors
     RSpec.describe Call do
+      include Helpers
 
       # Returns an S-expression representing a method call.
       def exp(method_name, argument)
         s(:call, nil, method_name.to_sym, s(:str, argument.to_s))
-      end
-
-      def parse(ruby)
-        RubyParser.new.parse(ruby)
       end
 
       def process(input, rails = false, mocha = true)

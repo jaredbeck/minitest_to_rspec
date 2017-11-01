@@ -14,7 +14,7 @@ module MinitestToRspec
         sexp.clear
       end
 
-      # Given a `Model::Defn`, returns a `Sexp`
+      # Using a `Model::Defn`, returns a `Sexp`
       def process
         s(:iter,
           s(:call, nil, :it, s(:str, example_title)),

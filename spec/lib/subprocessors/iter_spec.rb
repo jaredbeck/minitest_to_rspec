@@ -1,12 +1,9 @@
 require "spec_helper"
 require "ruby_parser"
-require 'helpers'
 
 module MinitestToRspec
   module Subprocessors
     RSpec.describe Iter do
-      include Helpers
-
       describe ".new" do
         context "not an :iter" do
           it "raises error" do
@@ -18,6 +15,10 @@ module MinitestToRspec
       end
 
       describe "#process" do
+        def parse(ruby)
+          RubyParser.new.parse(ruby)
+        end
+
         def process(input)
           described_class.new(input, true, true).process
         end

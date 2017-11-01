@@ -1,11 +1,12 @@
 require "spec_helper"
 require "ruby_parser"
-require 'helpers'
 
 module MinitestToRspec
   module Subprocessors
     RSpec.describe Defn do
-      include Helpers
+      def parse(exp)
+        RubyParser.new.parse(exp)
+      end
 
       describe '.new' do
         context 'sexp_type is not :defn' do

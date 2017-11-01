@@ -1,13 +1,15 @@
 require "spec_helper"
 require "ruby_parser"
-require 'helpers'
 
 module MinitestToRspec
   module Subprocessors
     RSpec.describe Klass do
-      include Helpers
-
       describe "#process" do
+
+        def parse(str)
+          RubyParser.new.parse(str)
+        end
+
         def process(exp, rails = false, mocha = true)
           described_class.new(exp, rails, mocha).process
         end

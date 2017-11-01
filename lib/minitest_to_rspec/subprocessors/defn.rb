@@ -8,8 +8,6 @@ module MinitestToRspec
     class Defn < Base
       def initialize(sexp, rails, mocha)
         super(rails, mocha)
-        @rails = rails
-        @mocha = mocha
         @exp = Model::Defn.new(sexp)
         sexp.clear
       end

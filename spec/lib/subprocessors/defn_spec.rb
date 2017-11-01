@@ -25,7 +25,7 @@ module MinitestToRspec
         end
       end
 
-      describe '#generate_block' do
+      describe '#example_block' do
         it 'returns a sexp block and inner logic' do
           ruby = <<-RUBY
             def test_method_name
@@ -36,9 +36,9 @@ module MinitestToRspec
           allow_any_instance_of(::MinitestToRspec::Model::Defn)
             .to receive(:body).and_return(s(parse('assert_equal 1, 1')))
           sexp = RubyParser.new.parse(ruby)
-          generated_block = described_class.new(sexp, false, false).send(:generate_block)
-          expect(generated_block.first).to eq(:block)
-          expect(generated_block).to include(parse('expect(1).to(eq(1))'))
+          example_block = described_class.new(sexp, false, false).send(:example_block)
+          expect(example_block.first).to eq(:block)
+          expect(example_block).to include(parse('expect(1).to(eq(1))'))
         end
       end
     end

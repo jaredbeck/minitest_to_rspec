@@ -17,7 +17,7 @@ module MinitestToRspec
         s(:iter,
           s(:call, nil, :it, s(:str, example_title)),
           0,
-          generate_block)
+          example_block)
       end
 
       private
@@ -27,7 +27,7 @@ module MinitestToRspec
         @exp.method_name.sub(/^test_/, '').tr('_', ' ')
       end
 
-      def generate_block
+      def example_block
         block = s(:block)
         @exp.body.each_with_object(block) do |line, blk|
           blk << process_line(line)

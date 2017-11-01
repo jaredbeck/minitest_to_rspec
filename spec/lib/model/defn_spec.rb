@@ -4,7 +4,7 @@ require "ruby_parser"
 module MinitestToRspec
   module Model
     RSpec.describe Defn do
-      describe '#innards' do
+      describe '#body' do
         it 'returns sexp' do
           method = <<-RUBY
             def method_name
@@ -12,7 +12,7 @@ module MinitestToRspec
             end
           RUBY
           sexp = RubyParser.new.parse(method)
-          expect(described_class.new(sexp).innards)
+          expect(described_class.new(sexp).body)
             .to eq(s(s(:call, nil, :inner_method)))
         end
       end

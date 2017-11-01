@@ -34,7 +34,7 @@ module MinitestToRspec
           RUBY
 
           allow_any_instance_of(::MinitestToRspec::Model::Defn)
-            .to receive(:innards).and_return(s(parse('assert_equal 1, 1')))
+            .to receive(:body).and_return(s(parse('assert_equal 1, 1')))
           sexp = RubyParser.new.parse(ruby)
           generated_block = described_class.new(sexp, false, false).send(:generate_block)
           expect(generated_block.first).to eq(:block)

@@ -10,7 +10,7 @@ module MinitestToRspec
         @original = exp.dup
       end
 
-      def innards
+      def body
         @exp[3..-1]
       end
 

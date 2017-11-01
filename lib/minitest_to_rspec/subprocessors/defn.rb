@@ -31,13 +31,13 @@ module MinitestToRspec
 
       def generate_block
         block = s(:block)
-        @exp.innards.each_with_object(block) do |innard, blk|
-          blk << process_innard(innard)
+        @exp.body.each_with_object(block) do |line, blk|
+          blk << process_line(line)
         end
       end
 
-      def process_innard(innard)
-        ::MinitestToRspec::Processor.new(@rails, @mocha).process(innard)
+      def process_line(line)
+        ::MinitestToRspec::Processor.new(@rails, @mocha).process(line)
       end
     end
   end

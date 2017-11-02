@@ -13,3 +13,6 @@ Layout/FirstParameterIndentation:
 
 Layout/IndentHeredoc:
   EnforcedStyle: squiggly
+
+Layout/MultilineMethodCallBraceLayout:
+  Enabled: false

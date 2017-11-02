@@ -6,7 +6,7 @@ module MinitestToRspec
   RSpec.describe Converter do
     # Fixtures that represent rails use cases.  These will
     # instantiate Converter with `rails: true`.
-    RAILS_FIXTURES = [15, 20]
+    RAILS_FIXTURES = [15, 20].freeze
 
     # The path to `spec/fixtures`
     SPEC_FIXTURES = File.join(__dir__, '..', 'fixtures')

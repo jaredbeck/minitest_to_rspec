@@ -18,7 +18,7 @@ module MinitestToRspec
         stubs
         stub_everything
         twice
-      ]
+      ].freeze
 
       def initialize(sexp, rails, mocha)
         super(rails, mocha)

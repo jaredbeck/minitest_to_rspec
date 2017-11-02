@@ -9,7 +9,7 @@ module MinitestToRspec
       # Represents a call to `returns`, the stubbing method
       # from `mocha`.
       class Returns < Call
-        KNOWN_RECEIVERS = %i[stubs expects with]
+        KNOWN_RECEIVERS = %i[stubs expects with].freeze
 
         def initialize(exp)
           @exp = exp

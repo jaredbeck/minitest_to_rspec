@@ -23,16 +23,6 @@ Style/Documentation:
 
 # Offense count: 5
 # Cop supports --auto-correct.
-Style/MutableConstant:
-  Exclude:
-    - 'lib/minitest_to_rspec/cli.rb'
-    - 'lib/minitest_to_rspec/errors.rb'
-    - 'lib/minitest_to_rspec/model/calls/returns.rb'
-    - 'lib/minitest_to_rspec/subprocessors/call.rb'
-    - 'spec/lib/converter_spec.rb'
-
-# Offense count: 5
-# Cop supports --auto-correct.
 Style/RedundantFreeze:
   Exclude:
     - 'lib/minitest_to_rspec/cli.rb'

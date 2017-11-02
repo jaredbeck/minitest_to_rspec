@@ -16,3 +16,7 @@ Layout/IndentHeredoc:
 
 Layout/MultilineMethodCallBraceLayout:
   Enabled: false
+
+# We use the symbols `:true` and `:false` in S-expressions.
+Lint/BooleanSymbol:
+  Enabled: false

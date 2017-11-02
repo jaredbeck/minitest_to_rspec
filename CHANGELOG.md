@@ -1,11 +1,23 @@
-Change Log
-==========
+# Change Log
 
 This project follows [semver 2.0.0][1] and the recommendations
 of [keepachangelog.com][2].
 
-Unreleased
------
+## Unreleased
+
+### Breaking Changes
+
+- None
+
+### Added
+
+- None
+
+### Fixed
+
+- None
+
+## 0.10.0 (2017-11-01)
 
 ### Breaking Changes
 
@@ -18,13 +30,14 @@ Unreleased
 ### Added
 
 - MinitestToRspec.gem_version
+- [#7](https://github.com/jaredbeck/minitest_to_rspec/pull/7) - Support for
+  converting methods named test_*
 
 ### Fixed
 
 - None
 
-0.9.0 (2017-10-24)
------
+## 0.9.0 (2017-10-24)
 
 ### Breaking Changes
 
@@ -39,8 +52,7 @@ None
 - [#4](https://github.com/jaredbeck/minitest_to_rspec/issues/4) - Constrain
   dependency: sexp_processor < 4.8
 
-0.8.0
------
+## 0.8.0
 
 ### Changed
 
@@ -56,8 +68,7 @@ None
 
 None
 
-0.7.1
------
+## 0.7.1
 
 ### Changed
 
@@ -71,8 +82,7 @@ None
 
 - Update sexp2ruby to 0.0.4 (was 0.0.3)
 
-0.7.0
------
+## 0.7.0
 
 ### Changed
 - `assert` on a question-mark method converts to `eq(true)` instead
@@ -92,21 +102,18 @@ None
 ### Fixed
 - `__FILE__` keyword in input
 
-0.6.2
------
+## 0.6.2
 
 ### Fixed
 - Make runtime dependency on trollop explicit: declare in gemspec
 - Improve output: Fewer unnecessary parentheses: to, to_not
 
-0.6.1
------
+## 0.6.1
 
 ### Fixed
 - Improve output: Fewer unnecessary parentheses
 
-0.6.0
------
+## 0.6.0
 
 ### Added
 - Converts
@@ -118,16 +125,14 @@ None
   - Will have better output, e.g. ruby 1.9.3 hash syntax
   - Upgrade to ruby_parser 3.7
 
-0.5.0
------
+## 0.5.0
 
 ### Changed
 - Executable
   - Renamed from `minitest_to_rspec` to `mt2rspec`
   - The `target_file` argument is now optional
 
-0.4.0
------
+## 0.4.0
 
 ### Added
 - Experimental
@@ -138,8 +143,7 @@ None
 ### Fixed
 - NoMethodError when input contains stabby lambda
 
-0.3.0
------
+## 0.3.0
 
 ### Added
 - Converts
@@ -160,20 +164,17 @@ None
 ### Fixed
 - Improved error message for class definition using module shorthand
 
-0.2.1
------
+## 0.2.1
 
 ### Fixed
 - Declare ruby2ruby as a runtime dependency
 
-0.2.0
------
+## 0.2.0
 
 ### Added
 - CLI.  Usage: `minitest_to_rspec source_file target_file`
 
-0.1.0
------
+## 0.1.0
 
 Initial release.  11 assertions are supported.
 

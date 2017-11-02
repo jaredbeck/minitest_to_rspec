@@ -21,12 +21,6 @@ Style/Documentation:
     - 'lib/minitest_to_rspec/subprocessors/iter.rb'
     - 'lib/minitest_to_rspec/subprocessors/klass.rb'
 
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/Encoding:
-  Exclude:
-    - 'minitest_to_rspec.gemspec'
-
 # Offense count: 6
 # Configuration parameters: MinBodyLength.
 Style/GuardClause:

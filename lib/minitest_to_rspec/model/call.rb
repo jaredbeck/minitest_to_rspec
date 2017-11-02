@@ -4,7 +4,6 @@ require_relative "base"
 
 module MinitestToRspec
   module Model
-
     # Data object.  Represents a `:call` s-expression.
     class Call < Base
       attr_reader :original

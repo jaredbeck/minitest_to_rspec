@@ -4,7 +4,6 @@ require_relative "base"
 
 module MinitestToRspec
   module Model
-
     # Data object.  Represents a `:class` S-expression.
     class Klass < Base
       def initialize(exp)

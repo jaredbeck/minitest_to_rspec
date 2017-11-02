@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 module MinitestToRspec
-
   # Useful runtime assertions regarding S-expressions.
   module SexpAssertions
     def assert_sexp_type_array(type, obj)

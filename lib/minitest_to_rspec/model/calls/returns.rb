@@ -6,7 +6,6 @@ require_relative "../../errors"
 module MinitestToRspec
   module Model
     module Calls
-
       # Represents a call to `returns`, the stubbing method
       # from `mocha`.
       class Returns < Call

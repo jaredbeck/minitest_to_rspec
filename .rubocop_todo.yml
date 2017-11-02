@@ -6,21 +6,6 @@
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
-# Offense count: 8
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-# SupportedStyles: empty_lines, empty_lines_except_namespace, empty_lines_special, no_empty_lines
-Layout/EmptyLinesAroundModuleBody:
-  Exclude:
-    - 'lib/minitest_to_rspec/model/base.rb'
-    - 'lib/minitest_to_rspec/model/call.rb'
-    - 'lib/minitest_to_rspec/model/calls/returns.rb'
-    - 'lib/minitest_to_rspec/model/hash_exp.rb'
-    - 'lib/minitest_to_rspec/model/iter.rb'
-    - 'lib/minitest_to_rspec/model/klass.rb'
-    - 'lib/minitest_to_rspec/sexp_assertions.rb'
-    - 'spec/lib/sexp_assertions_spec.rb'
-
 # Offense count: 10
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SupportedStyles, IndentationWidth.

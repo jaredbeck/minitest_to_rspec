@@ -2,7 +2,6 @@
 
 module MinitestToRspec
   module Model
-
     # Data object.  Represents a `:hash` S-expression.
     class HashExp < Base
       def initialize(sexp)

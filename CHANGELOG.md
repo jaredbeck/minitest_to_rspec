@@ -9,7 +9,7 @@ Unreleased
 
 ### Breaking Changes
 
-- None
+- Drop support for ruby < 2.3 so we can use frozen_string_literal
 
 ### Added
 

@@ -21,7 +21,7 @@ A command-line tool for converting minitest files to rspec.
     f.match(%r{^(test|spec|features)/})
   }
   spec.require_paths = ["lib"]
-  spec.required_ruby_version = ">= 2.2.0"
+  spec.required_ruby_version = ">= 2.3.0"
 
   spec.add_runtime_dependency "ruby_parser", "~> 3.8"
   spec.add_runtime_dependency "ruby2ruby", "~> 2.3"

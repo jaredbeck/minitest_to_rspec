@@ -39,9 +39,9 @@ module MinitestToRspec
         end
 
         def message
-          calls_in_receiver_chain.
-            find { |c| [:stubs, :expects].include? c.method_name }.
-            arguments[0]
+          calls_in_receiver_chain
+            .find { |c| [:stubs, :expects].include? c.method_name }
+            .arguments[0]
         end
 
         # To avoid a `ProcessingError` please check `known_variant?`

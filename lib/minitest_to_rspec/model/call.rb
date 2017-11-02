@@ -73,10 +73,10 @@ module MinitestToRspec
       end
 
       def calls_in_receiver_chain
-        receiver_chain.
-          compact.
-          select { |r| sexp_type?(:call, r) }.
-          map { |r| Call.new(r) }
+        receiver_chain
+          .compact
+          .select { |r| sexp_type?(:call, r) }
+          .map { |r| Call.new(r) }
       end
 
       def method_name

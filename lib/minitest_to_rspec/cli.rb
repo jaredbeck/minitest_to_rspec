@@ -95,9 +95,9 @@ EOS
     end
 
     def infer_target_from(source)
-      source.
-        gsub(/\Atest/, "spec").
-        gsub(/_test.rb\Z/, "_spec.rb")
+      source
+        .gsub(/\Atest/, "spec")
+        .gsub(/_test.rb\Z/, "_spec.rb")
     end
 
     def read_source

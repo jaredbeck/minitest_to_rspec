@@ -13,7 +13,7 @@ Unreleased
 
 ### Added
 
-- None
+- MinitestToRspec.gem_version
 
 ### Fixed
 

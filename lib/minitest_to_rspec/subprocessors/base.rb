@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative "../sexp_assertions"
 
 module MinitestToRspec

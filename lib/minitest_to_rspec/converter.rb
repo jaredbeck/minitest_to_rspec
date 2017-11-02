@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "ruby_parser"
 require "ruby2ruby"
 require_relative "processor"

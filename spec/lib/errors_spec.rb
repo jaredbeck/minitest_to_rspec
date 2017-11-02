@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module MinitestToRspec
   RSpec.describe ModuleShorthandError do
     describe "#message" do

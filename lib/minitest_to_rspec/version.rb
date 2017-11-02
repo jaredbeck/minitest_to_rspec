@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #:nodoc:
 module MinitestToRspec
   VERSION = "0.9.0".freeze

@@ -10,6 +10,10 @@ Unreleased
 ### Breaking Changes
 
 - Drop support for ruby < 2.3 so we can use frozen_string_literal
+- We may now return frozen strings, now that we are using frozen_string_literal.
+  This could affect methods like `Converter#convert`. Even if some method seems
+  to return a thawed string in some situations, users should simiply assume all
+  strings are frozen.
 
 ### Added
 

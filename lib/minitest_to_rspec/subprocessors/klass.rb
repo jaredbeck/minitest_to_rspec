@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative "../errors"
 require_relative "../model/klass"
 require_relative "base"

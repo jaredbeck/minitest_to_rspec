@@ -4,7 +4,6 @@ require_relative "base"
 
 module MinitestToRspec
   module Model
-
     # Data object.  Represents an `:iter` s-expression.
     class Iter < Base
       def initialize(exp)

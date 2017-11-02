@@ -3,7 +3,6 @@
 require "spec_helper"
 
 module MinitestToRspec
-
   class ClassWithSexpAssertions
     extend SexpAssertions
   end

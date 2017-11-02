@@ -5,6 +5,7 @@ require "minitest_to_rspec"
 require "trollop"
 
 module MinitestToRspec
+  # Command-Line Interface (CLI) instantiated by `bin/mt2rspec`
   class CLI
     E_USAGE               = 1.freeze
     E_FILE_NOT_FOUND      = 2.freeze
@@ -12,21 +13,21 @@ module MinitestToRspec
     E_CONVERT_FAIL        = 4.freeze
     E_CANNOT_CREATE_TARGET_DIR = 5.freeze
 
-    BANNER = <<EOS.freeze
-Usage: mt2rspec [--rails] [--mocha] source_file [target_file]
+    BANNER = <<~EOS.freeze
+      Usage: mt2rspec [--rails] [--mocha] source_file [target_file]
 
-Reads source_file, writes target_file. If target_file is omitted,
-its location will be inferred. For example, test/fruit/banana_test.rb
-implies spec/fruit/banana_spec.rb. If the target directory doesn't
-exist, it will be created.
+      Reads source_file, writes target_file. If target_file is omitted,
+      its location will be inferred. For example, test/fruit/banana_test.rb
+      implies spec/fruit/banana_spec.rb. If the target directory doesn't
+      exist, it will be created.
 
-Options:
-EOS
+      Options:
+    EOS
     OPT_MOCHA = "Convert mocha to rspec-mocks. (Experimental)"
-    OPT_RAILS = <<EOS.gsub(/\n/, " ").freeze
-Requires rails_helper instead of spec_helper.
-Passes :type metadatum to RSpec.describe.
-EOS
+    OPT_RAILS = <<~EOS.tr("\n", " ").freeze
+      Requires rails_helper instead of spec_helper.
+      Passes :type metadatum to RSpec.describe.
+    EOS
 
     attr_reader :source, :target
 
@@ -95,9 +96,9 @@ EOS
     end
 
     def infer_target_from(source)
-      source.
-        gsub(/\Atest/, "spec").
-        gsub(/_test.rb\Z/, "_spec.rb")
+      source
+        .gsub(/\Atest/, "spec")
+        .gsub(/_test.rb\Z/, "_spec.rb")
     end
 
     def read_source

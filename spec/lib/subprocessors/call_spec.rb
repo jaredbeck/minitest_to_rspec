@@ -6,7 +6,6 @@ require "ruby_parser"
 module MinitestToRspec
   module Subprocessors
     RSpec.describe Call do
-
       # Returns an S-expression representing a method call.
       def exp(method_name, argument)
         s(:call, nil, method_name.to_sym, s(:str, argument.to_s))
@@ -96,7 +95,7 @@ module MinitestToRspec
 
       context "create" do
         it "does not change factory call" do
-          input = -> {
+          input = lambda {
             s(:call,
               nil,
               :create,
@@ -195,8 +194,8 @@ module MinitestToRspec
           expect(
             process(parse("refute Kiwi.delicious?"))
           ).to eq(
-              parse("expect(Kiwi.delicious?).to eq(false)")
-            )
+            parse("expect(Kiwi.delicious?).to eq(false)")
+          )
         end
       end
 
@@ -221,17 +220,27 @@ module MinitestToRspec
 
         it "converts any_instance.expects" do
           expect(
-            process(parse("Banana.any_instance.stubs(:delicious?).returns(true)"))
+            process(
+              parse("Banana.any_instance.stubs(:delicious?).returns(true)")
+            )
           ).to eq(
-            parse("allow_any_instance_of(Banana).to receive(:delicious?).and_return(true)")
+            parse(
+              "allow_any_instance_of(Banana).to " \
+              "receive(:delicious?).and_return(true)"
+            )
           )
         end
 
         it "converts any_instance.stubs" do
           expect(
-            process(parse("Banana.any_instance.expects(:delicious?).returns(true)"))
+            process(
+              parse("Banana.any_instance.expects(:delicious?).returns(true)")
+            )
           ).to eq(
-            parse("expect_any_instance_of(Banana).to receive(:delicious?).and_return(true)")
+            parse(
+              "expect_any_instance_of(Banana).to " \
+              "receive(:delicious?).and_return(true)"
+            )
           )
         end
 

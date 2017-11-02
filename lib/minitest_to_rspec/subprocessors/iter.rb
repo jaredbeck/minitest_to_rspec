@@ -5,6 +5,7 @@ require_relative "../model/iter"
 
 module MinitestToRspec
   module Subprocessors
+    # Processes `s(:iter, ..)` expressions.
     class Iter < Base
       def initialize(sexp, rails, mocha)
         super(rails, mocha)

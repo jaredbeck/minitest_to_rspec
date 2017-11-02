@@ -8,6 +8,9 @@ require_relative "subprocessors/klass"
 require_relative "subprocessors/iter"
 
 module MinitestToRspec
+  # Consumes a `String` of minitest code and returns an S-expression
+  # representing equivalent RSpec code. The main method is `#process`. See
+  # `SexpProcessor` docs for details.
   class Processor < SexpProcessor
     def initialize(rails, mocha)
       super()

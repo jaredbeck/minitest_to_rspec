@@ -6,6 +6,7 @@ require_relative "processor"
 require_relative "errors"
 
 module MinitestToRspec
+  # Converts strings of minitest code. Does not read or write files.
   class Converter
     def initialize(rails: false, mocha: false)
       @processor = Processor.new(rails, mocha)

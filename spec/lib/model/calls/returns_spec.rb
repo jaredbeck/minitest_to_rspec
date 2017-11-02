@@ -7,7 +7,6 @@ module MinitestToRspec
   module Model
     module Calls
       RSpec.describe Returns do
-
         def parse(ruby)
           RubyParser.new.parse(ruby)
         end

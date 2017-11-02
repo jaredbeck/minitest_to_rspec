@@ -4,3 +4,54 @@ AllCops:
   Exclude:
     - spec/fixtures/**/*
   TargetRubyVersion: 2.3
+
+Layout/AlignParameters:
+  EnforcedStyle: with_fixed_indentation
+
+Layout/FirstParameterIndentation:
+  EnforcedStyle: consistent
+
+Layout/IndentHeredoc:
+  EnforcedStyle: squiggly
+
+Layout/MultilineMethodCallBraceLayout:
+  Enabled: false
+
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+
+# We use the symbols `:true` and `:false` in S-expressions.
+Lint/BooleanSymbol:
+  Enabled: false
+
+# Not useful compared to e.g. AbcSize
+Metrics/BlockLength:
+  Enabled: false
+
+# Not useful compared to e.g. AbcSize
+Metrics/ClassLength:
+  Enabled: false
+
+# Not useful compared to e.g. AbcSize
+Metrics/MethodLength:
+  Enabled: false
+
+# Not useful compared to e.g. AbcSize
+Metrics/ModuleLength:
+  Enabled: false
+
+# EOS is a well-known delimiter and thus satisfactory.
+Naming/HeredocDelimiterNaming:
+  Enabled: false
+
+# Prefer semantic delimiters, but avoid `end.x`. Too subtle to lint.
+Style/BlockDelimiters:
+  Enabled: false
+
+Style/Documentation:
+  Exclude:
+    - 'spec/**/*'
+
+# Guard clauses are great, but this is too subtle to lint.
+Style/GuardClause:
+  Enabled: false

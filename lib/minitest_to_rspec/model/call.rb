@@ -4,7 +4,6 @@ require_relative "base"
 
 module MinitestToRspec
   module Model
-
     # Data object.  Represents a `:call` s-expression.
     class Call < Base
       attr_reader :original
@@ -73,10 +72,10 @@ module MinitestToRspec
       end
 
       def calls_in_receiver_chain
-        receiver_chain.
-          compact.
-          select { |r| sexp_type?(:call, r) }.
-          map { |r| Call.new(r) }
+        receiver_chain
+          .compact
+          .select { |r| sexp_type?(:call, r) }
+          .map { |r| Call.new(r) }
       end
 
       def method_name

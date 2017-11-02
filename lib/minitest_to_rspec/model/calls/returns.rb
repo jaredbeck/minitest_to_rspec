@@ -6,11 +6,10 @@ require_relative "../../errors"
 module MinitestToRspec
   module Model
     module Calls
-
       # Represents a call to `returns`, the stubbing method
       # from `mocha`.
       class Returns < Call
-        KNOWN_RECEIVERS = %i[stubs expects with]
+        KNOWN_RECEIVERS = %i[stubs expects with].freeze
 
         def initialize(exp)
           @exp = exp
@@ -39,9 +38,9 @@ module MinitestToRspec
         end
 
         def message
-          calls_in_receiver_chain.
-            find { |c| [:stubs, :expects].include? c.method_name }.
-            arguments[0]
+          calls_in_receiver_chain
+            .find { |c| [:stubs, :expects].include? c.method_name }
+            .arguments[0]
         end
 
         # To avoid a `ProcessingError` please check `known_variant?`

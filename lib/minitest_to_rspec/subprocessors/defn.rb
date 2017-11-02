@@ -5,8 +5,8 @@ require_relative "base"
 
 module MinitestToRspec
   module Subprocessors
-    # Minitest tests can be defined as methods using names beginning with 'test_'.
-    # Process those tests into RSpec `it` example blocks.
+    # Minitest tests can be defined as methods using names beginning with
+    # 'test_'. Process those tests into RSpec `it` example blocks.
     class Defn < Base
       def initialize(sexp, rails, mocha)
         super(rails, mocha)

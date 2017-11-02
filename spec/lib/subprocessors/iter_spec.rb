@@ -91,13 +91,13 @@ module MinitestToRspec
           end
 
           it "does not replace assert_raise(e1, e2)" do
-            input = -> {
+            input = lambda {
               parse("assert_raise(NotDelicious, NotYellow) { Kiwi.delicious! }")
             }
             expect(process(input.call)).to eq(input.call)
           end
 
-          it "replaces assert_raise(e, str) with raise_error(e), discards fail msg" do
+          it "replaces assert_raise(e, str) with raise_error(e)" do
             input = parse <<-EOS
               assert_raise(NotDelicious, "Fruit should not be hairy") {
                 Kiwi.delicious!

@@ -38,7 +38,9 @@ module MinitestToRspec
           allow_any_instance_of(::MinitestToRspec::Model::Defn)
             .to receive(:body).and_return(s(parse('assert_equal 1, 1')))
           sexp = RubyParser.new.parse(ruby)
-          example_block = described_class.new(sexp, false, false).send(:example_block)
+          example_block = described_class
+            .new(sexp, false, false)
+            .send(:example_block)
           expect(example_block.first).to eq(:block)
           expect(example_block).to include(parse('expect(1).to(eq(1))'))
         end

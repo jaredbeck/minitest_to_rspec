@@ -7,6 +7,7 @@ require_relative "base"
 
 module MinitestToRspec
   module Subprocessors
+    # Processes `s(:call, ..)` expressions.
     class Call < Base
       # Mocha methods will only be processed if `--mocha` flag was given,
       # i.e. `mocha` argument in constructor is true.

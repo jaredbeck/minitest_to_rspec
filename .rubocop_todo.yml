@@ -6,21 +6,6 @@
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
-# Offense count: 9
-Style/Documentation:
-  Exclude:
-    - 'spec/**/*'
-    - 'test/**/*'
-    - 'lib/minitest_to_rspec.rb'
-    - 'lib/minitest_to_rspec/cli.rb'
-    - 'lib/minitest_to_rspec/converter.rb'
-    - 'lib/minitest_to_rspec/errors.rb'
-    - 'lib/minitest_to_rspec/processor.rb'
-    - 'lib/minitest_to_rspec/subprocessors/base.rb'
-    - 'lib/minitest_to_rspec/subprocessors/call.rb'
-    - 'lib/minitest_to_rspec/subprocessors/iter.rb'
-    - 'lib/minitest_to_rspec/subprocessors/klass.rb'
-
 # Offense count: 5
 # Cop supports --auto-correct.
 Style/RedundantFreeze:

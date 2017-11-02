@@ -48,6 +48,10 @@ Naming/HeredocDelimiterNaming:
 Style/BlockDelimiters:
   Enabled: false
 
+Style/Documentation:
+  Exclude:
+    - 'spec/**/*'
+
 # Guard clauses are great, but this is too subtle to lint.
 Style/GuardClause:
   Enabled: false

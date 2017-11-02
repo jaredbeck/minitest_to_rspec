@@ -14,6 +14,7 @@ module MinitestToRspec
   # does not (yet) implement a conversion.
   class NotImplemented < Error; end
 
+  # See DEFAULT_MESSAGE
   class ModuleShorthandError < NotImplemented
     DEFAULT_MESSAGE = <<~EOS
       Unsupported class definition: Module shorthand (A::B::C) is not supported.

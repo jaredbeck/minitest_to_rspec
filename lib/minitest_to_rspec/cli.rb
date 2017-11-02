@@ -5,6 +5,7 @@ require "minitest_to_rspec"
 require "trollop"
 
 module MinitestToRspec
+  # Command-Line Interface (CLI) instantiated by `bin/mt2rspec`
   class CLI
     E_USAGE               = 1.freeze
     E_FILE_NOT_FOUND      = 2.freeze

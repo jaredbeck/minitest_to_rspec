@@ -4,6 +4,12 @@ require_relative "../sexp_assertions"
 
 module MinitestToRspec
   module Subprocessors
+    # Parent class of "sub-processors". There is one sub-processor for each
+    # `sexp_type` that `Processor` knows how to process.
+    #
+    # For example, `Subprocessors::Call` will process an `s(:call, ..)`
+    # expression representing minitest code, and return an S-expression
+    # representing equivalent RSpec code.
     class Base
       include SexpAssertions
 

@@ -7,7 +7,6 @@ module MinitestToRspec
   module Subprocessors
     RSpec.describe Klass do
       describe "#process" do
-
         def parse(str)
           RubyParser.new.parse(str)
         end

@@ -39,3 +39,7 @@ Metrics/MethodLength:
 # Not useful compared to e.g. AbcSize
 Metrics/ModuleLength:
   Enabled: false
+
+# EOS is a well-known delimiter and thus satisfactory.
+Naming/HeredocDelimiterNaming:
+  Enabled: false

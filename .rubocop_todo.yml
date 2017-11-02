@@ -6,18 +6,6 @@
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
-# Offense count: 30
-# Configuration parameters: Blacklist.
-# Blacklist: END, (?-mix:EO[A-Z]{1})
-Naming/HeredocDelimiterNaming:
-  Exclude:
-    - 'lib/minitest_to_rspec/cli.rb'
-    - 'lib/minitest_to_rspec/errors.rb'
-    - 'minitest_to_rspec.gemspec'
-    - 'spec/lib/subprocessors/call_spec.rb'
-    - 'spec/lib/subprocessors/iter_spec.rb'
-    - 'spec/lib/subprocessors/klass_spec.rb'
-
 # Offense count: 1
 # Cop supports --auto-correct.
 Performance/StringReplacement:

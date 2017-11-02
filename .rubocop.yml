@@ -10,3 +10,6 @@ Layout/AlignParameters:
 
 Layout/FirstParameterIndentation:
   EnforcedStyle: consistent
+
+Layout/IndentHeredoc:
+  EnforcedStyle: squiggly

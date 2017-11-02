@@ -95,7 +95,7 @@ module MinitestToRspec
 
       context "create" do
         it "does not change factory call" do
-          input = -> {
+          input = lambda {
             s(:call,
               nil,
               :create,

@@ -91,7 +91,7 @@ module MinitestToRspec
           end
 
           it "does not replace assert_raise(e1, e2)" do
-            input = -> {
+            input = lambda {
               parse("assert_raise(NotDelicious, NotYellow) { Kiwi.delicious! }")
             }
             expect(process(input.call)).to eq(input.call)

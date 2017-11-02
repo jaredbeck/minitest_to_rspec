@@ -21,15 +21,6 @@ Style/Documentation:
     - 'lib/minitest_to_rspec/subprocessors/iter.rb'
     - 'lib/minitest_to_rspec/subprocessors/klass.rb'
 
-# Offense count: 2
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-# SupportedStyles: line_count_dependent, lambda, literal
-Style/Lambda:
-  Exclude:
-    - 'spec/lib/subprocessors/call_spec.rb'
-    - 'spec/lib/subprocessors/iter_spec.rb'
-
 # Offense count: 5
 # Cop supports --auto-correct.
 Style/MutableConstant:

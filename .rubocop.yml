@@ -47,3 +47,7 @@ Naming/HeredocDelimiterNaming:
 # Prefer semantic delimiters, but avoid `end.x`. Too subtle to lint.
 Style/BlockDelimiters:
   Enabled: false
+
+# Guard clauses are great, but this is too subtle to lint.
+Style/GuardClause:
+  Enabled: false

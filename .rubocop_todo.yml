@@ -21,15 +21,6 @@ Style/Documentation:
     - 'lib/minitest_to_rspec/subprocessors/iter.rb'
     - 'lib/minitest_to_rspec/subprocessors/klass.rb'
 
-# Offense count: 6
-# Configuration parameters: MinBodyLength.
-Style/GuardClause:
-  Exclude:
-    - 'lib/minitest_to_rspec/cli.rb'
-    - 'lib/minitest_to_rspec/model/call.rb'
-    - 'lib/minitest_to_rspec/model/calls/returns.rb'
-    - 'lib/minitest_to_rspec/sexp_assertions.rb'
-
 # Offense count: 2
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SupportedStyles.

@@ -194,7 +194,7 @@ module MinitestToRspec
           expect(
             process(parse("refute Kiwi.delicious?"))
           ).to eq(
-              parse("expect(Kiwi.delicious?).to eq(false)")
+            parse("expect(Kiwi.delicious?).to eq(false)")
           )
         end
       end

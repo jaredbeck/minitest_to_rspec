@@ -6,25 +6,6 @@
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
-# Offense count: 16
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles, ProceduralMethods, FunctionalMethods, IgnoredMethods.
-# SupportedStyles: line_count_based, semantic, braces_for_chaining
-# ProceduralMethods: benchmark, bm, bmbm, create, each_with_object, measure, new, realtime, tap, with_object
-# FunctionalMethods: let, let!, subject, watch
-# IgnoredMethods: lambda, proc, it
-Style/BlockDelimiters:
-  Exclude:
-    - 'lib/minitest_to_rspec/model/iter.rb'
-    - 'lib/minitest_to_rspec/model/klass.rb'
-    - 'lib/minitest_to_rspec/subprocessors/call.rb'
-    - 'lib/minitest_to_rspec/subprocessors/iter.rb'
-    - 'spec/lib/cli_spec.rb'
-    - 'spec/lib/model/call_spec.rb'
-    - 'spec/lib/sexp_assertions_spec.rb'
-    - 'spec/lib/subprocessors/iter_spec.rb'
-    - 'spec/lib/subprocessors/klass_spec.rb'
-
 # Offense count: 9
 Style/Documentation:
   Exclude:

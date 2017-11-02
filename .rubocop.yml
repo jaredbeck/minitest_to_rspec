@@ -43,3 +43,7 @@ Metrics/ModuleLength:
 # EOS is a well-known delimiter and thus satisfactory.
 Naming/HeredocDelimiterNaming:
   Enabled: false
+
+# Prefer semantic delimiters, but avoid `end.x`. Too subtle to lint.
+Style/BlockDelimiters:
+  Enabled: false

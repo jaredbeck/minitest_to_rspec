@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module MinitestToRspec
 
   # Useful runtime assertions regarding S-expressions.

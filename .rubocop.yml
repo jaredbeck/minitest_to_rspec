@@ -3,4 +3,4 @@ inherit_from: .rubocop_todo.yml
 AllCops:
   Exclude:
     - spec/fixtures/**/*
-  TargetRubyVersion: 2.2
+  TargetRubyVersion: 2.3

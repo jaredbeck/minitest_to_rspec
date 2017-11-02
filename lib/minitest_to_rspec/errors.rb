@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module MinitestToRspec
   class Error < StandardError; end
   class ProcessingError < Error; end

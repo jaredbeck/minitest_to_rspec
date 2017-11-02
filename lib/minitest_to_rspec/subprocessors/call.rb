@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative "../model/call"
 require_relative "../model/calls/returns"
 require_relative "../model/hash_exp"

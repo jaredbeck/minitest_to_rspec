@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "ruby_parser"
 require "sexp_processor"
 require_relative "subprocessors/call"

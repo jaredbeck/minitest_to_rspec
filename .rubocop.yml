@@ -17,6 +17,25 @@ Layout/IndentHeredoc:
 Layout/MultilineMethodCallBraceLayout:
   Enabled: false
 
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+
 # We use the symbols `:true` and `:false` in S-expressions.
 Lint/BooleanSymbol:
+  Enabled: false
+
+# Not useful compared to e.g. AbcSize
+Metrics/BlockLength:
+  Enabled: false
+
+# Not useful compared to e.g. AbcSize
+Metrics/ClassLength:
+  Enabled: false
+
+# Not useful compared to e.g. AbcSize
+Metrics/MethodLength:
+  Enabled: false
+
+# Not useful compared to e.g. AbcSize
+Metrics/ModuleLength:
   Enabled: false

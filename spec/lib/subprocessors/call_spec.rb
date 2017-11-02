@@ -220,17 +220,27 @@ module MinitestToRspec
 
         it "converts any_instance.expects" do
           expect(
-            process(parse("Banana.any_instance.stubs(:delicious?).returns(true)"))
+            process(
+              parse("Banana.any_instance.stubs(:delicious?).returns(true)")
+            )
           ).to eq(
-            parse("allow_any_instance_of(Banana).to receive(:delicious?).and_return(true)")
+            parse(
+              "allow_any_instance_of(Banana).to " \
+              "receive(:delicious?).and_return(true)"
+            )
           )
         end
 
         it "converts any_instance.stubs" do
           expect(
-            process(parse("Banana.any_instance.expects(:delicious?).returns(true)"))
+            process(
+              parse("Banana.any_instance.expects(:delicious?).returns(true)")
+            )
           ).to eq(
-            parse("expect_any_instance_of(Banana).to receive(:delicious?).and_return(true)")
+            parse(
+              "expect_any_instance_of(Banana).to " \
+              "receive(:delicious?).and_return(true)"
+            )
           )
         end
 

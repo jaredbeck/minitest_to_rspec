@@ -23,7 +23,7 @@ module MinitestToRspec
       Options:
     EOS
     OPT_MOCHA = "Convert mocha to rspec-mocks. (Experimental)"
-    OPT_RAILS = <<~EOS.gsub(/\n/, " ").freeze
+    OPT_RAILS = <<~EOS.tr("\n", " ").freeze
       Requires rails_helper instead of spec_helper.
       Passes :type metadatum to RSpec.describe.
     EOS

@@ -17,6 +17,21 @@ of [keepachangelog.com][2].
 
 - None
 
+## 0.10.1 (2017-11-04)
+
+### Breaking Changes
+
+- None
+
+### Added
+
+- None
+
+### Fixed
+
+- [#10](https://github.com/jaredbeck/minitest_to_rspec/pull/10) - Lift
+  version constraint on sexp_processor
+
 ## 0.10.0 (2017-11-01)
 
 ### Breaking Changes

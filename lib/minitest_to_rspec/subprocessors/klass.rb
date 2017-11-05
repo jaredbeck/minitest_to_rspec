@@ -32,7 +32,8 @@ module MinitestToRspec
 
       # Returns a :block S-expression, the contents of the class.
       def block
-        s(:block) + @exp.block.map { |line| full_process(line) }
+        processed = @exp.block.map { |line| full_process(line) }
+        s(:block, *processed)
       end
 
       # Given a `test_class_name` like `BananaTest`, returns the

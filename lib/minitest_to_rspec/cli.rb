@@ -59,7 +59,7 @@ module MinitestToRspec
       ensure_target_directory(target)
       write_target(converter.convert(read_source, source))
     rescue Error => e
-      $stderr.puts "Failed to convert: #{e}"
+      warn "Failed to convert: #{e}"
       exit E_CONVERT_FAIL
     end
 
@@ -67,14 +67,14 @@ module MinitestToRspec
 
     def assert_file_exists(file)
       unless File.exist?(file)
-        $stderr.puts "File not found: #{file}"
+        warn "File not found: #{file}"
         exit(E_FILE_NOT_FOUND)
       end
     end
 
     def assert_file_does_not_exist(file)
       if File.exist?(file)
-        $stderr.puts "File already exists: #{file}"
+        warn "File already exists: #{file}"
         exit(E_FILE_ALREADY_EXISTS)
       end
     end
@@ -89,8 +89,8 @@ module MinitestToRspec
       begin
         FileUtils.mkdir_p(dir)
       rescue SystemCallError => e
-        $stderr.puts "Cannot create target dir: #{dir}"
-        $stderr.puts e.message
+        warn "Cannot create target dir: #{dir}"
+        warn e.message
         exit E_CANNOT_CREATE_TARGET_DIR
       end
     end

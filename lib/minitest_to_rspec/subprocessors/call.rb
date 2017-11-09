@@ -200,7 +200,7 @@ module MinitestToRspec
       def method_stub_everything
         if @exp.receiver.nil?
           d = s(:call, nil, :double, *@exp.arguments)
-          s(:call, d, :as_null_object,)
+          s(:call, d, :as_null_object)
         else
           @exp.original
         end

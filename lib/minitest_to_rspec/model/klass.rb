@@ -13,15 +13,15 @@ module MinitestToRspec
       end
 
       def action_controller_test_case?
-        lineage?(parent, [:ActionController, :TestCase])
+        lineage?(parent, %i[ActionController TestCase])
       end
 
       def action_mailer_test_case?
-        lineage?(parent, [:ActionMailer, :TestCase])
+        lineage?(parent, %i[ActionMailer TestCase])
       end
 
       def active_support_test_case?
-        lineage?(parent, [:ActiveSupport, :TestCase])
+        lineage?(parent, %i[ActiveSupport TestCase])
       end
 
       # Raise an error if we don't know now to process the name
@@ -45,7 +45,7 @@ module MinitestToRspec
       end
 
       def draper_test_case?
-        lineage?(parent, [:Draper, :TestCase])
+        lineage?(parent, %i[Draper TestCase])
       end
 
       # Returns the name of the class.  Examples:

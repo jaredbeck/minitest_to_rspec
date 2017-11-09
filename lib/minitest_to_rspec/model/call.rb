@@ -50,7 +50,7 @@ module MinitestToRspec
 
       def assert_difference?
         return false unless method_name == :assert_difference
-        [[:str], [:str, :lit]].include?(argument_types)
+        [[:str], %i[str lit]].include?(argument_types)
       end
 
       def assert_no_difference?
@@ -95,7 +95,7 @@ module MinitestToRspec
       # assertion failure message, which will be discarded later.
       def raise_error_args?
         arg_types = arguments.map(&:sexp_type)
-        [[], [:str], [:const], [:const, :str]].include?(arg_types)
+        [[], [:str], [:const], %i[const str]].include?(arg_types)
       end
 
       def receiver

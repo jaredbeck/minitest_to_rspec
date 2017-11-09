@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require_relative "../call"
-require_relative "../../errors"
+require_relative '../call'
+require_relative '../../errors'
 
 module MinitestToRspec
   module Model
@@ -39,7 +39,7 @@ module MinitestToRspec
 
         def message
           calls_in_receiver_chain
-            .find { |c| [:stubs, :expects].include? c.method_name }
+            .find { |c| %i[stubs expects].include? c.method_name }
             .arguments[0]
         end
 
@@ -49,13 +49,13 @@ module MinitestToRspec
           s = stub?
           e = expectation?
           if s && e
-            raise ProcessingError, "Method chain contains stubs and expects"
+            raise ProcessingError, 'Method chain contains stubs and expects'
           elsif s
             :allow
           elsif e
             :expect
           else
-            raise ProcessingError, "Found returns without stubs or expects"
+            raise ProcessingError, 'Found returns without stubs or expects'
           end
         end
 

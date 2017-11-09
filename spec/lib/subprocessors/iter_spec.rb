@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
-require "spec_helper"
-require "ruby_parser"
+require 'spec_helper'
+require 'ruby_parser'
 
 module MinitestToRspec
   module Subprocessors
     RSpec.describe Iter do
-      describe ".new" do
-        context "not an :iter" do
-          it "raises error" do
+      describe '.new' do
+        context 'not an :iter' do
+          it 'raises error' do
             expect {
               described_class.new(s(:nil), false, false)
             }.to raise_error(TypeError)
@@ -16,7 +16,7 @@ module MinitestToRspec
         end
       end
 
-      describe "#process" do
+      describe '#process' do
         def parse(ruby)
           RubyParser.new.parse(ruby)
         end
@@ -25,7 +25,7 @@ module MinitestToRspec
           described_class.new(input, true, true).process
         end
 
-        it "replaces assert_difference with expect to change" do
+        it 'replaces assert_difference with expect to change' do
           input = parse <<-EOS
             assert_difference "ary.length" do ary.push("banana") end
           EOS
@@ -35,7 +35,7 @@ module MinitestToRspec
           expect(process(input)).to eq(output)
         end
 
-        it "replaces assert_difference (arity 2) with expect to change by" do
+        it 'replaces assert_difference (arity 2) with expect to change by' do
           input = parse <<-EOS
             assert_difference "ary.length", +1 do
               ary.push("banana")
@@ -47,7 +47,7 @@ module MinitestToRspec
           expect(process(input)).to eq(output)
         end
 
-        it "replaces assert_no_difference with expect to_not change" do
+        it 'replaces assert_no_difference with expect to_not change' do
           input = parse <<-EOS
             assert_no_difference "banana.flavor" do
               banana.peel
@@ -59,8 +59,8 @@ module MinitestToRspec
           expect(process(input)).to eq(output)
         end
 
-        context "assert_raise" do
-          it "replaces assert_raise with expect to raise" do
+        context 'assert_raise' do
+          it 'replaces assert_raise with expect to raise' do
             input = parse <<-EOS
               assert_raise { Kiwi.delicious! }
             EOS
@@ -70,7 +70,7 @@ module MinitestToRspec
             expect(process(input)).to eq(output)
           end
 
-          it "replaces assert_raise(e) with expect to raise_error(e)" do
+          it 'replaces assert_raise(e) with expect to raise_error(e)' do
             input = parse <<-EOS
               assert_raise(NotDeliciousError) { Kiwi.delicious! }
             EOS
@@ -80,7 +80,7 @@ module MinitestToRspec
             expect(process(input)).to eq(output)
           end
 
-          it "replaces assert_raise(str) with raise_error, discards fail msg" do
+          it 'replaces assert_raise(str) with raise_error, discards fail msg' do
             input = parse <<-EOS
               assert_raise("Fruit should not be hairy") { Kiwi.delicious! }
             EOS
@@ -90,14 +90,14 @@ module MinitestToRspec
             expect(process(input)).to eq(output)
           end
 
-          it "does not replace assert_raise(e1, e2)" do
+          it 'does not replace assert_raise(e1, e2)' do
             input = lambda {
-              parse("assert_raise(NotDelicious, NotYellow) { Kiwi.delicious! }")
+              parse('assert_raise(NotDelicious, NotYellow) { Kiwi.delicious! }')
             }
             expect(process(input.call)).to eq(input.call)
           end
 
-          it "replaces assert_raise(e, str) with raise_error(e)" do
+          it 'replaces assert_raise(e, str) with raise_error(e)' do
             input = parse <<-EOS
               assert_raise(NotDelicious, "Fruit should not be hairy") {
                 Kiwi.delicious!
@@ -110,7 +110,7 @@ module MinitestToRspec
           end
         end
 
-        it "replaces assert_raises with expect to raise" do
+        it 'replaces assert_raises with expect to raise' do
           input = parse <<-EOS
             assert_raises(NotDeliciousError) { Kiwi.delicious! }
           EOS
@@ -120,7 +120,7 @@ module MinitestToRspec
           expect(process(input)).to eq(output)
         end
 
-        it "replaces assert_nothing_raised with expect to_not raise" do
+        it 'replaces assert_nothing_raised with expect to_not raise' do
           input = parse <<-EOS
             assert_nothing_raised { Banana.delicious! }
           EOS
@@ -130,7 +130,7 @@ module MinitestToRspec
           expect(process(input)).to eq(output)
         end
 
-        it "replaces setup with before" do
+        it 'replaces setup with before' do
           expect(
             process(parse('setup { peel_bananas }'))
           ).to eq(
@@ -138,7 +138,7 @@ module MinitestToRspec
           )
         end
 
-        it "replaces teardown with after" do
+        it 'replaces teardown with after' do
           expect(
             process(parse('teardown { compost_the_banana_peels }'))
           ).to eq(

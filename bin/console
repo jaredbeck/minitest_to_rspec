@@ -1,8 +1,8 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-require "bundler/setup"
-require "minitest_to_rspec"
-require "byebug"
-require "irb"
+require 'bundler/setup'
+require 'minitest_to_rspec'
+require 'byebug'
+require 'irb'
 IRB.start

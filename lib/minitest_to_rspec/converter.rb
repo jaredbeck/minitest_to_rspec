@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require "ruby_parser"
-require "ruby2ruby"
-require_relative "processor"
-require_relative "errors"
+require 'ruby_parser'
+require 'ruby2ruby'
+require_relative 'processor'
+require_relative 'errors'
 
 module MinitestToRspec
   # Converts strings of minitest code. Does not read or write files.

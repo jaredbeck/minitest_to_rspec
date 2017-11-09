@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require "ruby_parser"
-require "sexp_processor"
-require_relative "subprocessors/call"
-require_relative "subprocessors/defn"
-require_relative "subprocessors/klass"
-require_relative "subprocessors/iter"
+require 'ruby_parser'
+require 'sexp_processor'
+require_relative 'subprocessors/call'
+require_relative 'subprocessors/defn'
+require_relative 'subprocessors/klass'
+require_relative 'subprocessors/iter'
 
 module MinitestToRspec
   # Consumes a `String` of minitest code and returns an S-expression

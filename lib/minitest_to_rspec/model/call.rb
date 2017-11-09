@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative "base"
+require_relative 'base'
 
 module MinitestToRspec
   module Model
@@ -50,7 +50,7 @@ module MinitestToRspec
 
       def assert_difference?
         return false unless method_name == :assert_difference
-        [[:str], [:str, :lit]].include?(argument_types)
+        [[:str], %i[str lit]].include?(argument_types)
       end
 
       def assert_no_difference?
@@ -95,7 +95,7 @@ module MinitestToRspec
       # assertion failure message, which will be discarded later.
       def raise_error_args?
         arg_types = arguments.map(&:sexp_type)
-        [[], [:str], [:const], [:const, :str]].include?(arg_types)
+        [[], [:str], [:const], %i[const str]].include?(arg_types)
       end
 
       def receiver
@@ -158,11 +158,11 @@ module MinitestToRspec
       def require_test_helper?
         method_name == :require &&
           one_string_argument? &&
-          arguments[0][1] == "test_helper"
+          arguments[0][1] == 'test_helper'
       end
 
       def question_mark_method?
-        method_name.to_s.end_with?("?")
+        method_name.to_s.end_with?('?')
       end
 
       private

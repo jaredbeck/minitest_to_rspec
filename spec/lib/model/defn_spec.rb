@@ -25,6 +25,15 @@ module MinitestToRspec
           expect(described_class.new(sexp).method_name).to eq('method_name')
         end
       end
+
+      describe '#test_method?' do
+        context 'method name begins with test_' do
+          it 'returns true' do
+            sexp = s(:defn, :test_banana)
+            expect(described_class.new(sexp)).to be_test_method
+          end
+        end
+      end
     end
   end
 end

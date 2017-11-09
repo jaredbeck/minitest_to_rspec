@@ -10,16 +10,21 @@ module MinitestToRspec
     class Defn < Base
       def initialize(sexp, rails, mocha)
         super(rails, mocha)
+        @original = sexp.dup
         @exp = Model::Defn.new(sexp)
         sexp.clear
       end
 
       # Using a `Model::Defn`, returns a `Sexp`
       def process
-        s(:iter,
-          s(:call, nil, :it, s(:str, example_title)),
-          0,
-          example_block)
+        if @exp.test_method?
+          s(:iter,
+            s(:call, nil, :it, s(:str, example_title)),
+            0,
+            example_block)
+        else
+          @original
+        end
       end
 
       private

@@ -18,6 +18,10 @@ module MinitestToRspec
       def method_name
         @exp[1].to_s
       end
+
+      def test_method?
+        method_name.start_with?('test_')
+      end
     end
   end
 end

@@ -15,7 +15,8 @@ of [keepachangelog.com][2].
 
 ### Fixed
 
-- None
+- [#12](https://github.com/jaredbeck/minitest_to_rspec/issues/12) -
+  Only covert methods whose name begins with `test_`
 
 ## 0.10.1 (2017-11-04)
 

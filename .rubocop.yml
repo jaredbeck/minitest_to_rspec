@@ -38,6 +38,9 @@ Metrics/MethodLength:
 Metrics/ModuleLength:
   Enabled: false
 
+Metrics/ParameterLists:
+  Max: 6
+
 # EOS is a well-known delimiter and thus satisfactory.
 Naming/HeredocDelimiterNaming:
   Enabled: false
@@ -49,6 +52,10 @@ Style/BlockDelimiters:
 Style/Documentation:
   Exclude:
     - 'spec/**/*'
+
+# Too subtle to lint. Avoid postfix operators unless line is very simple.
+Style/IfUnlessModifier:
+  Enabled: false
 
 # Guard clauses are great, but this is too subtle to lint.
 Style/GuardClause:

@@ -119,7 +119,9 @@ module MinitestToRspec
           expect(
             process(parse('Banana.expects(:delicious?).returns(true)'))
           ).to eq(
-            parse('expect(Banana).to receive(:delicious?).and_return(true)')
+            parse(
+              'expect(Banana).to receive(:delicious?).and_return(true).once'
+            )
           )
         end
 
@@ -127,7 +129,7 @@ module MinitestToRspec
           expect(
             process(parse('a_b.expects(:c?).returns(:d)'))
           ).to eq(
-            parse('expect(a_b).to receive(:c?).and_return(:d)')
+            parse('expect(a_b).to receive(:c?).and_return(:d).once')
           )
         end
 
@@ -176,7 +178,7 @@ module MinitestToRspec
           expect(
             process(parse('a.expects(:b).once'))
           ).to eq(
-            parse('expect(a).to receive(:b).and_call_original.once')
+            parse('expect(a).to receive(:b).once')
           )
         end
       end
@@ -239,7 +241,7 @@ module MinitestToRspec
           ).to eq(
             parse(
               'expect_any_instance_of(Banana).to ' \
-              'receive(:delicious?).and_return(true)'
+              'receive(:delicious?).and_return(true).once'
             )
           )
         end
@@ -331,7 +333,7 @@ module MinitestToRspec
           expect(
             process(parse('a.expects(:b).twice'))
           ).to eq(
-            parse('expect(a).to receive(:b).and_call_original.twice')
+            parse('expect(a).to receive(:b).twice')
           )
         end
       end

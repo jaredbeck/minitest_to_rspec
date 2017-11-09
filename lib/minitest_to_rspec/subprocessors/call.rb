@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
+require 'minitest_to_rspec/type'
+require 'minitest_to_rspec/expression_builders/stub'
 require_relative '../model/call'
-require_relative '../model/calls/returns'
 require_relative '../model/hash_exp'
 require_relative 'base'
 
@@ -166,9 +167,21 @@ module MinitestToRspec
         expect_to_not(eq(unexpected), calculated, true)
       end
 
+      # Processes an entire line of code that ends in `.returns`
       def method_returns
-        mocha_returns(Model::Calls::Returns.new(@exp.original))
-      rescue UnknownVariant
+        receiver = mocha_stub_receiver(@exp)
+        any_instance = rspec_any_instance?(@exp)
+        message_call = mocha_stub_expects(@exp)
+        message = message_call.arguments.first
+        with = mocha_stub_with(@exp)
+        returns = @exp.arguments.first
+        count = message_call.method_name == :expects ? 1 : nil
+        ExpressionBuilders::Stub.new(
+          receiver, any_instance, message, with, returns, count
+        ).to_rspec_exp
+      rescue StandardError
+        # TODO: We used to have an `UnknownVariant` error.
+        # That was nice and specific.
         @exp.original
       end
 
@@ -236,35 +249,50 @@ module MinitestToRspec
         expect_to(receive_and_call_original(lit_sexp), exp.receiver, true)
       end
 
-      def mocha_expectation_count(exp, ordinal)
-        raise ArgumentError unless exp.is_a?(Model::Call)
-        raise ArgumentError unless %i[once twice].include?(ordinal)
-        rvc = exp.receiver_call
-        receiver_processing_method = "mocha_#{rvc.method_name}".to_sym
-        if respond_to?(receiver_processing_method, true)
-          x = send(receiver_processing_method, rvc)
-          apply_expectation_count_to(x, ordinal)
-        else
-          exp.original
-        end
+      # TODO: add support for
+      # - at_least
+      # - at_least_once
+      # - at_most
+      # - at_most_once
+      # - never
+      def mocha_expectation_count(exp, count)
+        Type.assert(Model::Call, exp)
+        Type.assert(Integer, count)
+        receiver = mocha_stub_receiver(exp)
+        any_instance = rspec_any_instance?(exp)
+        message = mocha_stub_expects(exp).arguments.first
+        with = mocha_stub_with(exp)
+        returns = exp.find_call_in_receiver_chain(:returns)&.arguments&.first
+        ExpressionBuilders::Stub.new(
+          receiver, any_instance, message, with, returns, count
+        ).to_rspec_exp
+      end
+
+      # Given a mocha stub, e.g. `X.any_instance.expects(:y)`, returns `X`.
+      def mocha_stub_receiver(exp)
+        chain = exp.receiver_chain
+        last = chain[-1]
+        last.nil? ? chain[-2] : last
+      end
+
+      # Given an `exp` representing a chain of calls, like
+      # `stubs(x).returns(y).once`, finds the call to `stubs` or `expects`.
+      def mocha_stub_expects(exp)
+        exp.find_call_in_receiver_chain(%i[stubs expects])
+      end
+
+      def mocha_stub_with(exp)
+        exp.find_call_in_receiver_chain(:with)&.arguments&.first
+      end
+
+      def rspec_any_instance?(exp)
+        exp.calls_in_receiver_chain.any? { |i|
+          i.method_name.to_s.include?('any_instance')
+        }
       end
 
       def mocha_once(exp)
-        mocha_expectation_count(exp, :once)
-      end
-
-      # Given `r`, a `Model::Calls::Returns`, return a `Sexp` representing
-      # the equivalent stub or message expectation in RSpec.
-      def mocha_returns(r)
-        raise ArgumentError unless r.is_a?(Model::Calls::Returns)
-        subprocessor_method = "#{r.rspec_mocks_method}_receive_and_return"
-        send(subprocessor_method,
-          r.rspec_msg_recipient,
-          r.message,
-          r.values,
-          r.any_instance?,
-          r.with
-        )
+        mocha_expectation_count(exp, 1)
       end
 
       def mocha_stub(exp)
@@ -277,7 +305,7 @@ module MinitestToRspec
       end
 
       def mocha_twice(exp)
-        mocha_expectation_count(exp, :twice)
+        mocha_expectation_count(exp, 2)
       end
 
       def name_of_processing_method

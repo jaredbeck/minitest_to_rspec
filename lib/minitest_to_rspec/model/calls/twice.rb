@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require_relative "../call"
-require_relative "../../errors"
+require_relative '../call'
+require_relative '../../errors'
 
 module MinitestToRspec
   module Model

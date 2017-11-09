@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require_relative "../errors"
-require_relative "../model/klass"
-require_relative "base"
+require_relative '../errors'
+require_relative '../model/klass'
+require_relative 'base'
 
 module MinitestToRspec
   module Subprocessors
@@ -39,7 +39,7 @@ module MinitestToRspec
       # Given a `test_class_name` like `BananaTest`, returns the
       # described class, like `Banana`.
       def described_class(test_class_name)
-        test_class_name.to_s.gsub(/Test\Z/, "").to_sym
+        test_class_name.to_s.gsub(/Test\Z/, '').to_sym
       end
 
       # Returns the head of the output Sexp.  If it's a test case,

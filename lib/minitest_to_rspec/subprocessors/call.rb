@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require_relative "../model/call"
-require_relative "../model/calls/returns"
-require_relative "../model/hash_exp"
-require_relative "base"
+require_relative '../model/call'
+require_relative '../model/calls/returns'
+require_relative '../model/hash_exp'
+require_relative 'base'
 
 module MinitestToRspec
   module Subprocessors
@@ -307,7 +307,7 @@ module MinitestToRspec
             s(:call, nil, :lambda),
             0,
             s(:block,
-              s(:str, "Sorry for the pointless lambda here."),
+              s(:str, 'Sorry for the pointless lambda here.'),
               *array_of_calls
             )
           ),
@@ -341,7 +341,7 @@ module MinitestToRspec
       end
 
       def require_spec_helper
-        prefix = @rails ? "rails" : "spec"
+        prefix = @rails ? 'rails' : 'spec'
         s(:call, nil, :require, s(:str, "#{prefix}_helper"))
       end
 

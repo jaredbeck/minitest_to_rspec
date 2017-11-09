@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative "base"
+require_relative 'base'
 
 module MinitestToRspec
   module Model
@@ -158,11 +158,11 @@ module MinitestToRspec
       def require_test_helper?
         method_name == :require &&
           one_string_argument? &&
-          arguments[0][1] == "test_helper"
+          arguments[0][1] == 'test_helper'
       end
 
       def question_mark_method?
-        method_name.to_s.end_with?("?")
+        method_name.to_s.end_with?('?')
       end
 
       private

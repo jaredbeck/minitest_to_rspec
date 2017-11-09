@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "fileutils"
-require "minitest_to_rspec"
-require "trollop"
+require 'fileutils'
+require 'minitest_to_rspec'
+require 'trollop'
 
 module MinitestToRspec
   # Command-Line Interface (CLI) instantiated by `bin/mt2rspec`
@@ -23,8 +23,8 @@ module MinitestToRspec
 
       Options:
     EOS
-    OPT_MOCHA = "Convert mocha to rspec-mocks. (Experimental)"
-    OPT_RAILS = <<~EOS.tr("\n", " ").freeze
+    OPT_MOCHA = 'Convert mocha to rspec-mocks. (Experimental)'
+    OPT_RAILS = <<~EOS.tr("\n", ' ').freeze
       Requires rails_helper instead of spec_helper.
       Passes :type metadatum to RSpec.describe.
     EOS
@@ -48,7 +48,7 @@ module MinitestToRspec
         @source = args[0]
         @target = infer_target_from @source
       else
-        warn "Please specify source file"
+        warn 'Please specify source file'
         exit E_USAGE
       end
     end
@@ -97,8 +97,8 @@ module MinitestToRspec
 
     def infer_target_from(source)
       source
-        .gsub(/\Atest/, "spec")
-        .gsub(/_test.rb\Z/, "_spec.rb")
+        .gsub(/\Atest/, 'spec')
+        .gsub(/_test.rb\Z/, '_spec.rb')
     end
 
     def read_source

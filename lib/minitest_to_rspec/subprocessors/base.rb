@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative "../sexp_assertions"
+require_relative '../sexp_assertions'
 
 module MinitestToRspec
   module Subprocessors

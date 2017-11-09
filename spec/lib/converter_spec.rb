@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "spec_helper"
+require 'spec_helper'
 
 module MinitestToRspec
   RSpec.describe Converter do
@@ -19,7 +19,7 @@ module MinitestToRspec
     end
 
     def input_file_path(fixture)
-      File.join(fixture, "in.rb")
+      File.join(fixture, 'in.rb')
     end
 
     def fixture_number(fixture)
@@ -27,7 +27,7 @@ module MinitestToRspec
     end
 
     def output_file_path(fixture)
-      File.join(fixture, "out.rb")
+      File.join(fixture, 'out.rb')
     end
 
     def rails?(fixture)
@@ -42,7 +42,7 @@ module MinitestToRspec
       File.read(output_file_path(fixture))
     end
 
-    describe "#convert" do
+    describe '#convert' do
       # To run just one of the following programmatically
       # generated examples, use RSpec's `--example` flag, e.g.
       # `rspec --example "17" spec/lib/converter_spec.rb`
@@ -56,22 +56,22 @@ module MinitestToRspec
         end
       end
 
-      it "supports rails option" do
+      it 'supports rails option' do
         expect(
           convert("require 'test_helper'", nil, true, false)
         ).to eq('require("rails_helper")')
       end
 
-      context "__FILE__ keyword" do
-        it "replaces with the given file path" do
+      context '__FILE__ keyword' do
+        it 'replaces with the given file path' do
           expect(
-            convert("__FILE__", "/banana/kiwi/mango", false, false)
+            convert('__FILE__', '/banana/kiwi/mango', false, false)
           ).to eq('"/banana/kiwi/mango"')
         end
 
-        it "replaces with helpful message when not provided" do
+        it 'replaces with helpful message when not provided' do
           expect(
-            convert("__FILE__", nil, false, false)
+            convert('__FILE__', nil, false, false)
           ).to match(/No file path provided/)
         end
       end

@@ -7,13 +7,13 @@ require "trollop"
 module MinitestToRspec
   # Command-Line Interface (CLI) instantiated by `bin/mt2rspec`
   class CLI
-    E_USAGE               = 1.freeze
-    E_FILE_NOT_FOUND      = 2.freeze
-    E_FILE_ALREADY_EXISTS = 3.freeze
-    E_CONVERT_FAIL        = 4.freeze
-    E_CANNOT_CREATE_TARGET_DIR = 5.freeze
+    E_USAGE               = 1
+    E_FILE_NOT_FOUND      = 2
+    E_FILE_ALREADY_EXISTS = 3
+    E_CONVERT_FAIL        = 4
+    E_CANNOT_CREATE_TARGET_DIR = 5
 
-    BANNER = <<~EOS.freeze
+    BANNER = <<~EOS
       Usage: mt2rspec [--rails] [--mocha] source_file [target_file]
 
       Reads source_file, writes target_file. If target_file is omitted,

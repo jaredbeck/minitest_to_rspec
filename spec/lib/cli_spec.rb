@@ -13,7 +13,7 @@ module MinitestToRspec
       # Tests require certain files to exist
       # http://pubs.opengroup.org/onlinepubs/000095399/basedefs/xbd_chap10.html
       unless File.exist?("/dev/null") && Dir.exist?("/tmp")
-        fail "Tests require a POSIX OS"
+        raise "Tests require a POSIX OS"
       end
     end
 

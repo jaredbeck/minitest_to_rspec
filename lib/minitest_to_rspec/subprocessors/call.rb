@@ -180,6 +180,10 @@ module MinitestToRspec
         end
       end
 
+      def method_should
+        s(:call, nil, :it, *@exp.arguments)
+      end
+
       # Happily, the no-block signatures of [stub][3] are the
       # same as [double][2].
       #

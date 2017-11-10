@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-require "minitest_to_rspec/cli"
+require 'minitest_to_rspec/cli'
 MinitestToRspec::CLI.new(ARGV).run

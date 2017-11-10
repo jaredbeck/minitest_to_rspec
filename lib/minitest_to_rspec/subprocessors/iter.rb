@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require_relative "base"
-require_relative "../model/iter"
+require_relative 'base'
+require_relative '../model/iter'
 
 module MinitestToRspec
   module Subprocessors

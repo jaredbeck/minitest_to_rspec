@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative "base"
+require_relative 'base'
 
 module MinitestToRspec
   module Model
@@ -50,7 +50,7 @@ module MinitestToRspec
 
       def assert_difference?
         return false unless method_name == :assert_difference
-        [[:str], [:str, :lit]].include?(argument_types)
+        [[:str], %i[str lit]].include?(argument_types)
       end
 
       def assert_no_difference?
@@ -72,10 +72,15 @@ module MinitestToRspec
       end
 
       def calls_in_receiver_chain
-        receiver_chain
-          .compact
-          .select { |r| sexp_type?(:call, r) }
-          .map { |r| Call.new(r) }
+        receiver_chain.each_with_object([]) do |e, a|
+          next unless sexp_type?(:call, e)
+          a << self.class.new(e)
+        end
+      end
+
+      def find_call_in_receiver_chain(method_names)
+        name_array = [method_names].flatten
+        calls_in_receiver_chain.find { |i| name_array.include?(i.method_name) }
       end
 
       def method_name
@@ -95,28 +100,11 @@ module MinitestToRspec
       # assertion failure message, which will be discarded later.
       def raise_error_args?
         arg_types = arguments.map(&:sexp_type)
-        [[], [:str], [:const], [:const, :str]].include?(arg_types)
+        [[], [:str], [:const], %i[const str]].include?(arg_types)
       end
 
       def receiver
         @exp[1]
-      end
-
-      # While `#receiver` returns a `Sexp`, `#receiver_call`
-      # returns a `Model::Call`.
-      def receiver_call
-        if sexp_type?(:call, receiver)
-          rvc = Model::Call.new(receiver)
-
-          # TODO: Seems like a factory pattern
-          if rvc.method_name == :returns
-            Model::Calls::Returns.new(receiver)
-          else
-            rvc
-          end
-        else
-          raise TypeError
-        end
       end
 
       # Consider the following chain of method calls:
@@ -152,17 +140,19 @@ module MinitestToRspec
       end
 
       def receiver_chain_include?(method_name)
-        receiver_chain.compact.any? { |r| Call.method_name?(r, method_name) }
+        receiver_chain.compact.any? { |r|
+          self.class.method_name?(r, method_name)
+        }
       end
 
       def require_test_helper?
         method_name == :require &&
           one_string_argument? &&
-          arguments[0][1] == "test_helper"
+          arguments[0][1] == 'test_helper'
       end
 
       def question_mark_method?
-        method_name.to_s.end_with?("?")
+        method_name.to_s.end_with?('?')
       end
 
       private

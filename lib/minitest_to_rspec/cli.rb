@@ -1,19 +1,19 @@
 # frozen_string_literal: true
 
-require "fileutils"
-require "minitest_to_rspec"
-require "trollop"
+require 'fileutils'
+require 'minitest_to_rspec'
+require 'trollop'
 
 module MinitestToRspec
   # Command-Line Interface (CLI) instantiated by `bin/mt2rspec`
   class CLI
-    E_USAGE               = 1.freeze
-    E_FILE_NOT_FOUND      = 2.freeze
-    E_FILE_ALREADY_EXISTS = 3.freeze
-    E_CONVERT_FAIL        = 4.freeze
-    E_CANNOT_CREATE_TARGET_DIR = 5.freeze
+    E_USAGE               = 1
+    E_FILE_NOT_FOUND      = 2
+    E_FILE_ALREADY_EXISTS = 3
+    E_CONVERT_FAIL        = 4
+    E_CANNOT_CREATE_TARGET_DIR = 5
 
-    BANNER = <<~EOS.freeze
+    BANNER = <<~EOS
       Usage: mt2rspec [--rails] [--mocha] source_file [target_file]
 
       Reads source_file, writes target_file. If target_file is omitted,
@@ -23,8 +23,8 @@ module MinitestToRspec
 
       Options:
     EOS
-    OPT_MOCHA = "Convert mocha to rspec-mocks. (Experimental)"
-    OPT_RAILS = <<~EOS.tr("\n", " ").freeze
+    OPT_MOCHA = 'Convert mocha to rspec-mocks. (Experimental)'
+    OPT_RAILS = <<~EOS.tr("\n", ' ').freeze
       Requires rails_helper instead of spec_helper.
       Passes :type metadatum to RSpec.describe.
     EOS
@@ -48,7 +48,7 @@ module MinitestToRspec
         @source = args[0]
         @target = infer_target_from @source
       else
-        warn "Please specify source file"
+        warn 'Please specify source file'
         exit E_USAGE
       end
     end
@@ -59,7 +59,7 @@ module MinitestToRspec
       ensure_target_directory(target)
       write_target(converter.convert(read_source, source))
     rescue Error => e
-      $stderr.puts "Failed to convert: #{e}"
+      warn "Failed to convert: #{e}"
       exit E_CONVERT_FAIL
     end
 
@@ -67,14 +67,14 @@ module MinitestToRspec
 
     def assert_file_exists(file)
       unless File.exist?(file)
-        $stderr.puts "File not found: #{file}"
+        warn "File not found: #{file}"
         exit(E_FILE_NOT_FOUND)
       end
     end
 
     def assert_file_does_not_exist(file)
       if File.exist?(file)
-        $stderr.puts "File already exists: #{file}"
+        warn "File already exists: #{file}"
         exit(E_FILE_ALREADY_EXISTS)
       end
     end
@@ -89,16 +89,16 @@ module MinitestToRspec
       begin
         FileUtils.mkdir_p(dir)
       rescue SystemCallError => e
-        $stderr.puts "Cannot create target dir: #{dir}"
-        $stderr.puts e.message
+        warn "Cannot create target dir: #{dir}"
+        warn e.message
         exit E_CANNOT_CREATE_TARGET_DIR
       end
     end
 
     def infer_target_from(source)
       source
-        .gsub(/\Atest/, "spec")
-        .gsub(/_test.rb\Z/, "_spec.rb")
+        .gsub(/\Atest/, 'spec')
+        .gsub(/_test.rb\Z/, '_spec.rb')
     end
 
     def read_source

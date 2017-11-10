@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require "spec_helper"
-require "ruby_parser"
+require 'spec_helper'
+require 'ruby_parser'
 
 module MinitestToRspec
   module Subprocessors

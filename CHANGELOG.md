@@ -17,6 +17,23 @@ of [keepachangelog.com][2].
 
 - None
 
+## 0.11.0 (2017-11-10)
+
+### Breaking Changes
+
+- None
+
+### Added
+
+- [#15](https://github.com/jaredbeck/minitest_to_rspec/pull/15) -
+  Support mocha stubs without returns
+- [#16](https://github.com/jaredbeck/minitest_to_rspec/pull/16) -
+  Convert `should` to `it`
+
+### Fixed
+
+- None
+
 ## 0.10.2 (2017-11-09)
 
 ### Breaking Changes

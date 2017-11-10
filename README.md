@@ -8,6 +8,7 @@ Converts [minitest][8] files to [rspec][9].
   and [ActiveSupport][27] are converted to [rspec-expectations][25].
 - Selected methods from [mocha][28] are converted to [rspec-mocks][24].
   (Experimental)
+- Selected methods from [shoulda-context][36]
 
 ## Example
 
@@ -111,6 +112,14 @@ Mocha                 | Arity | Block | Notes
 
 To do: [at_least, never, raises, etc.][30]
 
+## Supported shoulda-context methods
+
+Mocha                 | Arity | Block | Notes
+--------------------- | ----- | ----- | -------
+[context][36]         | 1     | yes   |
+[setup][37]           | 1,2   | no    |
+[should][38]          | 1,2   | yes   |
+
 ## Acknowledgements
 
 This project would not be possible without [ruby_parser][14],
@@ -147,3 +156,7 @@ This project would not be possible without [ruby_parser][14],
 [32]: http://www.rubydoc.info/github/floehopper/mocha/Mocha/Expectation#twice-instance_method
 [34]: https://github.com/bbatsov/ruby-style-guide
 [35]: https://github.com/bbatsov/rubocop
+[35]: https://github.com/thoughtbot/shoulda-context
+[36]: http://www.rubydoc.info/github/thoughtbot/shoulda-context/master/Shoulda/Context/ClassMethods#context-instance_method
+[37]: http://www.rubydoc.info/github/thoughtbot/shoulda-context/master/Shoulda/Context/Context#setup-instance_method
+[38]: http://www.rubydoc.info/github/thoughtbot/shoulda-context/master/Shoulda/Context/ClassMethods#should-instance_method

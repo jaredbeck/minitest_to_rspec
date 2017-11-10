@@ -320,6 +320,14 @@ module MinitestToRspec
         end
       end
 
+      context 'should' do
+        it 'replaces `should` with `it`' do
+          argument = 'is delicious'
+          input = exp(:should, argument)
+          expect(process(input)).to eq(exp(:it, argument))
+        end
+      end
+
       context 'test' do
         it 'replaces `test` with `it`' do
           argument = 'is delicious'

@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
 require_relative '../call'
-require_relative '../../errors'
+require 'minitest_to_rspec/errors'
 
 module MinitestToRspec
   module Model
     module Calls
-      class Once < Call
+      class Twice < Call
       end
     end
   end

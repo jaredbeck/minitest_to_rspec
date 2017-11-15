@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'minitest_to_rspec/type'
-require 'minitest_to_rspec/expression_builders/stub'
+require 'minitest_to_rspec/rspec/stub'
 require_relative '../model/call'
 require_relative '../model/hash_exp'
 require_relative 'base'
@@ -176,7 +176,7 @@ module MinitestToRspec
         with = mocha_stub_with(@exp)
         returns = @exp.arguments.first
         count = message_call.method_name == :expects ? 1 : nil
-        ExpressionBuilders::Stub.new(
+        Rspec::Stub.new(
           receiver, any_instance, message, with, returns, count
         ).to_rspec_exp
       rescue StandardError
@@ -267,7 +267,7 @@ module MinitestToRspec
         message = mocha_stub_expects(exp).arguments.first
         with = mocha_stub_with(exp)
         returns = exp.find_call_in_receiver_chain(:returns)&.arguments&.first
-        ExpressionBuilders::Stub.new(
+        Rspec::Stub.new(
           receiver, any_instance, message, with, returns, count
         ).to_rspec_exp
       end

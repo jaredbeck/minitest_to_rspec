@@ -3,7 +3,7 @@
 require 'minitest_to_rspec/type'
 
 module MinitestToRspec
-  module ExpressionBuilders
+  module Rspec
     # Represents an `expects` or a `stubs`
     class Stub
       def initialize(receiver, any_instance, message, with, returns, count)

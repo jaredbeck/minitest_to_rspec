@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
-require 'minitest_to_rspec/type'
-require 'minitest_to_rspec/rspec/stub'
 require 'minitest_to_rspec/input/model/call'
 require 'minitest_to_rspec/input/model/hash_exp'
 require 'minitest_to_rspec/input/subprocessors/base'
+require 'minitest_to_rspec/minitest/stub'
+require 'minitest_to_rspec/rspec/stub'
+require 'minitest_to_rspec/type'
 
 module MinitestToRspec
   module Input
@@ -45,28 +46,6 @@ module MinitestToRspec
 
         private
 
-        # - msg_rcp.  Message recipient.  The object to be stubbed.
-        # - msg.  Message.  The name of the stubbed method.
-        # - ret_vals.  Return values.
-        # - any_ins.  Any instance?  True if this is an `any_instance` stub.
-        # - with. Allowed arguments.
-        def allow_receive_and_return(msg_rcp, msg, ret_vals, any_ins, with)
-          allow_to(
-            msg_rcp,
-            receive_and_return(msg, ret_vals, with),
-            any_ins
-          )
-        end
-
-        # Given `exp`, an S-expression representing an rspec-mocks statement
-        # (expect or allow) apply `ordinal`, which is either `:once` or
-        # `:twice`. This feels like a hack.  No other processing "re-opens" an
-        # "output sexp".
-        def apply_expectation_count_to(exp, ordinal)
-          exp[3] = s(:call, exp[3], ordinal)
-          exp
-        end
-
         def be_falsey
           matcher(:be_falsey)
         end
@@ -85,31 +64,6 @@ module MinitestToRspec
 
         def eq(exp)
           matcher(:eq, exp)
-        end
-
-        # - msg_rcp.  Message recipient.  The object to be stubbed.
-        # - msg.  Message.  The name of the stubbed method.
-        # - ret_vals.  Return values.
-        # - any_ins.  Any instance?  True if this is an `any_instance` stub.
-        # - with. Allowed arguments.
-        def expect_receive_and_return(msg_rcp, msg, ret_vals, any_ins, with)
-          expect_to(
-            receive_and_return(msg, ret_vals, with),
-            msg_rcp,
-            true,
-            any_ins
-          )
-        end
-
-        # Given a `Sexp` representing a `Hash` of message expectations,
-        # return an array of `Sexp`, each representing an expectation
-        # in rspec-mocks syntax.
-        def hash_to_expectations(sexp, receiver)
-          Model::HashExp.new(sexp).to_h.map { |msg, ret_val|
-            expect_receive_and_return(
-              receiver.deep_clone, msg, wrap_sexp(ret_val), false, []
-            )
-          }
         end
 
         def match(pattern)
@@ -147,15 +101,16 @@ module MinitestToRspec
         end
 
         def method_expects
-          if @exp.num_arguments == 1
-            mocha_expects(@exp)
+          if @exp.num_arguments == 1 &&
+             %i[lit hash].include?(@exp.arguments.first.sexp_type)
+            mocha_stub
           else
             @exp.original
           end
         end
 
         def method_once
-          mocha_once(@exp)
+          mocha_stub
         end
 
         def method_refute
@@ -170,20 +125,11 @@ module MinitestToRspec
 
         # Processes an entire line of code that ends in `.returns`
         def method_returns
-          receiver = mocha_stub_receiver(@exp)
-          any_instance = rspec_any_instance?(@exp)
-          message_call = mocha_stub_expects(@exp)
-          message = message_call.arguments.first
-          with = mocha_stub_with(@exp)
-          returns = @exp.arguments.first
-          count = message_call.method_name == :expects ? 1 : nil
-          Rspec::Stub.new(
-            receiver, any_instance, message, with, returns, count
-          ).to_rspec_exp
-        rescue StandardError
-          # TODO: We used to have an `UnknownVariant` error.
-          # That was nice and specific.
-          @exp.original
+          if @exp.num_arguments.zero?
+            @exp.original
+          else
+            mocha_stub
+          end
         end
 
         def method_require
@@ -204,9 +150,13 @@ module MinitestToRspec
         # - (name)
         # - (stubs)
         # - (name, stubs)
-
         def method_stub
-          mocha_stub(@exp)
+          raise ArgumentError unless @exp.is_a?(Model::Call)
+          if @exp.receiver.nil?
+            s(:call, nil, :double, *@exp.arguments)
+          else
+            @exp.original
+          end
         end
 
         # [stub_everything][1] responds to all messages with nil.
@@ -214,7 +164,6 @@ module MinitestToRspec
         # drop-in replacement, but will work in many situations.
         # RSpec doesn't provide an equivalent to `stub_everything`,
         # AFAIK.
-
         def method_stub_everything
           if @exp.receiver.nil?
             d = s(:call, nil, :double, *@exp.arguments)
@@ -229,88 +178,44 @@ module MinitestToRspec
         end
 
         def method_twice
-          mocha_twice(@exp)
+          mocha_stub
         end
 
-        def mocha_expects(exp)
-          raise ArgumentError unless exp.is_a?(Model::Call)
-          arg = exp.arguments.first
-          if sexp_type?(:hash, arg)
-            mocha_expects_hash(exp, arg)
-          elsif sexp_type?(:lit, arg)
-            mocha_expects_lit(exp, arg)
-          else
-            exp.original
-          end
-        end
-
-        def mocha_expects_hash(exp, hash_sexp)
-          assert_sexp_type(:hash, hash_sexp)
-          pointless_lambda(hash_to_expectations(hash_sexp, exp.receiver))
-        end
-
-        def mocha_expects_lit(exp, lit_sexp)
-          assert_sexp_type(:lit, lit_sexp)
-          expect_to(receive_and_call_original(lit_sexp), exp.receiver, true)
-        end
-
-        # TODO: add support for
-        # - at_least
-        # - at_least_once
-        # - at_most
-        # - at_most_once
-        # - never
-        def mocha_expectation_count(exp, count)
-          Type.assert(Model::Call, exp)
-          Type.assert(Integer, count)
-          receiver = mocha_stub_receiver(exp)
-          any_instance = rspec_any_instance?(exp)
-          message = mocha_stub_expects(exp).arguments.first
-          with = mocha_stub_with(exp)
-          returns = exp.find_call_in_receiver_chain(:returns)&.arguments&.first
-          Rspec::Stub.new(
-            receiver, any_instance, message, with, returns, count
-          ).to_rspec_exp
-        end
-
-        # Given a mocha stub, e.g. `X.any_instance.expects(:y)`, returns `X`.
-        def mocha_stub_receiver(exp)
-          chain = exp.receiver_chain
-          last = chain[-1]
-          last.nil? ? chain[-2] : last
-        end
-
-        # Given an `exp` representing a chain of calls, like
-        # `stubs(x).returns(y).once`, finds the call to `stubs` or `expects`.
-        def mocha_stub_expects(exp)
-          exp.find_call_in_receiver_chain(%i[stubs expects])
-        end
-
-        def mocha_stub_with(exp)
-          exp.find_call_in_receiver_chain(:with)&.arguments&.first
-        end
-
-        def rspec_any_instance?(exp)
-          exp.calls_in_receiver_chain.any? { |i|
-            i.method_name.to_s.include?('any_instance')
+        # Given a sexp representing the hash from a mocha shorthand stub, as in
+        # `Banana.expects(edible: true, color: "yellow")`
+        # return an array of separate RSpec stubs, one for each hash key.
+        def mocha_shorthand_stub_to_rspec_stubs(shorthand_stub_hash, mt_stub)
+          Model::HashExp.new(shorthand_stub_hash).to_h.map { |k, v|
+            Rspec::Stub.new(
+              mt_stub.receiver,
+              mt_stub.any_instance?,
+              k,
+              mt_stub.with,
+              v,
+              1
+            ).to_rspec_exp
           }
         end
 
-        def mocha_once(exp)
-          mocha_expectation_count(exp, 1)
-        end
-
-        def mocha_stub(exp)
-          raise ArgumentError unless exp.is_a?(Model::Call)
-          if exp.receiver.nil?
-            s(:call, nil, :double, *exp.arguments)
+        def mocha_stub
+          mt_stub = Minitest::Stub.new(@exp)
+          msg = mt_stub.message
+          if sexp_type?(:hash, msg)
+            pointless_lambda(mocha_shorthand_stub_to_rspec_stubs(msg, mt_stub))
           else
-            exp.original
+            Rspec::Stub.new(
+              mt_stub.receiver,
+              mt_stub.any_instance?,
+              mt_stub.message,
+              mt_stub.with,
+              mt_stub.returns,
+              mt_stub.count
+            ).to_rspec_exp
           end
-        end
-
-        def mocha_twice(exp)
-          mocha_expectation_count(exp, 2)
+        rescue StandardError
+          # TODO: We used to have an `UnknownVariant` error.
+          # That was nice and specific.
+          @exp.original
         end
 
         def name_of_processing_method
@@ -332,7 +237,6 @@ module MinitestToRspec
         #
         # To get better output (without a pointless lambda) we would have to
         # process `:block` *and* `:defn`, which we are not yet doing.
-
         def pointless_lambda(array_of_calls)
           assert_sexp_type_array(:call, array_of_calls)
           s(:call,
@@ -346,23 +250,6 @@ module MinitestToRspec
             ),
             :call
           )
-        end
-
-        def receive(message, with = [])
-          r = s(:call, nil, :receive, message)
-          if with.empty?
-            r
-          else
-            s(:call, r, :with, *with)
-          end
-        end
-
-        def receive_and_call_original(message)
-          s(:call, s(:call, nil, :receive, message), :and_call_original)
-        end
-
-        def receive_and_return(message, return_values, with = [])
-          s(:call, receive(message, with), :and_return, *return_values)
         end
 
         # `refsert` - Code shared by refute and assert. I could also have gone

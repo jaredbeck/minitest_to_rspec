@@ -141,8 +141,8 @@ module MinitestToRspec
               <<-EOS
                 lambda {
                   "Sorry for the pointless lambda here."
-                  expect(Banana).to(receive(:edible).and_return(true))
-                  expect(Banana).to(receive(:color).and_return("yellow"))
+                  expect(Banana).to(receive(:edible).and_return(true).once)
+                  expect(Banana).to(receive(:color).and_return("yellow").once)
                 }.call
               EOS
             ))
@@ -152,7 +152,7 @@ module MinitestToRspec
             expect(
               process(parse('Banana.expects(:delicious?)'))
             ).to eq(
-              parse('expect(Banana).to receive(:delicious?).and_call_original')
+              parse('expect(Banana).to receive(:delicious?).once')
             )
           end
 

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'minitest_to_rspec/errors'
 require 'minitest_to_rspec/input/model/call'
 require 'minitest_to_rspec/input/model/hash_exp'
 require 'minitest_to_rspec/input/subprocessors/base'
@@ -212,9 +213,7 @@ module MinitestToRspec
               mt_stub.count
             ).to_rspec_exp
           end
-        rescue StandardError
-          # TODO: We used to have an `UnknownVariant` error.
-          # That was nice and specific.
+        rescue UnknownVariant
           @exp.original
         end
 

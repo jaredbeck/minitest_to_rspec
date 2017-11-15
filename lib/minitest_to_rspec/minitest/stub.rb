@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'minitest_to_rspec/errors'
 require 'minitest_to_rspec/type'
 require 'minitest_to_rspec/input/model/call'
 
@@ -30,10 +31,15 @@ module MinitestToRspec
       # Given e.g. `expects(:y)`, returns `:y`.
       def message
         case @call.method_name
-        when :expects
+        when :expects, :stubs
           @call.arguments.first
         else
-          the_call_to_stubs_or_expects.arguments.first
+          call = the_call_to_stubs_or_expects
+          if call.nil?
+            raise UnknownVariant, 'not a mocha stub, no stubs/expects'
+          else
+            call.arguments.first
+          end
         end
       end
 

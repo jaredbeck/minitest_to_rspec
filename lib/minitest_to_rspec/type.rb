@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module MinitestToRspec
-  # Runtime type assertion function.
+  # Runtime type assertions.
   module Type
     class << self
       def assert(types, value)

@@ -2,14 +2,14 @@
 
 require 'ruby_parser'
 require 'ruby2ruby'
-require_relative 'processor'
+require 'minitest_to_rspec/input/processor'
 require_relative 'errors'
 
 module MinitestToRspec
   # Converts strings of minitest code. Does not read or write files.
   class Converter
     def initialize(rails: false, mocha: false)
-      @processor = Processor.new(rails, mocha)
+      @processor = Input::Processor.new(rails, mocha)
     end
 
     # - `input` - Contents of a ruby file.

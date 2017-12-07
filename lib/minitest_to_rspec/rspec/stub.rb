@@ -3,8 +3,9 @@
 require 'minitest_to_rspec/type'
 
 module MinitestToRspec
-  module ExpressionBuilders
-    # Represents an `expects` or a `stubs`
+  module Rspec
+    # Represents a `receive` matcher from RSpec.
+    # Conceptually the same as `Minitest::Stub`.
     class Stub
       def initialize(receiver, any_instance, message, with, returns, count)
         Type.assert(Sexp, receiver)

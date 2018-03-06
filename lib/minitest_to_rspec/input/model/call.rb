@@ -103,7 +103,7 @@ module MinitestToRspec
         # assertion failure message, which will be discarded later.
         def raise_error_args?
           arg_types = arguments.map(&:sexp_type)
-          [[], [:str], [:const], %i[const str]].include?(arg_types)
+          [[], [:str], [:const], %i[const str], [:colon2]].include?(arg_types)
         end
 
         def receiver

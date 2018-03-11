@@ -72,6 +72,14 @@ module MinitestToRspec
           expect_to(raise_error(*iter.call_arguments), iter.block, false)
         end
 
+        def method_refute_raise(iter)
+          method_refute_raises(iter)
+        end
+
+        def method_refute_raises(iter)
+          expect_to_not(raise_error(*iter.call_arguments), iter.block, false)
+        end
+
         def method_setup(exp)
           replace_method_name(exp, :before)
         end

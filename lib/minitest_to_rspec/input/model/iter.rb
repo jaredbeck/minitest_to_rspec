@@ -36,6 +36,14 @@ module MinitestToRspec
           !empty? && Model::Call.assert_raises?(@exp[1])
         end
 
+        def refute_raise?
+          !empty? && Model::Call.refute_raise?(@exp[1])
+        end
+
+        def refute_raises?
+          !empty? && Model::Call.refute_raises?(@exp[1])
+        end
+
         def block
           @exp[3]
         end

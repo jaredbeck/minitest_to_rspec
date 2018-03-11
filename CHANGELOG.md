@@ -43,7 +43,8 @@ of [keepachangelog.com][2].
 
 ### Added
 
-- None
+- [#20](https://github.com/jaredbeck/minitest_to_rspec/pull/20) -
+  Support `refute_raise[s]`
 
 ### Fixed
 

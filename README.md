@@ -97,6 +97,8 @@ assert_not_nil              |       |
 [assert_raises][13]         | 0..2  | Minitest
 refute                      |       |
 refute_equal                |       |
+[refute_raise][39]          |       |
+[refute_raises][39]         |       |
 
 ## Supported Mocha
 
@@ -160,3 +162,4 @@ This project would not be possible without [ruby_parser][14],
 [36]: http://www.rubydoc.info/github/thoughtbot/shoulda-context/master/Shoulda/Context/ClassMethods#context-instance_method
 [37]: http://www.rubydoc.info/github/thoughtbot/shoulda-context/master/Shoulda/Context/Context#setup-instance_method
 [38]: http://www.rubydoc.info/github/thoughtbot/shoulda-context/master/Shoulda/Context/ClassMethods#should-instance_method
+[39]: https://github.com/jaredbeck/minitest_to_rspec/pull/20

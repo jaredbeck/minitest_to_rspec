@@ -11,7 +11,8 @@ of [keepachangelog.com][2].
 
 ### Added
 
-- None
+- [#21](https://github.com/jaredbeck/minitest_to_rspec/pull/21) -
+  convert `setup`/`teardown` methods to `before`/`after` blocks
 
 ### Fixed
 

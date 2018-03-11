@@ -24,6 +24,18 @@ module MinitestToRspec
               s(:call, nil, :it, s(:str, example_title)),
               0,
               example_block)
+          elsif @exp.setup?
+            s(:iter,
+              s(:call, nil, :before),
+              0,
+              example_block
+            )
+          elsif @exp.teardown?
+            s(:iter,
+              s(:call, nil, :after),
+              0,
+              example_block
+            )
           else
             @original
           end

@@ -36,6 +36,14 @@ module MinitestToRspec
             exp.sexp_type == :call && new(exp).assert_raises?
           end
 
+          def refute_raise?(exp)
+            exp.sexp_type == :call && new(exp).refute_raise?
+          end
+
+          def refute_raises?(exp)
+            exp.sexp_type == :call && new(exp).refute_raises?
+          end
+
           def method_name?(exp, name)
             exp.sexp_type == :call && new(exp).method_name.to_s == name.to_s
           end
@@ -72,6 +80,14 @@ module MinitestToRspec
           method_name == :assert_raises && raise_error_args?
         end
 
+        def refute_raise?
+          method_name == :refute_raise && raise_error_args?
+        end
+
+        def refute_raises?
+          method_name == :refute_raises && raise_error_args?
+        end
+
         def calls_in_receiver_chain
           receiver_chain.each_with_object([]) do |e, a|
             next unless sexp_type?(:call, e)
@@ -103,7 +119,7 @@ module MinitestToRspec
         # assertion failure message, which will be discarded later.
         def raise_error_args?
           arg_types = arguments.map(&:sexp_type)
-          [[], [:str], [:const], %i[const str]].include?(arg_types)
+          [[], [:str], [:const], %i[const str], [:colon2]].include?(arg_types)
         end
 
         def receiver

@@ -23,6 +23,14 @@ module MinitestToRspec
         def test_method?
           method_name.start_with?('test_')
         end
+
+        def setup?
+          method_name == 'setup'
+        end
+
+        def teardown?
+          method_name == 'teardown'
+        end
       end
     end
   end

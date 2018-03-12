@@ -11,8 +11,24 @@ of [keepachangelog.com][2].
 
 ### Added
 
+- None
+
+### Fixed
+
+- None
+
+## 0.12.0 (2018-03-11)
+
+### Breaking Changes
+
+- None
+
+### Added
+
 - [#21](https://github.com/jaredbeck/minitest_to_rspec/pull/21) -
   convert `setup`/`teardown` methods to `before`/`after` blocks
+- [#20](https://github.com/jaredbeck/minitest_to_rspec/pull/20) -
+  Support `refute_raise[s]`
 - [#18](https://github.com/jaredbeck/minitest_to_rspec/pull/18) -
   Support namespaced exceptions for assert_raise[s]
 
@@ -45,8 +61,7 @@ of [keepachangelog.com][2].
 
 ### Added
 
-- [#20](https://github.com/jaredbeck/minitest_to_rspec/pull/20) -
-  Support `refute_raise[s]`
+- None
 
 ### Fixed
 

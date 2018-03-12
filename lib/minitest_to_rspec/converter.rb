@@ -8,15 +8,21 @@ require_relative 'errors'
 module MinitestToRspec
   # Converts strings of minitest code. Does not read or write files.
   class Converter
-    def initialize(rails: false, mocha: false)
+    NEWLINE = '__NEWLINE__'
+
+    def initialize(rails: false, mocha: false, newline: false)
       @processor = Input::Processor.new(rails, mocha)
+      @newline = newline
     end
 
     # - `input` - Contents of a ruby file.
     # - `file_path` - Optional. Value will replace any `__FILE__`
     #   keywords in the input.
     def convert(input, file_path = nil)
-      render process parse(input, file_path)
+      input = input.gsub("\n\n", "\n#{NEWLINE}\n") if @newline
+      output = render process parse(input, file_path)
+      output = output.gsub(NEWLINE, '') if @newline
+      output
     end
 
     private

@@ -8,14 +8,23 @@ module MinitestToRspec
     # instantiate Converter with `rails: true`.
     RAILS_FIXTURES = [15, 20, 23].freeze
 
+    # Fixtures that persist newlines.  These will
+    # instantiate Converter with `newlines: true`.
+    NEWLINE_FIXTURES = [28].freeze
+
     # The path to `spec/fixtures`
     SPEC_FIXTURES = File.join(__dir__, '..', 'fixtures')
 
     # Directories under `spec/fixtures`
     FIXTURE_DIRS = Dir.glob("#{SPEC_FIXTURES}/*")
 
-    def convert(input, file_path, rails, mocha)
-      described_class.new(rails: rails, mocha: mocha).convert(input, file_path)
+    def convert(input, file_path, rails, mocha, newline)
+      options = {
+        rails: rails,
+        mocha: mocha,
+        newline: newline
+      }
+      described_class.new(options).convert(input, file_path)
     end
 
     def input_file_path(fixture)
@@ -32,6 +41,10 @@ module MinitestToRspec
 
     def rails?(fixture)
       RAILS_FIXTURES.include?(fixture_number(fixture))
+    end
+
+    def newline?(fixture)
+      NEWLINE_FIXTURES.include?(fixture_number(fixture))
     end
 
     def read_input(fixture)
@@ -51,27 +64,29 @@ module MinitestToRspec
           expected = read_output(fixture).strip
           input = read_input(fixture)
           path = input_file_path(fixture)
-          calculated = convert(input, path, rails?(fixture), true).strip
+          rails = rails?(fixture)
+          newline = newline?(fixture)
+          calculated = convert(input, path, rails, true, newline).strip
           expect(calculated).to eq(expected)
         end
       end
 
       it 'supports rails option' do
         expect(
-          convert("require 'test_helper'", nil, true, false)
+          convert("require 'test_helper'", nil, true, false, false)
         ).to eq('require("rails_helper")')
       end
 
       context '__FILE__ keyword' do
         it 'replaces with the given file path' do
           expect(
-            convert('__FILE__', '/banana/kiwi/mango', false, false)
+            convert('__FILE__', '/banana/kiwi/mango', false, false, false)
           ).to eq('"/banana/kiwi/mango"')
         end
 
         it 'replaces with helpful message when not provided' do
           expect(
-            convert('__FILE__', nil, false, false)
+            convert('__FILE__', nil, false, false, false)
           ).to match(/No file path provided/)
         end
       end

@@ -14,7 +14,7 @@ module MinitestToRspec
     E_CANNOT_CREATE_TARGET_DIR = 5
 
     BANNER = <<~EOS
-      Usage: mt2rspec [--rails] [--mocha] source_file [target_file]
+      Usage: mt2rspec [--rails] [--mocha] [--newline] source_file [target_file]
 
       Reads source_file, writes target_file. If target_file is omitted,
       its location will be inferred. For example, test/fruit/banana_test.rb
@@ -28,19 +28,16 @@ module MinitestToRspec
       Requires rails_helper instead of spec_helper.
       Passes :type metadatum to RSpec.describe.
     EOS
+    OPT_NEWLINE = 'Try to preserve newlines.'
 
     attr_reader :source, :target
 
     def initialize(args)
-      opts = Trollop.options(args) do
-        version MinitestToRspec::VERSION
-        banner BANNER
-        opt :rails, OPT_RAILS, short: :none
-        opt :mocha, OPT_MOCHA, short: :none
-      end
+      opts = parse_opts(args)
 
       @rails = opts[:rails]
       @mocha = opts[:mocha]
+      @newline = opts[:newline]
       case args.length
       when 2
         @source, @target = args
@@ -50,6 +47,16 @@ module MinitestToRspec
       else
         warn 'Please specify source file'
         exit E_USAGE
+      end
+    end
+
+    def parse_opts(args)
+      Trollop.options(args) do
+        version MinitestToRspec::VERSION
+        banner BANNER
+        opt :rails, OPT_RAILS, short: :none
+        opt :mocha, OPT_MOCHA, short: :none
+        opt :newline, OPT_NEWLINE, short: :none
       end
     end
 
@@ -80,7 +87,7 @@ module MinitestToRspec
     end
 
     def converter
-      Converter.new(mocha: @mocha, rails: @rails)
+      Converter.new(mocha: @mocha, rails: @rails, newline: @newline)
     end
 
     def ensure_target_directory(target)

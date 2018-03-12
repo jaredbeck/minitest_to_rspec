@@ -51,7 +51,7 @@ gem install minitest_to_rspec
 ### CLI
 
 ```bash
-mt2rspec [--rails] [--mocha] source_file [target_file]
+mt2rspec [--rails] [--mocha] [--newline] source_file [target_file]
 mt2rspec --help
 ```
 

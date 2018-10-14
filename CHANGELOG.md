@@ -11,7 +11,11 @@ of [keepachangelog.com][2].
 
 ### Added
 
-- None
+- [#23](https://github.com/jaredbeck/minitest_to_rspec/pull/23)
+  - support `Test::Unit::TestCase`
+  - support `assert_empty`
+  - support `assert_kind_of`
+  - support `assert_instance_of`
 
 ### Fixed
 

@@ -84,6 +84,13 @@ module MinitestToRspec
             ))
           end
 
+          it 'converts a Test::Unit::TestCase' do
+            input = parse('class BananaTest < Test::Unit::TestCase; end')
+            expect(process(input, true)).to eq(parse(
+              'RSpec.describe(Banana, type: :model) do; end'
+            ))
+          end
+
           it 'converts a Draper::TestCase' do
             input = parse('class BananaDecoratorTest < Draper::TestCase; end')
             expect(process(input, true)).to eq(parse(

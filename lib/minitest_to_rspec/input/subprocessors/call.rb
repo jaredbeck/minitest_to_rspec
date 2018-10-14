@@ -55,8 +55,20 @@ module MinitestToRspec
           matcher(:be_nil)
         end
 
+        def be_empty
+          matcher(:be_empty)
+        end
+
         def be_truthy
           matcher(:be_truthy)
+        end
+
+        def be_a(exp)
+          matcher(:be_a, exp)
+        end
+
+        def be_instance_of(exp)
+          matcher(:be_instance_of, exp)
         end
 
         def call_to_question_mark?(exp)
@@ -95,10 +107,26 @@ module MinitestToRspec
           expect_to_not(be_nil, @exp.arguments[0], true)
         end
 
+        def method_assert_empty
+          expect_to(be_empty, @exp.arguments[0], true)
+        end
+
         def method_assert_not_equal
           expected = @exp.arguments[0]
           calculated = @exp.arguments[1]
           expect_to_not(eq(expected), calculated, true)
+        end
+
+        def method_assert_kind_of
+          expected = @exp.arguments[0]
+          calculated = @exp.arguments[1]
+          expect_to(be_a(expected), calculated, true)
+        end
+
+        def method_assert_instance_of
+          expected = @exp.arguments[0]
+          calculated = @exp.arguments[1]
+          expect_to(be_instance_of(expected), calculated, true)
         end
 
         def method_expects

@@ -11,6 +11,20 @@ of [keepachangelog.com][2].
 
 ### Added
 
+- None
+
+### Fixed
+
+- None
+
+## 0.13.0 (2018-10-18)
+
+### Breaking Changes
+
+- Removed `MinitestToRspec::VERSION`, please use `MinitestToRspec.gem_version`
+
+### Added
+
 - [#26](https://github.com/jaredbeck/minitest_to_rspec/pull/26) -
   Support `Test::Unit::TestCase`
 - [#25](https://github.com/jaredbeck/minitest_to_rspec/pull/25) -

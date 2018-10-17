@@ -32,13 +32,7 @@ module MinitestToRspec
     attr_reader :source, :target
 
     def initialize(args)
-      opts = Trollop.options(args) do
-        version MinitestToRspec::VERSION
-        banner BANNER
-        opt :rails, OPT_RAILS, short: :none
-        opt :mocha, OPT_MOCHA, short: :none
-      end
-
+      opts = parse_args(args)
       @rails = opts[:rails]
       @mocha = opts[:mocha]
       case args.length
@@ -99,6 +93,15 @@ module MinitestToRspec
       source
         .gsub(/\Atest/, 'spec')
         .gsub(/_test.rb\Z/, '_spec.rb')
+    end
+
+    def parse_args(args)
+      Trollop.options(args) do
+        version MinitestToRspec.gem_version.to_s
+        banner BANNER
+        opt :rails, OPT_RAILS, short: :none
+        opt :mocha, OPT_MOCHA, short: :none
+      end
     end
 
     def read_source

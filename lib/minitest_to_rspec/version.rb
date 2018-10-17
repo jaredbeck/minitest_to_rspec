@@ -2,9 +2,7 @@
 
 #:nodoc:
 module MinitestToRspec
-  VERSION = '0.12.0'
-
   def self.gem_version
-    ::Gem::Version.new(VERSION)
+    ::Gem::Version.new('0.12.0')
   end
 end

@@ -11,6 +11,8 @@ of [keepachangelog.com][2].
 
 ### Added
 
+- [#26](https://github.com/jaredbeck/minitest_to_rspec/pull/26) -
+  Support `Test::Unit::TestCase`
 - [#25](https://github.com/jaredbeck/minitest_to_rspec/pull/25) -
   Support `assert_empty`, `assert_kind_of`, `assert_instance_of`
 

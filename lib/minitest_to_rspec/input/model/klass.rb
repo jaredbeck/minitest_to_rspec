@@ -45,6 +45,10 @@ module MinitestToRspec
           @_block ||= @exp[3..-1] || []
         end
 
+        def test_unit_test_case?
+          lineage?(parent, %i[Test Unit TestCase])
+        end
+
         def draper_test_case?
           lineage?(parent, %i[Draper TestCase])
         end
@@ -78,23 +82,24 @@ module MinitestToRspec
           active_support_test_case? ||
             action_controller_test_case? ||
             action_mailer_test_case? ||
+            test_unit_test_case? ||
             draper_test_case?
         end
 
         private
 
-        def ancestor_name(exp, index)
-          assert_sexp_type(:colon2, exp)
-          ancestor = exp[index + 1]
-          sexp_type?(:const, ancestor) ? ancestor[1] : ancestor
+        def ancestor_names(exp)
+          return [exp] if exp.is_a?(Symbol)
+
+          sexp_type?(:colon2, exp) || sexp_type?(:const, exp) ||
+            raise(TypeError, "Expected :const or :colon2, got #{exp.inspect}")
+
+          exp.sexp_body.flat_map { |entry| ancestor_names(entry) }
         end
 
         def lineage?(exp, names)
           assert_sexp_type(:colon2, exp)
-          exp.length == names.length + 1 &&
-            names.each_with_index.all? { |name, ix|
-              name.to_sym == ancestor_name(exp, ix).to_sym
-            }
+          ancestor_names(exp) == names
         end
       end
     end

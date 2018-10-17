@@ -17,7 +17,7 @@ of [keepachangelog.com][2].
 
 - None
 
-## 0.13.0 (Unreleased)
+## 0.13.0 (2018-10-18)
 
 ### Breaking Changes
 

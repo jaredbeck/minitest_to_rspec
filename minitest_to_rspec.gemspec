@@ -29,8 +29,9 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'ruby_parser', '~> 3.8'
 
   spec.add_development_dependency 'bundler', '~> 1.17.3'
-  spec.add_development_dependency 'byebug', '~> 9.1'
-  spec.add_development_dependency 'rake', '~> 12.1'
+  spec.add_development_dependency 'byebug', '~> 11.0.1'
+  spec.add_development_dependency 'rake', '~> 13.0.0'
   spec.add_development_dependency 'rspec', '~> 3.5'
-  spec.add_development_dependency 'rubocop', '~> 0.51.0'
+  spec.add_development_dependency 'rubocop', '~> 0.76.0'
+  spec.add_development_dependency 'gemsurance', '~> 0.10.0'
 end

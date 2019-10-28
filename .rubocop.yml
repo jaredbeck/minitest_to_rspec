@@ -1,7 +1,7 @@
 AllCops:
   Exclude:
     - spec/fixtures/**/*
-  TargetRubyVersion: 2.3
+  TargetRubyVersion: 2.4
 
 Layout/AlignParameters:
   EnforcedStyle: with_fixed_indentation

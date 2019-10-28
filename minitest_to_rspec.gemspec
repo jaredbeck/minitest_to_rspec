@@ -22,7 +22,7 @@ Gem::Specification.new do |spec|
     f.match(%r{^(test|spec|features)/})
   }
   spec.require_paths = ['lib']
-  spec.required_ruby_version = '>= 2.4.7'
+  spec.required_ruby_version = '>= 2.4.9'
 
   spec.add_runtime_dependency 'optimist', '~> 3.0.0'
   spec.add_runtime_dependency 'ruby2ruby', '~> 2.3'

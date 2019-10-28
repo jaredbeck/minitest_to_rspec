@@ -7,6 +7,9 @@ AllCops:
 Layout/AlignParameters:
   EnforcedStyle: with_fixed_indentation
 
+Layout/EndOfLine:
+  EnforcedStyle: native
+
 Layout/IndentFirstArgument:
   EnforcedStyle: consistent
 

@@ -42,7 +42,7 @@ module MinitestToRspec
         end
 
         def block
-          @_block ||= @exp[3..-1] || []
+          @block ||= @exp[3..-1] || []
         end
 
         def test_unit_test_case?
@@ -72,7 +72,7 @@ module MinitestToRspec
         # - Inherit Bar::Foo #=> s(:colon2, s(:const, :Bar), :Foo)
         #
         def parent
-          @_parent ||= @exp[2]
+          @parent ||= @exp[2]
         end
 
         # Returns true if `@exp` inherits from, e.g. ActiveSupport::TestCase.

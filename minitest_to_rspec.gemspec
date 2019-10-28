@@ -22,13 +22,13 @@ Gem::Specification.new do |spec|
     f.match(%r{^(test|spec|features)/})
   }
   spec.require_paths = ['lib']
-  spec.required_ruby_version = '>= 2.3.0'
+  spec.required_ruby_version = '>= 2.4.7'
 
   spec.add_runtime_dependency 'optimist', '~> 3.0.0'
   spec.add_runtime_dependency 'ruby2ruby', '~> 2.3'
   spec.add_runtime_dependency 'ruby_parser', '~> 3.8'
 
-  spec.add_development_dependency 'bundler', '~> 1.7'
+  spec.add_development_dependency 'bundler', '~> 2.0.2'
   spec.add_development_dependency 'byebug', '~> 9.1'
   spec.add_development_dependency 'rake', '~> 12.1'
   spec.add_development_dependency 'rspec', '~> 3.5'

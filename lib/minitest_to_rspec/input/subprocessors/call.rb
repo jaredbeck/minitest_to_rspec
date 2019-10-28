@@ -181,6 +181,7 @@ module MinitestToRspec
         # - (name, stubs)
         def method_stub
           raise ArgumentError unless @exp.is_a?(Model::Call)
+
           if @exp.receiver.nil?
             s(:call, nil, :double, *@exp.arguments)
           else
@@ -273,10 +274,10 @@ module MinitestToRspec
               s(:block,
                 s(:str, 'Sorry for the pointless lambda here.'),
                 *array_of_calls
-              )
-            ),
+               )
+             ),
             :call
-          )
+           )
         end
 
         # `refsert` - Code shared by refute and assert. I could also have gone

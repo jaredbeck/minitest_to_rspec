@@ -63,7 +63,7 @@ module MinitestToRspec
             s(:call, nil, :expect),
             0,
             full_process(block)
-          )
+           )
         end
 
         # If it's a `Sexp`, run `obj` through a new `Processor`.  Otherwise,

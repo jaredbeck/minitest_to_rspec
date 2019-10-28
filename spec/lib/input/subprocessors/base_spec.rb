@@ -19,7 +19,7 @@ module MinitestToRspec
                 s(:call, nil, :allow, msg_recipient),
                 :to,
                 matcher
-              )
+               )
             )
           end
         end

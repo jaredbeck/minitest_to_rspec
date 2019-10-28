@@ -40,9 +40,9 @@ module MinitestToRspec
             context 'emtpy' do
               it 'converts' do
                 input = s(:class,
-                  :BananaTest,
-                  s(:colon2, s(:const, :ActiveSupport), :TestCase)
-                )
+                          :BananaTest,
+                          s(:colon2, s(:const, :ActiveSupport), :TestCase)
+                         )
                 iter = process(input)
                 expect(iter.sexp_type).to eq(:iter)
                 expect(iter.length).to eq(3) # type, call, args
@@ -54,14 +54,14 @@ module MinitestToRspec
             context 'not empty' do
               it 'converts' do
                 inp = s(:class,
-                  :BananaTest,
-                  s(:colon2, s(:const, :ActiveSupport), :TestCase),
-                  s(:iter,
-                    s(:call, nil, :test, s(:str, 'is delicious')),
-                    0,
-                    s(:call, nil, :puts)
-                  )
-                )
+                        :BananaTest,
+                        s(:colon2, s(:const, :ActiveSupport), :TestCase),
+                        s(:iter,
+                          s(:call, nil, :test, s(:str, 'is delicious')),
+                          0,
+                          s(:call, nil, :puts)
+                         )
+                       )
                 expect(process(inp)).to eq(parse(
                   <<-EOS
                     RSpec.describe(Banana) do
@@ -131,9 +131,10 @@ module MinitestToRspec
                   s(:class,
                     s(:colon2, s(:const, :Fruit), :BananaTest),
                     nil
-                  )
+                   )
                 )
-              }.to raise_error(ModuleShorthandError,
+              }.to raise_error(
+                ModuleShorthandError,
                 /Please convert your class definition to use nested modules/
               )
             end

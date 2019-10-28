@@ -59,6 +59,7 @@ module MinitestToRspec
 
         def assert_difference?
           return false unless method_name == :assert_difference
+
           [[:str], %i[str lit]].include?(argument_types)
         end
 
@@ -91,6 +92,7 @@ module MinitestToRspec
         def calls_in_receiver_chain
           receiver_chain.each_with_object([]) do |e, a|
             next unless sexp_type?(:call, e)
+
             a << self.class.new(e)
           end
         end

@@ -79,6 +79,7 @@ module MinitestToRspec
         # TODO: Other test case parent classes.
         def test_case?
           return false unless sexp_type?(:colon2, parent)
+
           active_support_test_case? ||
             action_controller_test_case? ||
             action_mailer_test_case? ||

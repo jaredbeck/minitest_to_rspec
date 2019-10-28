@@ -32,7 +32,7 @@ module MinitestToRspec
             change(diff_exp),
             :by,
             by_exp
-          )
+           )
         end
 
         def matcher_with_block(matcher_name, block)
@@ -40,7 +40,7 @@ module MinitestToRspec
             s(:call, nil, matcher_name),
             0,
             block
-          )
+           )
         end
 
         def method_assert_difference(exp)

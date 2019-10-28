@@ -80,6 +80,7 @@ module MinitestToRspec
     def ensure_target_directory(target)
       dir = File.dirname(target)
       return if Dir.exist?(dir)
+
       begin
         FileUtils.mkdir_p(dir)
       rescue SystemCallError => e

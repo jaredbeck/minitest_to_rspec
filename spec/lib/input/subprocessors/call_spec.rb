@@ -108,8 +108,8 @@ module MinitestToRspec
                   s(:str, 'yellow'),
                   s(:lit, :delicious),
                   s(:true)
-                )
-              )
+                 )
+               )
             }
             expect(process(input.call)).to eq(input.call)
           end

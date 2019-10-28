@@ -29,13 +29,13 @@ module MinitestToRspec
               s(:call, nil, :before),
               0,
               example_block
-            )
+             )
           elsif @exp.teardown?
             s(:iter,
               s(:call, nil, :after),
               0,
               example_block
-            )
+             )
           else
             @original
           end

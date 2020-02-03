@@ -24,9 +24,9 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
   spec.required_ruby_version = '>= 2.3.0'
 
+  spec.add_runtime_dependency 'optimist', '~> 3.0'
   spec.add_runtime_dependency 'ruby2ruby', '~> 2.4.4'
   spec.add_runtime_dependency 'ruby_parser', '~> 3.11.0'
-  spec.add_runtime_dependency 'trollop', '~> 2.1'
 
   spec.add_development_dependency 'bundler', '~> 2.0'
   spec.add_development_dependency 'byebug', '~> 11.0'

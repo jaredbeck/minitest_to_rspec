@@ -2,7 +2,7 @@
 
 require 'fileutils'
 require 'minitest_to_rspec'
-require 'trollop'
+require 'optimist'
 
 module MinitestToRspec
   # Command-Line Interface (CLI) instantiated by `bin/mt2rspec`
@@ -96,7 +96,7 @@ module MinitestToRspec
     end
 
     def parse_args(args)
-      Trollop.options(args) do
+      Optimist.options(args) do
         version MinitestToRspec.gem_version.to_s
         banner BANNER
         opt :rails, OPT_RAILS, short: :none

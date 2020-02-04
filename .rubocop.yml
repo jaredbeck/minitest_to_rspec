@@ -5,13 +5,13 @@ AllCops:
     - spec/fixtures/**/*
   TargetRubyVersion: 2.3
 
-Layout/AlignParameters:
+Layout/ParameterAlignment:
   EnforcedStyle: with_fixed_indentation
 
-Layout/IndentFirstArgument:
+Layout/FirstArgumentIndentation:
   EnforcedStyle: consistent
 
-Layout/IndentHeredoc:
+Layout/HeredocIndentation:
   EnforcedStyle: squiggly
 
 Layout/MultilineMethodCallBraceLayout:
@@ -53,7 +53,7 @@ Style/BlockDelimiters:
 
 Style/Documentation:
   Exclude:
-    - 'spec/**/*'
+    - "spec/**/*"
 
 # Too subtle to lint. Avoid postfix operators unless line is very simple.
 Style/IfUnlessModifier:

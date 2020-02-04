@@ -10,41 +10,41 @@
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, IndentationWidth.
 # SupportedStyles: with_first_argument, with_fixed_indentation
-Layout/AlignArguments:
+Layout/ArgumentAlignment:
   Exclude:
-    - 'spec/lib/input/subprocessors/klass_spec.rb'
+    - "spec/lib/input/subprocessors/klass_spec.rb"
 
 # Offense count: 13
 # Cop supports --auto-correct.
 Layout/ClosingParenthesisIndentation:
   Exclude:
-    - 'lib/minitest_to_rspec/input/subprocessors/base.rb'
-    - 'lib/minitest_to_rspec/input/subprocessors/call.rb'
-    - 'lib/minitest_to_rspec/input/subprocessors/defn.rb'
-    - 'lib/minitest_to_rspec/input/subprocessors/iter.rb'
-    - 'spec/lib/input/subprocessors/base_spec.rb'
-    - 'spec/lib/input/subprocessors/call_spec.rb'
-    - 'spec/lib/input/subprocessors/klass_spec.rb'
+    - "lib/minitest_to_rspec/input/subprocessors/base.rb"
+    - "lib/minitest_to_rspec/input/subprocessors/call.rb"
+    - "lib/minitest_to_rspec/input/subprocessors/defn.rb"
+    - "lib/minitest_to_rspec/input/subprocessors/iter.rb"
+    - "spec/lib/input/subprocessors/base_spec.rb"
+    - "spec/lib/input/subprocessors/call_spec.rb"
+    - "spec/lib/input/subprocessors/klass_spec.rb"
 
 # Offense count: 5
 # Cop supports --auto-correct.
 Layout/EmptyLineAfterGuardClause:
   Exclude:
-    - 'lib/minitest_to_rspec/cli.rb'
-    - 'lib/minitest_to_rspec/input/model/call.rb'
-    - 'lib/minitest_to_rspec/input/model/klass.rb'
-    - 'lib/minitest_to_rspec/input/subprocessors/call.rb'
+    - "lib/minitest_to_rspec/cli.rb"
+    - "lib/minitest_to_rspec/input/model/call.rb"
+    - "lib/minitest_to_rspec/input/model/klass.rb"
+    - "lib/minitest_to_rspec/input/subprocessors/call.rb"
 
 # Offense count: 2
 # Configuration parameters: EnforcedStyleForLeadingUnderscores.
 # SupportedStylesForLeadingUnderscores: disallowed, required, optional
 Naming/MemoizedInstanceVariableName:
   Exclude:
-    - 'lib/minitest_to_rspec/input/model/klass.rb'
+    - "lib/minitest_to_rspec/input/model/klass.rb"
 
 # Offense count: 2
 # Cop supports --auto-correct.
 Style/ExpandPathArguments:
   Exclude:
-    - 'minitest_to_rspec.gemspec'
-    - 'spec/spec_helper.rb'
+    - "minitest_to_rspec.gemspec"
+    - "spec/spec_helper.rb"
